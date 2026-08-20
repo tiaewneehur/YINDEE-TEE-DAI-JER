@@ -1,170 +1,1927 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>จองที่นั่งรถตู้ - ยินดีที่ได้เจอ</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#121214',
-                        cardBg: '#1E1E24',
-                        accentOrange: '#FF7A00',
-                        accentHover: '#E06A00',
-                    }
-                }
-            }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>ยินดีที่ได้เจอ 🚐</title>
+
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#121214" />
+<meta name="apple-mobile-web-app-title" content="ยินดีที่ได้เจอ" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-icon" href="logo-yindee.png" />
+<link rel="icon" href="logo-yindee.png" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          darkBg: '#121214',
+          cardBg: '#1E1E24',
+          cardBg2: '#18181D',
+          accentOrange: '#FF7A00',
+          accentHover: '#E06A00',
         }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Prompt', sans-serif; }
-    </style>
+      }
+    }
+  }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+<style>
+  body { font-family: 'Prompt', sans-serif; }
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
+  .hidden-el { display: none !important; }
+  .expanded .hist-extra, .expanded .past-extra { display: block !important; }
+  @keyframes pulseSoft { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+  .animate-pulseSoft { animation: pulseSoft 1s ease-in-out infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .animate-spin-slow { animation: spin 1s linear infinite; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-up { animation: fadeUp .3s ease; }
+  @keyframes ringPulse { 0%, 100% { box-shadow: 0 0 0 2px #FF7A00; } 50% { box-shadow: 0 0 0 5px rgba(255,122,0,.35); } }
+  .ring-pulse { animation: ringPulse 1s ease-in-out infinite; }
+</style>
 </head>
-<body class="bg-darkBg text-gray-100 min-h-screen flex justify-center items-center p-0 sm:p-4">
+<body class="bg-darkBg text-gray-100 min-h-screen">
 
-    <!-- Mobile Frame Container -->
-    <div class="w-full max-w-md bg-darkBg sm:bg-cardBg sm:rounded-3xl sm:shadow-2xl overflow-hidden flex flex-col min-h-screen sm:min-h-[85vh] border border-gray-800">
-        
-        <!-- Header -->
-        <div class="p-6 bg-gradient-to-b from-[#1E1E24] to-darkBg border-b border-gray-800">
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <span class="text-xs tracking-widest text-accentOrange uppercase font-semibold">Van Booking System</span>
-                    <h1 class="text-2xl font-bold tracking-wide">ยินดีที่ได้เจอ</h1>
-                </div>
-                <div class="w-10 h-10 rounded-full bg-accentOrange/10 border border-accentOrange/30 flex items-center justify-center text-accentOrange font-bold">
-                    🚐
-                </div>
-            </div>
+<!-- ================================================================
+     LOGIN PAGE
+     ================================================================ -->
+<div id="loginPage" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center p-6 bg-darkBg">
+  <div class="text-center mb-6">
+    <div class="w-20 h-20 rounded-full bg-cardBg border border-accentOrange/30 flex items-center justify-center mx-auto mb-3 overflow-hidden">
+      <img src="logo-yindee.png" onerror="this.src='https://via.placeholder.com/80/1E1E24/FF7A00?text=Y'" class="w-full h-full object-cover" alt="Logo">
+    </div>
+    <span class="text-xs tracking-widest text-accentOrange uppercase font-semibold">Van Booking System</span>
+    <h1 class="text-2xl font-bold tracking-wide mt-1">ยินดีที่ได้เจอ</h1>
+    <p class="text-xs text-gray-500 mt-1">เดินป่าให้เจอกัน 🚐</p>
+  </div>
 
-            <!-- Route Card -->
-            <div class="bg-cardBg/80 backdrop-blur-md p-4 rounded-2xl border border-gray-700/50 space-y-2">
-                <div class="flex justify-between text-sm text-gray-400">
-                    <span>เส้นทางเดินทาง</span>
-                    <span class="text-accentOrange font-medium">฿180 / ที่นั่ง</span>
-                </div>
-                <div class="flex items-center justify-between font-semibold text-base">
-                    <span>กรุงเทพฯ (หมอชิต)</span>
-                    <span class="text-gray-500">➔</span>
-                    <span>กาญจนบุรี</span>
-                </div>
-                <div class="pt-2 border-t border-gray-700/40 flex justify-between text-xs text-gray-400">
-                    <span>📅 ศุกร์, 21 ส.ค. 2026</span>
-                    <span class="text-gray-200 bg-gray-700/60 px-2 py-0.5 rounded-full">รอบ 09:30 น.</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Seat Selection Section -->
-        <div class="flex-1 p-6 space-y-6">
-            <div class="text-center">
-                <h2 class="text-sm font-medium text-gray-300">เลือกที่นั่งของคุณ</h2>
-                <p class="text-xs text-gray-500 mt-0.5">แตะที่นั่งที่ต้องการ (สีส้มคือที่นั่งของคุณ)</p>
-            </div>
-
-            <!-- Legend Status -->
-            <div class="flex justify-center gap-4 text-xs">
-                <div class="flex items-center gap-1.5">
-                    <div class="w-3.5 h-3.5 rounded bg-gray-800 border border-gray-600"></div>
-                    <span class="text-gray-400">ว่าง</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <div class="w-3.5 h-3.5 rounded bg-accentOrange shadow-sm shadow-accentOrange/50"></div>
-                    <span class="text-gray-200 font-medium">เลือกแล้ว</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <div class="w-3.5 h-3.5 rounded bg-gray-900 border border-gray-800 opacity-40"></div>
-                    <span class="text-gray-600">ไม่ว่าง</span>
-                </div>
-            </div>
-
-            <!-- Van Interior Layout -->
-            <div class="bg-[#18181D] border border-gray-800 rounded-3xl p-6 relative shadow-inner max-w-xs mx-auto">
-                
-                <!-- Front Car Indicator -->
-                <div class="flex justify-between items-center pb-4 mb-6 border-b border-gray-800/80 text-xs text-gray-500 font-medium">
-                    <span class="bg-gray-800 px-2 py-1 rounded text-gray-400">🚪 ประตูขึ้น-ลง</span>
-                    <span class="bg-gray-800 px-2 py-1 rounded text-gray-400">👤 คนขับ</span>
-                </div>
-
-                <!-- Seats Grid -->
-                <div class="space-y-4">
-                    <!-- Row 1 (Front Passenger) -->
-                    <div class="flex justify-between items-center px-4">
-                        <button onclick="toggleSeat(this, 'A1')" class="seat w-12 h-12 rounded-xl bg-gray-800 border border-gray-700 text-xs font-bold transition-all hover:border-gray-500 flex flex-col items-center justify-center">
-                            <span>A1</span>
-                            <span class="text-[9px] text-gray-500 font-normal">หน้า</span>
-                        </button>
-                        <div class="w-12 h-12"></div> <!-- ช่องว่างทางเดิน -->
-                    </div>
-
-                    <!-- Row 2 -->
-                    <div class="grid grid-cols-3 gap-3">
-                        <button onclick="toggleSeat(this, 'B1')" class="seat w-12 h-12 rounded-xl bg-gray-800 border border-gray-700 text-xs font-bold transition-all hover:border-gray-500 flex flex-col items-center justify-center">B1</button>
-                        <button onclick="toggleSeat(this, 'B2')" class="seat w-12 h-12 rounded-xl bg-gray-900 border border-gray-800 text-xs font-bold text-gray-700 cursor-not-allowed flex flex-col items-center justify-center" disabled>B2</button>
-                        <button onclick="toggleSeat(this, 'B3')" class="seat w-12 h-12 rounded-xl bg-gray-800 border border-gray-700 text-xs font-bold transition-all hover:border-gray-500 flex flex-col items-center justify-center">B3</button>
-                    </div>
-
-                    <!-- Row 3 -->
-                    <div class="grid grid-cols-3 gap-3">
-                        <button onclick="toggleSeat(this, 'C1')" class="seat w-12 h-12 rounded-xl bg-gray-800 border border-gray-700 text-xs font-bold transition-all hover:border-gray-500 flex flex-col items-center justify-center">C1</button>
-                        <button onclick="toggleSeat(this, 'C2')" class="seat w-12 h-12 rounded-xl bg-gray-800 border border-gray-700 text-xs font-bold transition-all hover:border-gray-500 flex flex-col items-center justify-center">C2</button>
-                        <button onclick="toggleSeat(this, 'C3')" class="seat w-12 h-12 rounded-xl bg-gray-800 border border-gray-700 text-xs font-bold transition-all hover:border-gray-500 flex flex-col items-center justify-center">C3</button>
-                    </div>
-
-                    <!-- Row 4 (Back Row - 4 seats) -->
-                    <div class="grid grid-cols-4 gap-2 pt-2 border-t border-gray-800/50">
-                        <button onclick="toggleSeat(this, 'D1')" class="seat w-10 h-11 rounded-lg bg-gray-800 border border-gray-700 text-[11px] font-bold transition-all hover:border-gray-500 flex items-center justify-center">D1</button>
-                        <button onclick="toggleSeat(this, 'D2')" class="seat w-10 h-11 rounded-lg bg-gray-800 border border-gray-700 text-[11px] font-bold transition-all hover:border-gray-500 flex items-center justify-center">D2</button>
-                        <button onclick="toggleSeat(this, 'D3')" class="seat w-10 h-11 rounded-lg bg-gray-900 border border-gray-800 text-[11px] font-bold text-gray-700 cursor-not-allowed flex items-center justify-center" disabled>D3</button>
-                        <button onclick="toggleSeat(this, 'D4')" class="seat w-10 h-11 rounded-lg bg-gray-800 border border-gray-700 text-[11px] font-bold transition-all hover:border-gray-500 flex items-center justify-center">D4</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sticky Footer Summary & CTA -->
-        <div class="p-4 bg-[#1A1A22] border-t border-gray-800 flex items-center justify-between">
-            <div>
-                <p class="text-xs text-gray-400">เลือกแล้ว (<span id="selectedCount">0</span> ที่นั่ง)</p>
-                <p class="text-lg font-bold text-accentOrange">฿<span id="totalPrice">0</span></p>
-            </div>
-            <button onclick="alert('ไปสู่หน้าชำระเงินของเพจ ยินดีที่ได้เจอ ✨')" class="bg-gradient-to-r from-accentOrange to-[#FF5500] hover:from-accentHover hover:to-[#E04800] text-white font-semibold px-6 py-3 rounded-2xl shadow-lg shadow-accentOrange/25 transition-all text-sm">
-                ยืนยันที่นั่ง ✨
-            </button>
-        </div>
-
+  <div class="w-full max-w-sm bg-cardBg border border-gray-800 rounded-3xl p-6 shadow-2xl">
+    <div id="lineLoginStep">
+      <h2 class="text-lg font-bold text-white mb-1">👋 ยินดีต้อนรับครับ!</h2>
+      <p class="text-xs text-gray-500 mb-5 leading-relaxed">กดปุ่มด้านล่างเพื่อเข้าสู่ระบบด้วย LINE<br>ปลอดภัย ไม่ต้องจำรหัสผ่าน</p>
+      <button id="lineLoginBtn" onclick="loginWithLine()" class="hidden-el w-full h-12 rounded-2xl bg-[#06C755] text-white font-semibold text-sm flex items-center justify-center gap-2">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" class="w-5 h-5"> เข้าสู่ระบบด้วย LINE
+      </button>
+      <p id="lineLoginLoading" class="text-center text-xs text-gray-500 mt-2">⌛ กำลังเชื่อมต่อกับ LINE...</p>
     </div>
 
-    <!-- JavaScript สำหรับกดเลือก/ยกเลิกที่นั่งแบบอินเทอร์แอกทีฟ -->
-    <script>
-        const pricePerSeat = 180;
-        let selectedSeats = [];
+    <div id="phoneStep" class="hidden-el w-full">
+      <div class="flex items-center gap-3 bg-[#06C755]/10 border border-[#06C755]/30 rounded-2xl p-3 mb-5">
+        <img id="linePicPreview" src="" class="w-10 h-10 rounded-full object-cover border-2 border-[#06C755]">
+        <div class="text-left">
+          <div id="lineNamePreview" class="text-sm font-bold text-white">-</div>
+          <div class="text-[11px] text-[#06C755]">✅ เข้าสู่ระบบด้วย LINE แล้ว</div>
+        </div>
+      </div>
+      <h2 class="text-lg font-bold text-white mb-1">ใส่ข้อมูลของคุณ 📞</h2>
+      <p class="text-xs text-gray-500 mb-5">ใช้ผูกกับประวัติการจองของคุณเท่านั้น</p>
+      <div class="relative mb-3">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm">🏷️</span>
+        <input id="loginNick" oninput="checkReady()" placeholder="พิมพ์ชื่อเล่นเพื่อแสดงบนผังเบาะ" maxlength="30"
+          class="w-full h-12 bg-gray-800/70 border border-gray-700 rounded-2xl pl-11 pr-4 text-sm text-white outline-none focus:border-accentOrange">
+      </div>
+      <div class="relative mb-4">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm">🇹🇭</span>
+        <input id="loginPhone" type="tel" oninput="checkReady()" placeholder="063xxxxxxx" maxlength="10"
+          class="w-full h-12 bg-gray-800/70 border border-gray-700 rounded-2xl pl-11 pr-4 text-sm text-white outline-none focus:border-accentOrange">
+      </div>
+      <button id="loginBtn" disabled onclick="doLogin()"
+        class="w-full h-12 rounded-2xl bg-accentOrange disabled:bg-gray-800 disabled:text-gray-600 text-white font-semibold text-sm transition-colors">เข้าสู่ระบบ →</button>
+    </div>
+  </div>
+  <p class="text-[11px] text-gray-600 mt-5">🔒 ใช้เบอร์ดึงประวัติการจองของคุณเท่านั้น</p>
+</div>
 
-        function toggleSeat(button, seatName) {
-            if (button.classList.contains('bg-accentOrange')) {
-                // ยกเลิกเลือก
-                button.classList.remove('bg-accentOrange', 'border-transparent', 'text-white', 'shadow-md', 'shadow-accentOrange/40');
-                button.classList.add('bg-gray-800', 'border-gray-700', 'text-gray-100');
-                selectedSeats = selectedSeats.filter(s => s !== seatName);
-            } else {
-                // เลือกที่นั่ง
-                button.classList.remove('bg-gray-800', 'border-gray-700', 'text-gray-100');
-                button.classList.add('bg-accentOrange', 'border-transparent', 'text-white', 'shadow-md', 'shadow-accentOrange/40');
-                selectedSeats.push(seatName);
-            }
-            updateSummary();
-        }
+<!-- LOADING SCREEN -->
+<div id="loadingScreen" class="hidden-el fixed inset-0 z-[9998] flex-col items-center justify-center gap-5 bg-darkBg">
+  <div class="relative w-16 h-16">
+    <div class="absolute inset-0 rounded-full border-4 border-gray-800 border-t-accentOrange animate-spin-slow"></div>
+    <img src="logo-yindee.png" onerror="this.src='https://via.placeholder.com/44/1E1E24/FF7A00?text=Y'" class="absolute inset-2 w-12 h-12 rounded-full object-cover">
+  </div>
+  <p class="text-xs text-gray-500 tracking-wide">กำลังโหลดข้อมูล...</p>
+</div>
 
-        function updateSummary() {
-            document.getElementById('selectedCount').innerText = selectedSeats.length;
-            document.getElementById('totalPrice').innerText = selectedSeats.length * pricePerSeat;
+<!-- ================================================================
+     APP SHELL
+     ================================================================ -->
+<div id="appShell" class="hidden-el">
+
+  <!-- HEADER -->
+  <div class="sticky top-0 z-[500] p-4 bg-gradient-to-b from-cardBg to-darkBg border-b border-gray-800">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+        <div class="w-11 h-11 rounded-full bg-accentOrange/10 border border-accentOrange/30 overflow-hidden flex items-center justify-center">
+          <img src="logo-yindee.png" onerror="this.src='https://via.placeholder.com/44/1E1E24/FF7A00?text=Y'" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h1 class="text-base font-bold tracking-wide">ยินดีที่ได้เจอ</h1>
+          <span class="text-[10px] tracking-widest text-accentOrange uppercase font-semibold">Van Booking System</span>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="openDrawer()" class="text-[11px] font-semibold bg-gray-800/70 border border-gray-700 text-gray-300 px-3 py-1.5 rounded-full">📋 สาระ</button>
+        <button onclick="document.getElementById('adminPopup').classList.remove('hidden-el')" class="text-[11px] font-semibold bg-accentOrange text-white px-3 py-1.5 rounded-full shadow shadow-accentOrange/30">👤 ติดต่อ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-home" class="pb-28"><div class="max-w-md mx-auto px-4 pt-4" id="homeContent"></div></div>
+
+  <div id="tab-trips" class="hidden-el pb-28">
+    <div class="max-w-md mx-auto px-4 pt-4">
+      <div class="relative mb-5">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500">🔍</span>
+        <input id="searchInput" oninput="searchTrips()" placeholder="ค้นหาชื่อทริป..."
+          class="w-full h-11 bg-cardBg border border-gray-800 rounded-2xl pl-11 pr-4 text-sm text-white outline-none focus:border-accentOrange">
+      </div>
+      <div id="tripListFull" class="space-y-4">
+        <p class="text-center text-accentOrange text-xs py-8">⌛ กำลังโหลด...</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-mytrips" class="hidden-el pb-28"><div class="max-w-md mx-auto px-4 pt-4" id="myContent"></div></div>
+  <div id="tab-notif" class="hidden-el pb-28"><div class="max-w-md mx-auto px-4 pt-4" id="notifContent"></div></div>
+
+  <!-- BOTTOM NAV -->
+  <div class="fixed bottom-0 left-0 w-full z-[500] bg-[#1A1A22]/95 backdrop-blur-md border-t border-gray-800 flex" style="padding-bottom:env(safe-area-inset-bottom,0)">
+    <div class="bnav-item flex-1 flex flex-col items-center justify-center gap-1 py-2.5 cursor-pointer" id="nav-home" onclick="switchTab('home')">
+      <div class="text-xl">🏠</div><div class="text-[9px] font-medium">หน้าหลัก</div>
+    </div>
+    <div class="bnav-item flex-1 flex flex-col items-center justify-center gap-1 py-2.5 cursor-pointer" id="nav-trips" onclick="switchTab('trips')">
+      <div class="text-xl">🚐</div><div class="text-[9px] font-medium">ทริปทั้งหมด</div>
+    </div>
+    <div class="bnav-item flex-1 flex flex-col items-center justify-center gap-1 py-2.5 cursor-pointer" id="nav-mytrips" onclick="switchTab('mytrips')">
+      <div class="text-xl flex items-center justify-center"><img id="navProfilePic" src="" class="hidden-el w-5 h-5 rounded-full object-cover border border-gray-600"><span id="navProfileEmoji">🪪</span></div>
+      <div class="text-[9px] font-medium">โปรไฟล์</div>
+    </div>
+    <div class="bnav-item flex-1 flex flex-col items-center justify-center gap-1 py-2.5 cursor-pointer" id="nav-notif" onclick="switchTab('notif')">
+      <div class="text-xl">🔔</div><div class="text-[9px] font-medium">เผื่อจำเป็น</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     TRIP DETAIL BOTTOM SHEET
+     ================================================================ -->
+<div id="modalBg" class="hidden-el fixed inset-0 z-[800] bg-black/75 backdrop-blur-sm items-end sm:items-center justify-center" onclick="if(event.target===this) closeModal()">
+  <div class="w-full sm:w-[92%] sm:max-w-md max-h-[90vh] bg-cardBg rounded-t-3xl sm:rounded-3xl overflow-y-auto relative fade-up">
+    <button onclick="closeModal()" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-black/50 text-white flex items-center justify-center">✕</button>
+    <img id="md-img" src="" onerror="this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80'" class="w-full h-48 object-cover">
+    <button id="md-bookBtn" onclick="goToBook()" class="block w-[88%] max-w-xs h-12 mx-auto -mt-6 relative z-10 rounded-2xl bg-gradient-to-r from-accentOrange to-[#FF5500] text-white font-bold text-sm shadow-lg shadow-accentOrange/30">จองที่นั่ง 🚐</button>
+    <div class="p-5">
+      <h2 id="md-name" class="text-xl font-bold text-white mb-1"></h2>
+      <div id="md-date" class="text-xs text-accentOrange font-medium mb-4"></div>
+      <div id="md-price" class="inline-flex items-center gap-2 bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-2 text-sm font-semibold text-white mb-4"></div>
+      <div class="grid grid-cols-2 gap-2 mb-4">
+        <div class="bg-gray-800/40 border border-gray-800 rounded-xl p-3"><span class="block text-[10px] text-gray-500 mb-1">⏳ จำนวนวัน</span><strong id="md-days" class="text-sm text-white">-</strong></div>
+        <div class="bg-gray-800/40 border border-gray-800 rounded-xl p-3"><span class="block text-[10px] text-gray-500 mb-1">🥾 ระยะเดิน</span><strong id="md-dist" class="text-sm text-white">-</strong></div>
+        <div class="bg-gray-800/40 border border-gray-800 rounded-xl p-3"><span class="block text-[10px] text-gray-500 mb-1">🔥 ความยาก</span><strong id="md-level" class="text-sm text-white">-</strong></div>
+        <div class="bg-gray-800/40 border border-gray-800 rounded-xl p-3"><span class="block text-[10px] text-gray-500 mb-1">🚐 การเดินทาง</span><strong class="text-sm text-white">รถตู้ VIP</strong></div>
+      </div>
+      <div id="md-hl" class="bg-gray-800/30 border border-gray-800 rounded-xl p-4 text-sm text-gray-300 leading-relaxed mb-4 whitespace-pre-line"></div>
+      <div id="md-payment" class="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2 mb-4"></div>
+      <div class="flex items-center justify-between bg-gray-800/40 border border-gray-800 rounded-xl px-4 py-3">
+        <div>
+          <p class="text-[10px] text-gray-500 mb-1">ที่นั่งคงเหลือ</p>
+          <div id="md-avail" class="text-sm font-bold text-emerald-400">-</div>
+        </div>
+        <div id="md-status" class="text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full">เปิดจอง</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     BOOKING PAGE — van seat map (สไตล์ตามตัวอย่างที่ให้มา)
+     ================================================================ -->
+<div id="bookingPage2" class="hidden-el fixed inset-0 z-[900] bg-darkBg overflow-y-auto">
+  <div class="flex items-center justify-between gap-3 p-4 border-b border-gray-800 sticky top-0 bg-darkBg/95 backdrop-blur-md z-10">
+    <button onclick="closeBook()" class="text-accentOrange text-sm font-semibold flex items-center gap-1">⬅ ย้อนกลับ</button>
+    <span class="text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full">ขั้นตอน 2/3</span>
+  </div>
+
+  <div class="max-w-md mx-auto px-4 pt-5 pb-36">
+    <div class="text-center mb-5">
+      <h2 class="text-lg font-bold text-white">จองที่นั่งรถตู้ 🚐</h2>
+      <p class="text-xs text-accentOrange mt-1">เลือกทำเลดีๆ ก่อนตกรถนะครับ ⚡</p>
+    </div>
+
+    <!-- trip route card, matching reference style -->
+    <div class="bg-cardBg/80 backdrop-blur-md p-4 rounded-2xl border border-gray-700/50 space-y-2 mb-5">
+      <div class="flex justify-between text-xs text-gray-500"><span>ทริปที่เลือก</span></div>
+      <div class="font-semibold text-sm text-white" id="b-trip-display">-</div>
+      <div class="pt-2 border-t border-gray-700/40 flex justify-between text-xs text-gray-400">
+        <span id="b-date-display">📅 -</span>
+      </div>
+    </div>
+    <input id="b-trip" type="hidden"><input id="b-date" type="hidden">
+
+    <img src="seat-map.jpg" onerror="this.style.display='none'" class="w-full rounded-2xl border border-gray-800 mb-4">
+
+    <!-- Legend -->
+    <div class="flex justify-center gap-3 text-[11px] flex-wrap mb-5">
+      <div class="flex items-center gap-1.5"><div class="w-3.5 h-3.5 rounded bg-gray-800 border border-gray-600"></div><span class="text-gray-400">ว่าง</span></div>
+      <div class="flex items-center gap-1.5"><div class="w-3.5 h-3.5 rounded bg-accentOrange"></div><span class="text-gray-200 font-medium">ของคุณ</span></div>
+      <div class="flex items-center gap-1.5"><div class="w-3.5 h-3.5 rounded bg-red-950 border border-red-900"></div><span class="text-gray-500">ถูกจอง</span></div>
+      <div class="flex items-center gap-1.5"><div class="w-3.5 h-3.5 rounded bg-amber-900/40 border border-amber-700/50"></div><span class="text-gray-500">กำลังเลือก</span></div>
+    </div>
+
+    <div class="space-y-5">
+      <div class="van-block">
+        <div class="text-center text-xs font-semibold text-accentOrange bg-gray-800/50 rounded-xl py-2.5 mb-2">🚐 คันที่ 1 (ตู้ A)</div>
+        <div class="flex justify-between px-2 mb-1.5 text-[10px] font-semibold text-gray-500"><span>⬅ ด้านหน้า</span><span>ด้านหลัง ➡</span></div>
+        <div id="vanGridA" class="grid grid-cols-4 gap-2 bg-cardBg2 border border-gray-800 rounded-2xl p-3"></div>
+      </div>
+      <div class="van-block">
+        <div class="text-center text-xs font-semibold text-accentOrange bg-gray-800/50 rounded-xl py-2.5 mb-2">🚐 คันที่ 2 (ตู้ B)</div>
+        <div class="flex justify-between px-2 mb-1.5 text-[10px] font-semibold text-gray-500"><span>⬅ ด้านหน้า</span><span>ด้านหลัง ➡</span></div>
+        <div id="vanGridB" class="grid grid-cols-4 gap-2 bg-cardBg2 border border-gray-800 rounded-2xl p-3"></div>
+      </div>
+      <div class="van-block">
+        <div class="text-center text-xs font-semibold text-accentOrange bg-gray-800/50 rounded-xl py-2.5 mb-2">🚐 คันที่ 3 (ตู้ C)</div>
+        <div class="flex justify-between px-2 mb-1.5 text-[10px] font-semibold text-gray-500"><span>⬅ ด้านหน้า</span><span>ด้านหลัง ➡</span></div>
+        <div id="vanGridC" class="grid grid-cols-4 gap-2 bg-cardBg2 border border-gray-800 rounded-2xl p-3"></div>
+      </div>
+    </div>
+
+    <div id="formFieldsBox2" class="hidden-el bg-cardBg/60 border border-gray-800 rounded-2xl p-5 mt-6">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-xl bg-accentOrange/10 border border-accentOrange/30 flex items-center justify-center text-lg">📝</div>
+        <div>
+          <div class="text-sm font-bold text-white">กรอกข้อมูลผู้จอง</div>
+          <div class="text-[10px] text-gray-500">ใช้ยืนยันตัวตนตอนขึ้นรถ กรอกให้ครบนะครับ</div>
+        </div>
+      </div>
+
+      <div class="mb-4"><label class="block text-xs text-gray-400 mb-1.5">🤦 ชื่อ-นามสกุลจริง</label>
+        <input id="f-name" oninput="checkBook()" placeholder="ระบุชื่อ-นามสกุลจริง..." class="w-full h-11 bg-gray-800/60 border border-gray-700 rounded-xl px-4 text-sm text-white outline-none focus:border-accentOrange"></div>
+      <div class="mb-4"><label class="block text-xs text-gray-400 mb-1.5">🏷️ ชื่อเล่น</label>
+        <input id="f-nick" oninput="checkBook()" placeholder="ชื่อเล่น" class="w-full h-11 bg-gray-800/60 border border-gray-700 rounded-xl px-4 text-sm text-white outline-none focus:border-accentOrange"></div>
+      <div class="mb-4"><label class="block text-xs text-gray-400 mb-1.5">📞 เบอร์โทรศัพท์</label>
+        <input id="f-phone" type="tel" oninput="checkBook()" class="w-full h-11 bg-gray-800/60 border border-gray-700 rounded-xl px-4 text-sm text-white outline-none focus:border-accentOrange"></div>
+      <div class="mb-4"><label class="block text-xs text-gray-400 mb-1.5">💬 ชื่อ LINE</label>
+        <input id="f-line" oninput="checkBook()" placeholder="ชื่อไลน์ของคุณ" class="w-full h-11 bg-gray-800/60 border border-gray-700 rounded-xl px-4 text-sm text-white outline-none focus:border-accentOrange"></div>
+
+      <div>
+        <label class="block text-xs text-gray-400 mb-1.5">🚏 จุดขึ้นรถ</label>
+        <select id="f-pickup-select" onchange="handlePickupSelect()" class="w-full h-11 bg-gray-800/60 border border-gray-700 rounded-xl px-4 text-sm text-white outline-none focus:border-accentOrange">
+          <option value="ลานจอด BTS หมอชิต">ลานจอด BTS หมอชิต</option>
+          <option value="สี่แยกสแควร์หลักสี่">สี่แยกสแควร์หลักสี่</option>
+          <option value="ศาลาหน้าดอนเมือง">ศาลาหน้าดอนเมือง</option>
+          <option value="หน้าโลตัสรังสิต">หน้าโลตัสรังสิต</option>
+          <option value="__other__">📍 แวะรับจุดอื่น (ระบุเอง)</option>
+        </select>
+        <input id="f-pickup-other" placeholder="ระบุจุดที่ต้องการให้แวะรับ..." style="display:none"
+          oninput="document.getElementById('f-pickup').value=this.value.trim(); checkBook()"
+          class="w-full h-11 mt-2 bg-gray-800/60 border border-dashed border-accentOrange/50 rounded-xl px-4 text-sm text-white outline-none">
+        <input type="hidden" id="f-pickup" value="ลานจอด BTS หมอชิต">
+      </div>
+
+      <input type="hidden" id="f-seat"><input type="hidden" id="f-dateraw">
+    </div>
+  </div>
+
+  <div class="fixed bottom-0 left-0 w-full p-4 bg-[#1A1A22]/95 backdrop-blur-md border-t border-gray-800 z-20" style="padding-bottom:calc(16px + env(safe-area-inset-bottom,0))">
+    <button id="confirmBtn" disabled onclick="openPay()"
+      class="w-full max-w-md mx-auto block h-12 rounded-2xl bg-gray-800 text-gray-600 font-semibold text-sm transition-all">🚀 กรอกข้อมูลให้ครบและเลือกที่นั่ง</button>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAYMENT MODAL
+     ================================================================ -->
+<div id="payModal" class="hidden-el fixed inset-0 z-[3000] bg-black/85 backdrop-blur-sm items-start sm:items-center justify-center p-4 overflow-y-auto" style="padding-bottom:calc(40px + env(safe-area-inset-bottom,0))">
+  <div class="bg-cardBg w-full max-w-sm rounded-3xl p-6 text-center relative m-auto border border-gray-800">
+    <button onclick="closePay()" class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center">✕</button>
+    <span class="absolute top-4 left-4 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full">ขั้นตอน 3/3</span>
+    <h3 class="text-xl font-bold text-accentOrange mt-6">💰 ชำระเงินค่ามัดจำทริป</h3>
+    <p class="text-xs text-red-400 mt-1">(สแกน QR หรือบันทึกภาพเพื่อชำระเงิน)</p>
+    <img src="slip-qr.png" onerror="this.src='https://via.placeholder.com/180/ffffff/121214?text=PROMPTPAY'" class="w-44 rounded-xl border-4 border-white mx-auto my-4">
+
+    <div id="seatLockTimerBox" class="flex items-center justify-between gap-3 my-3 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30">
+      <div class="text-left">
+        <strong class="block text-amber-400 text-xs">⏳ ระบบล็อกที่นั่งของคุณไว้</strong>
+        <p class="text-[10px] text-gray-400 mt-0.5">กรุณาชำระเงินและแนบสลิปภายใน 5 นาที</p>
+      </div>
+      <div id="seatLockTimer" class="min-w-[64px] px-2 py-1.5 rounded-lg bg-amber-500/15 text-amber-400 text-lg font-bold text-center">05:00</div>
+    </div>
+
+    <div class="text-left my-4">
+      <div class="text-xs font-semibold text-white mb-2">🧾 แนบสลิปการโอนเงิน <span class="text-red-400">*</span></div>
+      <div id="slipDrop" class="relative flex items-center gap-3 p-3 bg-gray-800/60 border-2 border-dashed border-gray-700 rounded-2xl cursor-pointer">
+        <div class="w-10 h-10 rounded-xl bg-accentOrange/10 flex items-center justify-center text-lg flex-shrink-0">🧾</div>
+        <div class="flex-1 min-w-0">
+          <div id="slipName" class="text-xs font-semibold text-white truncate">แตะเพื่อเลือกรูปสลิป</div>
+          <div class="text-[10px] text-gray-500 mt-0.5">JPG, PNG หรือ WEBP ไม่เกิน 5MB</div>
+        </div>
+        <input type="file" id="slipFile" accept="image/jpeg,image/png,image/webp" onchange="handleSlipFile(this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+      </div>
+      <img id="slipPreview" class="hidden-el w-full max-h-48 object-contain mt-2.5 rounded-xl border border-gray-800 bg-black/40">
+    </div>
+
+    <button id="payOkBtn" disabled onclick="submitBook()" class="w-full h-12 rounded-2xl bg-gray-800 text-gray-600 font-semibold text-sm transition-colors">🧾 กรุณาแนบสลิปก่อน</button>
+    <p onclick="closePay()" class="text-xs text-gray-500 mt-3.5 cursor-pointer">ย้อนกลับไปแก้ไข</p>
+  </div>
+</div>
+
+<!-- ================================================================
+     SUCCESS PAGE
+     ================================================================ -->
+<div id="successPage2" class="hidden-el fixed inset-0 z-[1100] bg-darkBg overflow-y-auto">
+  <div class="max-w-sm mx-auto px-5 py-10 text-center">
+    <div class="w-16 h-16 rounded-full bg-emerald-500 flex items-center justify-center text-3xl text-white mx-auto mb-5 shadow-lg shadow-emerald-500/30">✓</div>
+    <h2 class="text-2xl font-bold text-white">จองสำเร็จ! 🎉</h2>
+    <div class="bg-white text-gray-800 rounded-2xl p-5 text-left my-5 shadow-xl">
+      <div class="flex items-center gap-2 mb-2.5 text-sm">👤 <span class="text-gray-400 font-normal">ผู้จอง:</span> <strong id="r-name">-</strong></div>
+      <div class="flex items-center gap-2 mb-2.5 text-sm">🚐 <span class="text-gray-400 font-normal">ทริป:</span> <strong id="r-trip">-</strong></div>
+      <div class="flex items-center gap-2 mb-2.5 text-sm">📅 <span class="text-gray-400 font-normal">วันที่:</span> <strong id="r-date">-</strong></div>
+      <div class="flex items-center gap-2 mb-2.5 text-sm">🚏 <span class="text-gray-400 font-normal">จุดขึ้นรถ:</span> <strong id="r-pickup">-</strong></div>
+      <div class="bg-orange-50 border border-dashed border-orange-200 rounded-xl p-3 text-center mt-3.5">
+        <p class="text-[11px] text-accentHover font-semibold">หมายเลขที่นั่งของคุณ</p>
+        <h4 id="r-seat" class="text-4xl font-extrabold text-accentHover">-</h4>
+      </div>
+    </div>
+    <p class="text-sm text-red-400 leading-relaxed mb-4">
+      ทักไลน์แอดมินส่งหลักฐานการจองเพื่อให้แอดมินดึงเข้ากลุ่ม
+      <br><span class="text-xs text-gray-500">(แคปหน้าจอไว้เป็นหลักฐานได้เลยครับ)</span>
+    </p>
+    <a href="https://line.me/ti/p/~yourlineid" target="_blank" rel="noopener noreferrer"
+       class="flex items-center justify-center gap-2 bg-[#06C755] text-white py-3.5 rounded-2xl text-sm font-semibold mb-3">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" class="w-5 h-5"> ทักไลน์แอดมินเลย
+    </a>
+    <button onclick="backHome()" class="w-full h-12 rounded-2xl bg-gradient-to-r from-accentOrange to-[#FF5500] text-white font-semibold text-sm">กลับสู่หน้าหลัก 🏠</button>
+  </div>
+</div>
+
+<!-- ================================================================
+     DRAWER
+     ================================================================ -->
+<div id="ov" class="hidden-el fixed inset-0 z-[599] bg-black/60 backdrop-blur-sm" onclick="closeDrawer()"></div>
+<div id="drawer" class="fixed top-0 -right-full w-[85%] max-w-sm h-full bg-cardBg z-[600] transition-all duration-300 p-5 overflow-y-auto border-l border-gray-800">
+  <h3 class="text-accentOrange text-sm font-bold mb-3">💡 สาระความรู้ & ข้อแนะนำ</h3>
+  <div class="bg-gray-800/30 border-l-2 border-accentOrange rounded-xl p-3 mb-2 text-xs leading-relaxed text-gray-300"><strong class="text-white">🚌 การเลือกที่นั่ง:</strong> แถวหน้าสุดเหมาะสำหรับผู้ที่เมารถง่าย แถวหลังสุดจะได้รับความสะเทือนมากกว่าปกติเล็กน้อย</div>
+  <div class="bg-gray-800/30 border-l-2 border-accentOrange rounded-xl p-3 mb-2 text-xs leading-relaxed text-gray-300"><strong class="text-white">🎒 สัมภาระเดินทาง:</strong> แนะนำกระเป๋าขนาดพอดี ของมีค่าและยาประจำตัวควรพกติดตัวไว้ตลอดเวลาครับ</div>
+  <div class="bg-gray-800/30 border-l-2 border-accentOrange rounded-xl p-3 mb-2 text-xs leading-relaxed text-gray-300"><strong class="text-white">⏰ การรักษาเวลา:</strong> กรุณามาถึงจุดนัดพบก่อนเวลาออกเดินทางอย่างน้อย 15 นาทีครับ</div>
+
+  <h3 class="text-white text-xs font-bold mt-6 mb-2.5">🗺️ ข้อมูลดูแลร่างกายเวลาเดินป่า</h3>
+  <img src="body-care.jpg" onerror="this.style.display='none'" class="w-full rounded-xl border border-gray-800">
+
+  <h3 class="text-white text-xs font-bold mt-6 mb-2.5">✨ ภาพความทรงจำจากทริปที่ผ่านมา</h3>
+  <div class="grid grid-cols-1 gap-2.5" id="memGrid"></div>
+</div>
+
+<!-- ================================================================
+     ADMIN CONTACT POPUP
+     ================================================================ -->
+<div id="adminPopup" class="hidden-el fixed inset-0 z-[2000] bg-black/80 backdrop-blur-sm items-center justify-center p-4" onclick="if(event.target===this) this.classList.add('hidden-el')">
+  <div class="w-full max-w-sm bg-cardBg rounded-3xl p-6 relative max-h-[90vh] overflow-y-auto border border-gray-800">
+    <button onclick="document.getElementById('adminPopup').classList.add('hidden-el')" class="absolute top-3.5 right-3.5 w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center">✕</button>
+    <div class="flex items-center gap-3.5 mb-4">
+      <img src="admin.jpg" onerror="this.src='https://via.placeholder.com/56/1E1E24/FF7A00?text=A'" class="w-14 h-14 rounded-full object-cover border-2 border-accentOrange">
+      <div>
+        <h3 class="text-base font-bold text-white">แอดมิน</h3>
+        <p class="text-xs text-accentOrange font-semibold">เจ้าของเพจ "ยินดีที่ได้เจอ"</p>
+      </div>
+    </div>
+    <p class="text-xs leading-relaxed text-gray-400 mb-5">ชวนทุกคนออกไปเห็นโลกอีกมุม เห็นหมอกตอนเช้า เห็นดาวตอนกลางคืน และได้เจอมิตรภาพดีๆ ระหว่างทาง 🌿</p>
+    <div class="rounded-2xl overflow-hidden border border-gray-800 mb-5">
+      <img src="team.jpg" onerror="this.src='https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=480&q=70'" class="w-full">
+      <div class="p-4 bg-cardBg2">
+        <h3 class="text-white text-base font-bold mb-1.5">🔥 ทีมงานยินดีที่ได้เจอ</h3>
+        <p class="text-gray-400 text-xs leading-relaxed">ทีมงานสายลุยที่พร้อมพาทุกคนออกเดินทาง ตั้งแต่ขึ้นรถ ยันถึงยอดเขา ⛰️</p>
+      </div>
+    </div>
+    <div class="flex flex-col gap-2.5">
+      <a href="https://line.me/ti/p/~yourlineid" target="_blank" class="flex items-center justify-center gap-2 bg-[#06C755] text-white py-3 rounded-full text-xs font-semibold"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" class="w-4 h-4"> LINE</a>
+      <a href="#" target="_blank" class="flex items-center justify-center gap-2 bg-[#1877F2] text-white py-3 rounded-full text-xs font-semibold"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" class="w-4 h-4"> Facebook</a>
+      <a href="#" target="_blank" class="flex items-center justify-center gap-2 text-white py-3 rounded-full text-xs font-semibold" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="w-4 h-4"> Instagram</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     EQUIPMENT RENTAL PAGE
+     ================================================================ -->
+<div id="equipPage" class="hidden-el fixed inset-0 z-[950] bg-darkBg overflow-y-auto">
+  <div class="flex items-center justify-between gap-3 p-4 border-b border-gray-800 sticky top-0 bg-darkBg/95 backdrop-blur-md z-10">
+    <button onclick="closeEquipRent()" class="text-accentOrange text-sm font-semibold flex items-center gap-1">⬅ ย้อนกลับ</button>
+    <span class="text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full">เช่าอุปกรณ์แคมป์</span>
+  </div>
+
+  <div class="max-w-md mx-auto px-4 pt-5 pb-40">
+    <div class="text-center mb-2">
+      <h2 class="text-lg font-bold text-white">🏕️ เช่าอุปกรณ์แคมป์</h2>
+      <p class="text-xs text-accentOrange mt-1">เลือกทริปที่จะไป แล้วเลือกของที่อยากเช่าได้เลยครับ</p>
+    </div>
+
+    <div class="text-xs font-bold text-accentOrange my-4">🥾 เลือกทริปที่จะไป</div>
+    <div id="eqTripList" class="space-y-2.5"></div>
+
+    <div class="text-xs font-bold text-accentOrange my-4">🧺 เลือกอุปกรณ์ที่ต้องการเช่า</div>
+    <div id="eqItemList" class="space-y-3"></div>
+
+    <div id="eqSummaryBox" class="hidden-el bg-gray-800/30 border border-accentOrange/30 rounded-2xl p-4 mt-5">
+      <div id="eqSummaryRows" class="space-y-1 text-xs text-gray-400"></div>
+      <div class="flex justify-between text-sm font-bold text-white border-t border-gray-700 mt-2 pt-2.5"><span>ยอดรวมที่ต้องจ่าย</span><span id="eqTotalPrice" class="text-accentOrange">0 บาท</span></div>
+      <div class="text-[11px] text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2 mt-2.5 leading-relaxed">⚠️ ทางแอดมินจะเรียกเก็บเงินค่าเช่าอุปกรณ์นี้ในกลุ่มอีกครั้งครับ ไม่ต้องโอนตอนนี้</div>
+    </div>
+  </div>
+
+  <div class="fixed bottom-0 left-0 w-full p-4 bg-[#1A1A22]/95 backdrop-blur-md border-t border-gray-800 z-20" style="padding-bottom:calc(16px + env(safe-area-inset-bottom,0))">
+    <button id="eqConfirmBtn" disabled onclick="confirmEquipRent()" class="w-full max-w-md mx-auto block h-12 rounded-2xl bg-gray-800 text-gray-600 font-semibold text-sm transition-all">🚀 กรุณาเลือกทริปก่อนครับ</button>
+  </div>
+</div>
+
+<!-- EQUIPMENT RENTAL RECEIPT -->
+<div id="equipReceiptPage" class="hidden-el fixed inset-0 z-[1150] bg-darkBg overflow-y-auto">
+  <div class="max-w-sm mx-auto px-5 py-10 text-center">
+    <div class="w-16 h-16 rounded-full bg-emerald-500 flex items-center justify-center text-3xl text-white mx-auto mb-5">✓</div>
+    <h2 class="text-xl font-bold text-white">ใบเสร็จค่าเช่าอุปกรณ์</h2>
+    <div class="bg-white text-gray-800 rounded-2xl p-5 text-left my-5 shadow-xl">
+      <div class="flex items-center gap-2 mb-2.5 text-sm">🚐 <span class="text-gray-400 font-normal">ทริป:</span> <strong id="eqr-trip">-</strong></div>
+      <div class="flex items-center gap-2 mb-2.5 text-sm">👤 <span class="text-gray-400 font-normal">ผู้จอง:</span> <strong id="eqr-name">-</strong></div>
+      <div class="flex items-center gap-2 mb-2.5 text-sm">🪑 <span class="text-gray-400 font-normal">เบาะ:</span> <strong id="eqr-seat">-</strong></div>
+      <div class="h-px bg-gray-200 my-3"></div>
+      <div id="eqr-items" class="space-y-1"></div>
+      <div class="flex justify-between text-base font-bold text-accentHover border-t border-dashed border-gray-300 mt-2.5 pt-2.5"><span>ยอดรวม</span><span id="eqr-total">0 บาท</span></div>
+    </div>
+    <p class="text-sm text-red-400 leading-relaxed mb-5">
+      ⚠️ ทางแอดมินจะเรียกเก็บเงินค่าเช่าอุปกรณ์นี้ในกลุ่มอีกครั้งครับ ไม่ต้องโอนตอนนี้
+      <br><span class="text-xs text-gray-500">(แคปหน้าจอไว้เป็นหลักฐานได้เลยครับ)</span>
+    </p>
+    <button onclick="closeEquipReceipt()" class="w-full h-12 rounded-2xl bg-gradient-to-r from-accentOrange to-[#FF5500] text-white font-semibold text-sm">กลับสู่หน้าหลัก 🏠</button>
+  </div>
+</div>
+
+<!-- FLOATING ADMIN TAB -->
+<div id="adminTab" onclick="toggleAdminTab(event)" class="fixed top-1/2 right-0 -translate-y-1/2 z-[700] flex items-center gap-2 h-12 px-2.5 bg-accentOrange/10 border border-accentOrange/30 border-r-0 rounded-l-2xl cursor-pointer opacity-60 transition-all overflow-hidden whitespace-nowrap">
+  <span class="text-accentOrange text-sm">⋮</span>
+  <span id="adminTabLabel" class="text-accentOrange text-xs font-semibold max-w-0 overflow-hidden opacity-0 transition-all">สำหรับแอดมิน</span>
+</div>
+
+<script>
+/* ================================================================
+   CONFIG / CONSTANTS
+   ================================================================ */
+const API_URL = "https://script.google.com/macros/s/PUT_YOUR_APPS_SCRIPT_DEPLOYMENT_ID_HERE/exec";
+const QUERY_URL = API_URL + "?action=read";
+const LIFF_ID = "PUT_YOUR_LIFF_ID_HERE";
+
+const SKIP_LOGIN = true;
+const GUEST_USER = { phone: "0800000000", nick: "ผู้ใช้ทดสอบ", lineName: "ผู้ใช้ทดสอบ", lineUserId: null, linePicture: null };
+
+const CLOSED_TRIPS = [""];
+const BUS_GRID_STRUCTURE = ['driver', 3, 6, 9, 'spacer', 2, 5, 8, 'เบาะซ้าย', 1, 4, 7];
+const SEAT_LOCK_MINUTES = 5;
+const SEAT_LOCK_DURATION = SEAT_LOCK_MINUTES * 60 * 1000;
+const PRICE_PER_SEAT = 180;
+
+const TRIP_DETAILS = {
+  "ดอยม่อนล้าน 2 วัน 1 คืน": {
+    days: "2 วัน 1 คืน", distance: "8-10 กม.", level: "ปานกลาง", price: "2,290 บาท",
+    paymentNote: "ชำระส่วนที่เหลือก่อนเดินทาง 15 วัน",
+    highlight: "ทะเลหมอกยามเช้า ทุ่งดอกไม้ป่าเต็มเนินเขา แคมป์ไฟยามค่ำคืนพร้อมเพื่อนใหม่ ✅",
+    image: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=700&q=80", loc: "จ.เชียงใหม่"
+  },
+  "ผาช้างน้อย 3 วัน 2 คืน": {
+    days: "3 วัน 2 คืน", distance: "15-18 กม.", level: "ยาก", price: "3,490 บาท",
+    paymentNote: "ชำระส่วนที่เหลือก่อนเดินทาง 15 วัน",
+    highlight: "วิวพระอาทิตย์ขึ้นเหนือทะเลหมอก 360 องศา เส้นทางเดินสันเขาสวยที่สุดแห่งหนึ่ง",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=700&q=80", loc: "จ.น่าน"
+  },
+  "น้ำตกซ่อนวารี 2 วัน 1 คืน": {
+    days: "2 วัน 1 คืน", distance: "6-8 กม.", level: "ง่าย", price: "2,150 บาท",
+    paymentNote: "ชำระส่วนที่เหลือก่อนเดินทาง 15 วัน",
+    highlight: "น้ำตกกลางป่าดิบชื้น เล่นน้ำใสเย็น เหมาะกับมือใหม่หัดเดินป่า",
+    image: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=700&q=80", loc: "จ.กาญจนบุรี"
+  }
+};
+
+const TRIP_IMAGES = Object.fromEntries(Object.entries(TRIP_DETAILS).map(([name, info]) => [name, info.image]));
+
+const PAST_TRIPS = [
+  { name: "ดอยม่อนล้าน 2 วัน 1 คืน", rounds: 1, people: 18, rating: 4.8, img: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=300&q=60" },
+  { name: "ผาช้างน้อย 3 วัน 2 คืน", rounds: 1, people: 22, rating: 4.6, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&q=60" },
+  { name: "น้ำตกซ่อนวารี 2 วัน 1 คืน", rounds: 2, people: 16, rating: 4.9, img: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=300&q=60" }
+];
+
+const EQUIP_ITEMS = {
+  tent: { label: "เต็นท์", brand: "Quechua MH100", price: 300, unit: "หลัง/ทริป", img: "https://contents.mediadecathlon.com/p2754515/k$0c5138baa6a18029208375492aa8e649/picture.jpg?format=auto&f=800x0" },
+  sleepingBag: { label: "ถุงนอน", brand: "Quechua Arpenaz 20°", price: 100, unit: "ใบ/ทริป", img: "https://contents.mediadecathlon.com/p2455218/k$ccb8b375884f01d6a31a25868874a4cc/camping-sleeping-bag-arpenaz-20-quechua-8648438.jpg" },
+  sleepingPad: { label: "แผ่นรองนอน", brand: "Forclaz Trek100", price: 100, unit: "แผ่น/ทริป", img: "https://www.decathlon.com/cdn/shop/files/8492712-product_image-p2422856.jpg?v=1701346667" }
+};
+
+/* ================================================================
+   GLOBAL STATE
+   ================================================================ */
+let currentUser = null;
+let allBookings = [];
+let allEquipRentals = [];
+let cacheTrips = [];
+let pendingTrip = null;
+let selectedSeat = null;
+let highlightSeatId = null;
+let selectedSlipFile = null;
+
+let eqSelectedTripKey = null;
+let eqQty = { tent: 0, sleepingBag: 0, sleepingPad: 0 };
+
+let seatRefreshTimer = null;
+let seatCountdownTimer = null;
+let seatLockExpiresAt = 0;
+let latestSeatRequestId = 0;
+
+const MY_SESSION_ID =
+  sessionStorage.getItem('ydtj_session_id') ||
+  ('SESSION-' + Date.now() + '-' + Math.random().toString(36).substring(2, 10));
+sessionStorage.setItem('ydtj_session_id', MY_SESSION_ID);
+
+/* Tailwind class sets per seat state (แทนที่คลาส CSS แบบเดิม) */
+const SEAT_BASE = "aspect-square rounded-xl flex flex-col items-center justify-center text-[10px] font-bold transition-all select-none";
+const SEAT_CLASSES = {
+  driver: SEAT_BASE + " bg-gray-800/60 border border-gray-700 text-gray-500 cursor-default pointer-events-none",
+  spacer: SEAT_BASE + " invisible pointer-events-none",
+  empty: SEAT_BASE + " bg-gray-800 border border-gray-700 hover:border-gray-500 text-gray-100 cursor-pointer",
+  selected: SEAT_BASE + " bg-accentOrange border border-transparent text-white shadow-md shadow-accentOrange/40 ring-pulse cursor-pointer",
+  booked: SEAT_BASE + " bg-red-950/50 border border-red-900/60 text-red-400/70 cursor-not-allowed",
+  locking: SEAT_BASE + " bg-amber-900/30 border border-amber-700/50 text-amber-400 cursor-not-allowed animate-pulseSoft",
+  hiddenSeat: SEAT_BASE + " bg-gray-900/40 border border-gray-900 opacity-0 pointer-events-none"
+};
+
+/* ================================================================
+   SEAT LOCK COUNTDOWN
+   ================================================================ */
+function startSeatCountdown(resetTime = false) {
+  clearInterval(seatCountdownTimer);
+  if (resetTime || !seatLockExpiresAt || seatLockExpiresAt <= Date.now()) {
+    seatLockExpiresAt = Date.now() + SEAT_LOCK_DURATION;
+  }
+  const box = document.getElementById('seatLockTimerBox');
+  const timer = document.getElementById('seatLockTimer');
+  if (box) box.classList.remove('hidden-el');
+  if (timer) { timer.classList.remove('bg-red-500/80', 'text-white', 'animate-pulseSoft'); timer.classList.add('bg-amber-500/15', 'text-amber-400'); }
+  updateSeatCountdown();
+  seatCountdownTimer = setInterval(updateSeatCountdown, 1000);
+}
+
+function updateSeatCountdown() {
+  const timer = document.getElementById('seatLockTimer');
+  if (!timer) return;
+  const remaining = seatLockExpiresAt - Date.now();
+  if (remaining <= 0) {
+    clearInterval(seatCountdownTimer);
+    seatCountdownTimer = null;
+    timer.textContent = '00:00';
+    timer.classList.remove('bg-amber-500/15', 'text-amber-400');
+    timer.classList.add('bg-red-500/80', 'text-white', 'animate-pulseSoft');
+    handleSeatLockExpired();
+    return;
+  }
+  const totalSeconds = Math.ceil(remaining / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  timer.textContent = String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+  if (remaining <= 60 * 1000) {
+    timer.classList.remove('bg-amber-500/15', 'text-amber-400');
+    timer.classList.add('bg-red-500/80', 'text-white', 'animate-pulseSoft');
+  }
+}
+
+function stopSeatCountdown() {
+  clearInterval(seatCountdownTimer);
+  seatCountdownTimer = null;
+  seatLockExpiresAt = 0;
+  const box = document.getElementById('seatLockTimerBox');
+  const timer = document.getElementById('seatLockTimer');
+  if (box) box.classList.add('hidden-el');
+  if (timer) {
+    timer.textContent = '05:00';
+    timer.classList.remove('bg-red-500/80', 'text-white', 'animate-pulseSoft');
+    timer.classList.add('bg-amber-500/15', 'text-amber-400');
+  }
+}
+
+function handleSeatLockExpired() {
+  seatLockExpiresAt = 0;
+  selectedSeat = null;
+  document.getElementById('f-seat').value = '';
+  document.getElementById('formFieldsBox2').classList.add('hidden-el');
+  checkBook();
+
+  const payModalWasOpen = !document.getElementById('payModal').classList.contains('hidden-el');
+  document.getElementById('payModal').classList.add('hidden-el');
+  document.getElementById('payModal').classList.remove('flex');
+
+  const date = document.getElementById('f-dateraw').value;
+  loadSeats(date);
+
+  Swal.fire({
+    icon: 'warning', title: 'หมดเวลาล็อกเบาะแล้ว',
+    text: payModalWasOpen
+      ? 'ที่นั่งของคุณถูกปลดล็อกอัตโนมัติระหว่างที่คุณกำลังชำระเงิน กรุณาเลือกเบาะใหม่แล้วทำรายการอีกครั้งครับ'
+      : 'ระบบปลดล็อกที่นั่งอัตโนมัติ กรุณาเลือกเบาะใหม่ครับ',
+    background: '#1E1E24', color: '#f3f4f6', confirmButtonColor: '#FF7A00'
+  });
+}
+
+/* ================================================================
+   LOGIN (LINE Login ผ่าน LIFF SDK)
+   ================================================================ */
+let lineProfile = null;
+
+function checkReady() {
+  const p = document.getElementById('loginPhone').value.trim();
+  const n = document.getElementById('loginNick').value.trim();
+  document.getElementById('loginBtn').disabled = !(p.length >= 9 && n.length > 0);
+}
+
+function doLogin() {
+  const phone = document.getElementById('loginPhone').value.trim();
+  const nick = document.getElementById('loginNick').value.trim() || (lineProfile && lineProfile.displayName) || 'ผู้ใช้ LINE';
+
+  currentUser = {
+    phone, nick,
+    lineName: (lineProfile && lineProfile.displayName) || nick,
+    lineUserId: lineProfile ? lineProfile.userId : null,
+    linePicture: lineProfile ? lineProfile.pictureUrl : null
+  };
+  localStorage.setItem('ydtjUser', JSON.stringify(currentUser));
+  if (lineProfile && lineProfile.userId) localStorage.setItem('ydtjPhone_' + lineProfile.userId, phone);
+
+  enterApp();
+}
+
+function enterApp() {
+  document.getElementById('loginPage').classList.add('hidden-el');
+  document.getElementById('appShell').classList.remove('hidden-el');
+  document.getElementById('loadingScreen').classList.remove('hidden-el');
+  document.getElementById('loadingScreen').classList.add('flex');
+  document.getElementById('f-phone').value = currentUser.phone;
+  document.getElementById('f-nick').value = currentUser.nick;
+  updateNavAvatar();
+  fetchData();
+}
+
+function updateNavAvatar() {
+  const img = document.getElementById('navProfilePic');
+  const emoji = document.getElementById('navProfileEmoji');
+  if (!img) return;
+  if (currentUser && currentUser.linePicture) {
+    img.src = currentUser.linePicture; img.classList.remove('hidden-el');
+    if (emoji) emoji.classList.add('hidden-el');
+  } else {
+    img.classList.add('hidden-el');
+    if (emoji) emoji.classList.remove('hidden-el');
+  }
+}
+
+async function initLiff() {
+  const saved = localStorage.getItem('ydtjUser');
+  if (saved) {
+    try { currentUser = JSON.parse(saved); enterApp(); return; }
+    catch (e) { localStorage.removeItem('ydtjUser'); }
+  }
+
+  const stuckTimer = setTimeout(() => {
+    showLineLoginRetry('⚠️ เชื่อมต่อ LINE ช้ากว่าปกติ กรุณากดปุ่มด้านล่างเพื่อลองใหม่');
+  }, 8000);
+
+  try {
+    await liff.init({ liffId: LIFF_ID });
+  } catch (err) {
+    console.error('LIFF init error', err);
+    clearTimeout(stuckTimer);
+    showLineLoginRetry('⚠️ เชื่อมต่อ LINE ไม่สำเร็จ กรุณากดปุ่มด้านล่างเพื่อลองใหม่ (ตรวจสอบ LIFF_ID ในโค้ดด้วยครับ)');
+    return;
+  }
+
+  try {
+    if (liff.isLoggedIn()) {
+      await afterLineLogin();
+    } else if (liff.isInClient()) {
+      liff.login();
+    } else {
+      showLineLoginRetry(null);
+    }
+  } catch (err) {
+    console.error('LIFF login flow error', err);
+    showLineLoginRetry('⚠️ เข้าสู่ระบบ LINE ไม่สำเร็จ กรุณากดปุ่มด้านล่างเพื่อลองใหม่');
+  } finally {
+    clearTimeout(stuckTimer);
+  }
+}
+
+function showLineLoginRetry(message) {
+  const loading = document.getElementById('lineLoginLoading');
+  const btn = document.getElementById('lineLoginBtn');
+  if (loading) {
+    if (message) { loading.textContent = message; loading.classList.remove('hidden-el'); }
+    else { loading.classList.add('hidden-el'); }
+  }
+  if (btn) btn.classList.remove('hidden-el');
+}
+
+function loginWithLine() {
+  document.getElementById('lineLoginBtn').classList.add('hidden-el');
+  document.getElementById('lineLoginLoading').classList.remove('hidden-el');
+  document.getElementById('lineLoginLoading').textContent = '⌛ กำลังพาไปเข้าสู่ระบบ LINE...';
+  liff.login({ redirectUri: window.location.href });
+}
+
+async function afterLineLogin() {
+  try {
+    const profile = await liff.getProfile();
+    lineProfile = { userId: profile.userId, displayName: profile.displayName, pictureUrl: profile.pictureUrl || '' };
+
+    document.getElementById('lineLoginStep').classList.add('hidden-el');
+    document.getElementById('phoneStep').classList.remove('hidden-el');
+    document.getElementById('lineNamePreview').textContent = lineProfile.displayName;
+    if (lineProfile.pictureUrl) document.getElementById('linePicPreview').src = lineProfile.pictureUrl;
+
+    const savedPhone = localStorage.getItem('ydtjPhone_' + lineProfile.userId);
+    if (savedPhone) document.getElementById('loginPhone').value = savedPhone;
+    checkReady();
+  } catch (err) {
+    console.error('getProfile error', err);
+    try { if (liff.isLoggedIn()) liff.logout(); } catch (e) {}
+    showLineLoginRetry('⚠️ เชื่อมต่อ LINE ไม่สำเร็จ (อาจเป็นเพราะสิทธิ์การเชื่อมต่อถูกยกเลิก) กรุณากดปุ่มด้านล่างเพื่อเข้าสู่ระบบใหม่');
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('loginPhone').addEventListener('input', checkReady);
+  document.getElementById('loginNick').addEventListener('input', checkReady);
+
+  if (SKIP_LOGIN) {
+    currentUser = { ...GUEST_USER };
+    enterApp();
+    return;
+  }
+  initLiff();
+});
+
+/* ================================================================
+   DATA FETCH (JSONP ไป Google Apps Script)
+   ================================================================ */
+function fetchData() {
+  const cb = 'cb_' + Date.now();
+  let finished = false;
+
+  window[cb] = (res) => {
+    finished = true;
+    allBookings = res.bookings || [];
+    allEquipRentals = res.rentals || [];
+
+    const seen = {};
+    cacheTrips = [];
+    allBookings.forEach(b => {
+      if (!b.trip || !b.date) return;
+      const key = b.trip + '_' + b.date;
+      if (!seen[key]) { seen[key] = 1; cacheTrips.push({ trip: b.trip, date: b.date }); }
+    });
+
+    if (cacheTrips.length === 0) {
+      const demoDate = new Date(); demoDate.setDate(demoDate.getDate() + 14);
+      cacheTrips = Object.keys(TRIP_DETAILS).map((name, i) => {
+        const d = new Date(demoDate); d.setDate(d.getDate() + i * 10);
+        return { trip: name, date: d.toISOString().slice(0, 10) };
+      });
+    }
+
+    renderHome();
+    renderTripList(cacheTrips);
+    renderMyTrips();
+    renderNotif();
+
+    const today = new Date(new Date().setHours(0, 0, 0, 0));
+    const upcomingEl = document.getElementById('upcomingList');
+    if (upcomingEl) {
+      const upcoming = cacheTrips.filter(t => new Date(t.date) >= today);
+      upcomingEl.innerHTML = upcoming.map(t => cardHTML(t)).join('')
+        || '<p class="text-center text-gray-500 text-xs py-6 w-full">ยังไม่มีทริปเปิดจองครับ</p>';
+      setupCarouselAutoScroll('upcoming', upcomingEl, 2000);
+    }
+
+    document.getElementById('loadingScreen').classList.remove('flex');
+    document.getElementById('loadingScreen').classList.add('hidden-el');
+    delete window[cb];
+  };
+
+  const script = document.createElement('script');
+  script.src = QUERY_URL + '&callback=' + cb;
+  script.onerror = () => {
+    if (finished) return;
+    allBookings = []; allEquipRentals = [];
+    const demoDate = new Date(); demoDate.setDate(demoDate.getDate() + 14);
+    cacheTrips = Object.keys(TRIP_DETAILS).map((name, i) => {
+      const d = new Date(demoDate); d.setDate(d.getDate() + i * 10);
+      return { trip: name, date: d.toISOString().slice(0, 10) };
+    });
+    renderHome(); renderTripList(cacheTrips); renderMyTrips(); renderNotif();
+    document.getElementById('loadingScreen').classList.remove('flex');
+    document.getElementById('loadingScreen').classList.add('hidden-el');
+  };
+  document.body.appendChild(script);
+}
+
+function loadSeats(date, showLoading = false) {
+  const requestId = ++latestSeatRequestId;
+  if (!date) return;
+  const trip = document.getElementById('b-trip').value.trim();
+  if (!trip) return;
+
+  if (showLoading) {
+    ['A', 'B', 'C'].forEach(prefix => {
+      const grid = document.getElementById('vanGrid' + prefix);
+      if (grid) {
+        grid.innerHTML = `<div class="col-span-4 flex items-center justify-center h-6 text-accentOrange text-[11px]">⌛ กำลังดึงข้อมูลจากหลังบ้าน...</div>`;
+      }
+    });
+  }
+
+  const callback = 'cbs_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+  window[callback] = function (res) {
+    if (requestId !== latestSeatRequestId) { delete window[callback]; return; }
+    renderVansWithData(res.bookings || [], res.locks || []);
+    delete window[callback];
+  };
+
+  const s = document.createElement('script');
+  s.src = QUERY_URL + '&date=' + encodeURIComponent(date) + '&trip=' + encodeURIComponent(trip) + '&callback=' + callback;
+  s.onerror = () => { renderVansWithData([], []); };
+  document.body.appendChild(s);
+}
+
+window._carouselControllers = window._carouselControllers || {};
+
+function setupCarouselAutoScroll(key, el, intervalMs) {
+  if (window._carouselControllers[key]) { window._carouselControllers[key].destroy(); window._carouselControllers[key] = null; }
+  if (!el) return;
+
+  let timer = null, resumeTimer = null, isProgrammatic = false;
+
+  function tick() {
+    if (el.children.length < 2) return;
+    const cardW = el.children[0].offsetWidth + 12;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    isProgrammatic = true;
+    el.scrollLeft = el.scrollLeft >= maxScroll - 5 ? 0 : el.scrollLeft + cardW;
+  }
+  function start() { clearInterval(timer); timer = setInterval(tick, intervalMs); }
+  function pauseThenResume() { clearInterval(timer); clearTimeout(resumeTimer); resumeTimer = setTimeout(start, intervalMs + 2000); }
+  function onScroll() { if (isProgrammatic) { isProgrammatic = false; return; } pauseThenResume(); }
+
+  el.addEventListener('scroll', onScroll, { passive: true });
+  start();
+
+  window._carouselControllers[key] = {
+    destroy() { clearInterval(timer); clearTimeout(resumeTimer); el.removeEventListener('scroll', onScroll); }
+  };
+}
+
+/* ================================================================
+   HOME TAB
+   ================================================================ */
+function renderHome() {
+  const h = new Date().getHours();
+  const greeting = h < 12 ? '🌅 อรุณสวัสดิ์' : h < 17 ? '☀️ สวัสดีตอนบ่าย' : '🌙 สวัสดีตอนเย็น';
+  const norm = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+  const myTripCount = allBookings.filter(b => norm(b.phone) === norm(currentUser.phone)).length;
+
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
+  const closedTrips = cacheTrips.filter(t => CLOSED_TRIPS.includes(t.trip));
+  const pastTrips = cacheTrips.filter(t => new Date(t.date) < today);
+
+  document.getElementById('homeContent').innerHTML = `
+    <div class="flex items-center justify-between gap-3 bg-cardBg/80 border border-gray-800 rounded-2xl p-4 mb-5">
+      <div>
+        <h2 class="text-sm font-bold text-white">${greeting}, ${currentUser.nick}!</h2>
+        <p class="text-xs text-gray-500 mt-1">ประวัติทริปทั้งหมด <strong class="text-accentOrange">${myTripCount} ทริป</strong></p>
+      </div>
+      <div class="flex gap-2 flex-shrink-0">
+        <div onclick="switchTab('trips')" class="w-14 h-14 rounded-xl bg-gradient-to-br from-accentOrange to-[#FF5500] flex flex-col items-center justify-center gap-0.5 cursor-pointer shadow-md shadow-accentOrange/30">
+          <div class="text-lg">🚐</div><div class="text-[8px] font-bold text-white">จองทริป</div>
+        </div>
+        <div onclick="openEquipRent()" class="w-14 h-14 rounded-xl bg-gray-800 border border-gray-700 flex flex-col items-center justify-center gap-0.5 cursor-pointer">
+          <div class="text-lg">🏕️</div><div class="text-[8px] font-bold text-gray-300">เช่าของ</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="text-sm font-bold text-white">🏕️ ทริปที่เปิดจอง</h3>
+      <span onclick="switchTab('trips')" class="text-xs text-accentOrange cursor-pointer font-semibold">ดูทั้งหมด ›</span>
+    </div>
+    <div id="upcomingList" class="flex gap-3 overflow-x-auto pb-1" style="scroll-snap-type:x mandatory">
+      <p class="text-center text-accentOrange text-xs py-6 w-full">⌛ กำลังโหลดข้อมูลจากหลังบ้าน...</p>
+    </div>
+
+    <div class="h-px bg-gray-800 my-6"></div>
+    <div class="flex items-center justify-between mb-3"><h3 class="text-sm font-bold text-white">⚠️ จะเปิดจองเร็วๆ นี้</h3></div>
+    <div class="space-y-4" id="closedList">
+      ${closedTrips.map(t => cardHTML(t)).join('') || '<p class="text-center text-gray-600 text-xs py-6">-</p>'}
+    </div>
+
+    <div class="h-px bg-gray-800 my-6"></div>
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="text-sm font-bold text-white">📅 ทริปที่ผ่านมา</h3>
+      <span onclick="togglePastList(this)" class="text-xs text-accentOrange cursor-pointer font-semibold">ดูทั้งหมด ›</span>
+    </div>
+    <div class="space-y-4 opacity-70" id="pastList">
+      ${pastTrips.map((t, i) => `<div class="${i >= 2 ? 'past-extra hidden-el' : ''}">${cardHTML(t)}</div>`).join('')
+        || '<p class="text-center text-gray-600 text-xs py-6">-</p>'}
+    </div>
+
+    <div class="h-px bg-gray-800 my-6"></div>
+    <div class="mb-3"><h3 class="text-sm font-bold text-white">🌟 ให้ระดับความยาก</h3></div>
+    <div class="grid grid-cols-3 gap-2.5">
+      ${PAST_TRIPS.map(p => `
+        <div class="relative rounded-xl overflow-hidden aspect-[3/4] cursor-pointer">
+          <img src="${p.img}" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&q=60'}" class="w-full h-full object-cover brightness-75">
+          <div class="absolute top-1.5 right-1.5 text-[9px] bg-black/60 text-amber-400 px-1.5 py-0.5 rounded font-bold">⭐ ${p.rating}</div>
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/85 to-transparent">
+            <h5 class="text-[9.5px] font-bold text-white leading-tight">${p.name}</h5>
+            <p class="text-[8px] text-gray-400">👥 ${p.people} คน · ${p.rounds} รอบ</p>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="flex items-center gap-3 bg-gray-800/30 border border-gray-800 rounded-2xl p-4 mt-6">
+      <div class="text-xl">👥</div>
+      <div><h4 class="text-xs font-bold text-white">ยอดรวมผู้เดินทางกว่า 100+ คน</h4><p class="text-[10px] text-gray-500 mt-0.5">ขอบคุณทุกความไว้วางใจจากยินดีที่ได้เจอ 💙</p></div>
+    </div>
+  `;
+}
+
+function togglePastList(triggerEl) {
+  const expanded = document.getElementById('pastList').classList.toggle('expanded');
+  triggerEl.innerText = expanded ? 'ย่อ ‹' : 'ดูทั้งหมด ›';
+}
+
+function toggleBookingHistory(triggerEl, listId) {
+  const expanded = document.getElementById(listId).classList.toggle('expanded');
+  triggerEl.innerText = expanded ? 'ย่อ ‹' : 'ดูทั้งหมด ›';
+}
+
+/* ================================================================
+   TRIP CARD
+   ================================================================ */
+function cardHTML(item, compact = false) {
+  const info = TRIP_DETAILS[item.trip] || {};
+  const img = TRIP_IMAGES[item.trip] || 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&q=70';
+  const fmtDate = new Date(item.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+  const locked = CLOSED_TRIPS.includes(item.trip);
+  const isPast = new Date(item.date) < new Date(new Date().setHours(0, 0, 0, 0));
+
+  const totalSeats = BUS_GRID_STRUCTURE.filter(n => n !== 'driver' && n !== 'spacer').length * 3;
+  const bookedCount = allBookings.filter(b => b.seat && b.trip === item.trip && b.date === item.date).length;
+  const avail = totalSeats - bookedCount;
+
+  let statusBg = 'bg-emerald-500/90 text-emerald-950', statusText = 'เปิดจอง';
+  if (locked) { statusBg = 'bg-white/15 text-amber-300'; statusText = '⚠️ เร็วๆนี้'; }
+  else if (isPast) { statusBg = 'bg-white/15 text-gray-300'; statusText = '✅ ไปมาแล้ว'; }
+  else if (avail <= 0) { statusBg = 'bg-red-500/90 text-white'; statusText = '🔴 เต็มแล้ว'; }
+  else if (avail <= 5) { statusBg = 'bg-amber-400 text-amber-950'; statusText = '🔥 ใกล้เต็ม!'; }
+
+  let seatsColor = 'text-emerald-400', seatsText = `🟢 ว่าง ${avail} ที่`;
+  if (locked) { seatsColor = 'text-gray-500'; seatsText = '⚠️ ยังไม่เปิด'; }
+  else if (isPast) { seatsText = '✅ ไปมาแล้ว'; seatsColor = 'text-gray-500'; }
+  else if (avail <= 0) { seatsColor = 'text-red-400'; seatsText = '🔴 เต็มแล้ว'; }
+  else if (avail <= 5) { seatsColor = 'text-amber-400'; seatsText = `🔥 ว่าง ${avail} ที่`; }
+
+  const flexShrink = compact ? '' : 'flex-shrink-0 w-[84%] snap-start';
+
+  return `
+    <div class="${flexShrink} bg-cardBg border border-gray-800 rounded-2xl overflow-hidden cursor-pointer hover:border-gray-700 transition-colors" onclick="openModal('${item.trip}','${item.date}')">
+      <div class="relative aspect-[16/10] ${compact ? 'aspect-[16/7]' : ''}">
+        <img src="${img}" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&q=70'}" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-cardBg via-transparent to-transparent"></div>
+        <span class="absolute top-2.5 left-2.5 text-[10px] font-bold px-2.5 py-1 rounded-full ${statusBg}">${statusText}</span>
+        <span class="absolute right-0 bottom-0 bg-gradient-to-r from-accentOrange to-[#FF5500] text-white text-xs font-bold px-3 py-1.5 rounded-tl-xl">฿${info.price || '-'}</span>
+        ${locked ? '<div class="absolute inset-0 bg-black/55 flex items-center justify-center text-2xl">🔒</div>' : ''}
+      </div>
+      <div class="p-4">
+        <h4 class="text-[15px] font-bold text-white leading-snug mb-1">${item.trip}</h4>
+        <div class="text-[11px] text-gray-500 mb-3">📍 ${info.loc || 'ประเทศไทย'}</div>
+        <div class="flex items-center justify-between pt-2.5 border-t border-gray-800 text-[11px]">
+          <span class="text-gray-400">🗓️ ${fmtDate}</span>
+          <span class="font-bold ${seatsColor}">${seatsText}</span>
+        </div>
+        <div class="flex items-center justify-between mt-1.5 text-[10.5px]">
+          <span class="text-gray-600">⏳ ${info.days || '-'}</span>
+          <span class="text-accentOrange font-semibold">ดูรายละเอียด ›</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ================================================================
+   TRIPS TAB
+   ================================================================ */
+function renderTripList(list) {
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
+  const upcoming = list.filter(t => new Date(t.date) >= today);
+  const past = list.filter(t => new Date(t.date) < today);
+
+  document.getElementById('tripListFull').innerHTML = `
+    <h3 class="text-sm font-bold text-white mb-3">🏕️ ทริปที่เปิดจอง</h3>
+    <div class="space-y-4">${upcoming.map(t => cardHTML(t, true)).join('') || '<p class="text-center text-gray-600 text-xs py-6">ยังไม่มีทริปเปิดจองครับ</p>'}</div>
+    <div class="h-px bg-gray-800 my-6"></div>
+    <h3 class="text-sm font-bold text-white mb-3">📅 ทริปที่ผ่านมา</h3>
+    <div class="space-y-4 opacity-70">${past.map(t => cardHTML(t, true)).join('') || '<p class="text-center text-gray-600 text-xs py-6">-</p>'}</div>
+  `;
+}
+
+function searchTrips() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  renderTripList(cacheTrips.filter(t => t.trip.toLowerCase().includes(q)));
+}
+
+/* ================================================================
+   MY TRIPS TAB
+   ================================================================ */
+function renderMyTrips() {
+  const norm = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+  const myBookings = allBookings.filter(b => norm(b.phone) === norm(currentUser.phone));
+
+  const seen = {}; const uniqueBookings = [];
+  myBookings.forEach(b => {
+    const key = b.trip + '_' + b.date + '_' + b.seat;
+    if (!seen[key]) { seen[key] = 1; uniqueBookings.push(b); }
+  });
+
+  const myEquipRentals = allEquipRentals.filter(r => norm(r.phone) === norm(currentUser.phone));
+  const provinceCount = [...new Set(uniqueBookings.map(b => (TRIP_DETAILS[b.trip] || {}).loc).filter(Boolean))].length;
+
+  document.getElementById('myContent').innerHTML = `
+    <div class="flex items-center gap-4 bg-gradient-to-br from-cardBg to-gray-900 border border-gray-800 rounded-2xl p-5 mb-6">
+      <div class="w-14 h-14 rounded-full overflow-hidden bg-gradient-to-br from-accentOrange to-[#FF5500] flex-shrink-0">
+        <img id="userAvatar" src="${currentUser.linePicture || 'https://via.placeholder.com/150/1E1E24/FF7A00?text=Y'}" class="w-full h-full object-cover">
+      </div>
+      <div class="flex-1">
+        <h3 class="text-base font-bold text-white">${currentUser.nick}</h3>
+        <p class="text-xs text-gray-500 mt-0.5">📞 ${currentUser.phone}</p>
+        <div class="flex gap-5 mt-2.5">
+          <div><h4 class="text-lg font-extrabold text-accentOrange">${uniqueBookings.length}</h4><p class="text-[9px] text-gray-500">ทริปทั้งหมด</p></div>
+          <div><h4 class="text-lg font-extrabold text-accentOrange">${provinceCount}</h4><p class="text-[9px] text-gray-500">จังหวัด</p></div>
+          <div><h4 class="text-lg font-extrabold text-accentOrange">${"⭐".repeat(Math.min(uniqueBookings.length, 5))}</h4><p class="text-[9px] text-gray-500">ระดับสายลุย</p></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="text-sm font-bold text-white mb-3">📋 ประวัติความบ้า</h3>
+    ${uniqueBookings.length === 0 ? '<div class="text-center py-10 text-gray-600"><div class="text-4xl mb-3">🏕️</div><p class="text-xs">ยังไม่มีประวัติการจองครับ<br>ไปเลือกทริปแล้วออกเดินทางกันเลย!</p></div>' : (() => {
+      const todayCut = new Date(new Date().setHours(0, 0, 0, 0));
+      const upcoming = uniqueBookings.filter(b => new Date(b.date) >= todayCut).sort((a, b) => new Date(a.date) - new Date(b.date));
+      const past = uniqueBookings.filter(b => new Date(b.date) < todayCut).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      const historyItemHTML = (b, i) => {
+        const img = TRIP_IMAGES[b.trip] || 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=100&q=60';
+        const fmtDate = new Date(b.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+        const isPast = new Date(b.date) < todayCut;
+        return `
+          <div class="${i >= 2 ? 'hist-extra hidden-el' : ''}">
+            <div class="flex items-center gap-3 bg-cardBg border border-gray-800 rounded-2xl p-3.5 mb-2.5 cursor-pointer hover:border-gray-700" onclick="viewMyBookingSeat('${b.trip}','${b.date}','${b.seat || ''}')">
+              <img src="${img}" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=100&q=60'}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-bold text-white truncate">${b.trip}</h4>
+                <p class="text-[11px] text-gray-500 mt-0.5">📅 ${fmtDate}</p>
+                <p class="mt-1">${isPast ? '<span class="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full">✅ ไปแล้ว</span>' : '<span class="text-[10px] font-semibold bg-accentOrange/10 text-accentOrange px-2 py-0.5 rounded-full">🗓️ กำลังจะไป</span>'}</p>
+              </div>
+              <div class="text-center bg-gray-800/60 border border-gray-700 rounded-xl px-2.5 py-2 flex-shrink-0">
+                <div class="text-[8px] text-gray-500 font-semibold">ที่นั่ง</div>
+                <div class="text-base font-extrabold text-accentOrange">${b.seat || '-'}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      };
+
+      return `
+        ${upcoming.length ? `
+          <div class="flex items-center justify-between text-xs font-bold text-gray-400 my-4">
+            <span>🗓️ กำลังจะไป (${upcoming.length})</span>
+            ${upcoming.length > 2 ? `<span onclick="toggleBookingHistory(this,'bookingUpcomingList')" class="text-accentOrange cursor-pointer">ดูทั้งหมด ›</span>` : ''}
+          </div>
+          <div id="bookingUpcomingList">${upcoming.map(historyItemHTML).join('')}</div>
+        ` : ''}
+        ${past.length ? `
+          <div class="flex items-center justify-between text-xs font-bold text-gray-400 my-4">
+            <span>✅ ไปแล้ว (${past.length})</span>
+            ${past.length > 2 ? `<span onclick="toggleBookingHistory(this,'bookingHistoryList')" class="text-accentOrange cursor-pointer">ดูทั้งหมด ›</span>` : ''}
+          </div>
+          <div id="bookingHistoryList">${past.map(historyItemHTML).join('')}</div>
+        ` : ''}
+      `;
+    })()}
+
+    <h3 class="text-sm font-bold text-white mt-6 mb-3">🎒 ประวัติการเช่าอุปกรณ์</h3>
+    ${myEquipRentals.length === 0
+      ? '<div class="text-center py-8 text-gray-600"><div class="text-3xl mb-2">🏕️</div><p class="text-xs">ยังไม่มีประวัติการเช่าอุปกรณ์ครับ</p></div>'
+      : myEquipRentals.map(r => {
+          const img = TRIP_IMAGES[r.trip] || 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=100&q=60';
+          const fmtDate = new Date(r.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+          return `
+            <div class="flex items-center gap-3 bg-cardBg border border-gray-800 rounded-2xl p-3.5 mb-2.5">
+              <img src="${img}" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=100&q=60'}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-bold text-white truncate">${r.trip}</h4>
+                <p class="text-[11px] text-gray-500 mt-0.5">📅 ${fmtDate}</p>
+                <p class="text-[10px] text-gray-600 mt-0.5 truncate">${r.itemsSummary || '-'}</p>
+              </div>
+              <div class="text-right flex-shrink-0"><div class="text-sm font-bold text-accentOrange">฿${Number(r.total || 0).toLocaleString()}</div><p class="text-[9px] text-gray-600">ยอดรวม</p></div>
+            </div>
+          `;
+        }).join('')}
+
+    <div class="h-px bg-gray-800 my-6"></div>
+    <button onclick="logOut()" class="w-full h-11 rounded-2xl border border-gray-800 text-gray-500 text-sm font-semibold hover:text-red-400 hover:border-red-500/30">🚪 ออกจากระบบ</button>
+  `;
+}
+
+function viewMyBookingSeat(trip, dateStr, seat) {
+  const fmtDate = new Date(dateStr).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+  pendingTrip = { name: trip, date: fmtDate, raw: dateStr };
+  highlightSeatId = seat || null;
+  goToBook();
+}
+
+/* ================================================================
+   NOTIF TAB
+   ================================================================ */
+const PREP_CHECKLIST = [
+  { t: "📋 ศึกษาข้อมูลเส้นทาง!", m: "* ระยะทางทั้งหมด<br>* ระดับความยาก<br>* ระยะเวลาเดิน<br>* ความสูงสะสม (Elevation Gain)<br>* จุดกางเต็นท์<br>* แหล่งน้ำ<br>* จุดรับสัญญาณโทรศัพท์<br>* สภาพอากาศล่าสุด<br>* กฎของอุทยานหรือพื้นที่" },
+  { t: "❤️ เตรียมร่างกาย!", m: "* พักผ่อนให้เพียงพอ<br>* ฝึกเดินหรือวิ่งก่อนเดินจริง<br>* ซ้อมแบกเป้<br>* ยืดกล้ามเนื้อ<br>* ดื่มน้ำให้เพียงพอ<br>* งดแอลกอฮอล์ก่อนเดิน" },
+  { t: "👩‍👧 แจ้งคนใกล้ตัว!", m: "* แจ้งเส้นทาง<br>* แจ้งวันเข้า-ออก<br>* แจ้งผู้ร่วมเดินทาง<br>* ส่งพิกัดหรือแผนที่<br>* แจ้งเบอร์ติดต่อฉุกเฉิน" },
+  { t: "🎒 อุปกรณ์แบกสัมภาระ!", m: "* เป้เดินป่า<br>* Rain Cover คลุมเป้<br>* Dry Bag<br>* ถุงซิปล็อกกันน้ำ" },
+  { t: "🌧 อุปกรณ์กันฝน!", m: "* เสื้อกันฝน<br>* กางเกงกันฝน<br>* Poncho<br>* ถุงคลุมเป้<br>* ถุงกันน้ำใส่มือถือ" },
+  { t: "🏕 อุปกรณ์แคมป์!", m: "* เต็นท์<br>* ฟลายชีท<br>* สมอบก<br>* เชือก<br>* ถุงนอน<br>* แผ่นรองนอน<br>* หมอนลม" },
+  { t: "🔦 อุปกรณ์ส่องสว่าง!", m: "* ไฟฉายคาดหัว<br>* ไฟฉายมือถือ<br>* แบตเตอรี่สำรอง<br>* โคมไฟแคมป์" },
+  { t: "🩹 ชุดปฐมพยาบาล!", m: "* พลาสเตอร์<br>* ผ้าก๊อซ<br>* ผ้ายืดพันแผล<br>* ยาประจำตัว<br>* ยาแก้ปวด<br>* ยาแก้แพ้<br>* ยาแก้ท้องเสีย<br>* ยาแก้เมารถ" },
+  { t: "⚠️ ก่อนออกเดินทุกครั้ง อย่าลืมเช็ก!", m: "1. เป้ไม่หนักเกิน 20–25% ของน้ำหนักตัว<br>2. ชาร์จอุปกรณ์ไฟฟ้าเต็ม<br>3. เช็กพยากรณ์อากาศ<br>4. แจ้งคนที่บ้าน<br>5. เช็กรองเท้าและเชือกผูก<br>6. เตรียมน้ำและอาหารให้เพียงพอ<br>7. เคารพธรรมชาติ และเก็บขยะกลับทุกชิ้น" }
+];
+
+function renderNotif() {
+  const listHTML = PREP_CHECKLIST.map(n => `
+    <div class="flex gap-3 bg-cardBg border border-gray-800 rounded-2xl p-3.5 mb-2.5">
+      <div class="w-2 h-2 rounded-full bg-accentOrange flex-shrink-0 mt-1.5"></div>
+      <div><h4 class="text-sm font-bold text-white mb-1">${n.t}</h4><p class="text-xs text-gray-400 leading-relaxed">${n.m}</p></div>
+    </div>
+  `).join('');
+
+  document.getElementById('notifContent').innerHTML = `
+    <h3 class="text-sm font-bold text-white mb-4">🔔 การเตรียมตัวก่อนเดินป่า</h3>
+    ${listHTML}
+  `;
+}
+
+/* ================================================================
+   BOTTOM NAV TABS
+   ================================================================ */
+const TABS = ['home', 'trips', 'mytrips', 'notif'];
+
+function switchTab(id) {
+  TABS.forEach(t => {
+    const page = document.getElementById('tab-' + t);
+    const nav = document.getElementById('nav-' + t);
+    if (t === id) { page.classList.remove('hidden-el'); nav.classList.add('text-accentOrange'); nav.classList.remove('text-gray-500'); }
+    else { page.classList.add('hidden-el'); nav.classList.remove('text-accentOrange'); nav.classList.add('text-gray-500'); }
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+// เริ่มต้นให้แถบ home เป็นสีส้ม active
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('nav-home').classList.add('text-accentOrange');
+  ['trips','mytrips','notif'].forEach(t => document.getElementById('nav-' + t).classList.add('text-gray-500'));
+});
+
+/* ================================================================
+   TRIP DETAIL MODAL
+   ================================================================ */
+function openModal(name, dateStr) {
+  const info = TRIP_DETAILS[name] || { days: '-', distance: '-', level: '-', price: '-', highlight: '-', image: '' };
+  const img = TRIP_IMAGES[name] || info.image || 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80';
+  const locked = CLOSED_TRIPS.includes(name);
+
+  const seatIds = ['A', 'B', 'C'].flatMap(prefix => BUS_GRID_STRUCTURE.filter(n => n !== 'driver' && n !== 'spacer').map(n => prefix + n));
+  const takenSeats = allBookings.filter(b => b.seat && b.trip === name && b.date === dateStr).map(b => String(b.seat));
+  const emptySeats = seatIds.filter(id => !takenSeats.includes(id));
+  const avail = emptySeats.length;
+  const fmtDate = new Date(dateStr).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.getElementById('md-img').src = img;
+  document.getElementById('md-name').innerText = name;
+  document.getElementById('md-date').innerText = '📅 ' + fmtDate;
+  document.getElementById('md-price').innerText = '💸 ค่าใช้จ่ายประมาณ ' + info.price;
+  document.getElementById('md-payment').innerText = info.paymentNote ? '💰 ' + info.paymentNote : '';
+  document.getElementById('md-days').innerText = info.days;
+  document.getElementById('md-dist').innerText = info.distance;
+  document.getElementById('md-level').innerText = info.level;
+  document.getElementById('md-hl').innerText = info.highlight;
+
+  const availEl = document.getElementById('md-avail');
+  const statusEl = document.getElementById('md-status');
+  const bookBtn = document.getElementById('md-bookBtn');
+
+  bookBtn.disabled = false;
+  bookBtn.onclick = () => goToBook();
+  bookBtn.className = "block w-[88%] max-w-xs h-12 mx-auto -mt-6 relative z-10 rounded-2xl bg-gradient-to-r from-accentOrange to-[#FF5500] text-white font-bold text-sm shadow-lg shadow-accentOrange/30";
+
+  if (locked) {
+    availEl.innerText = 'ยังไม่เปิดจอง';
+    availEl.className = 'text-sm font-bold text-red-400';
+    statusEl.innerText = 'เร็วๆ นี้';
+    statusEl.className = 'text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30 px-3 py-1 rounded-full';
+    bookBtn.disabled = true;
+    bookBtn.innerText = '⚠️ ยังไม่เปิดจองครับ';
+    bookBtn.className = "block w-[88%] max-w-xs h-12 mx-auto -mt-6 relative z-10 rounded-2xl bg-gray-800 text-gray-600 font-bold text-sm cursor-not-allowed";
+  } else if (avail <= 0) {
+    availEl.innerHTML = `
+      <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-3 text-center">
+        <div class="text-red-400 font-extrabold text-sm">🔴 ที่นั่งเต็มแล้วครับ</div>
+        <div class="text-gray-500 text-[10px] mt-0.5">กดปุ่มด้านล่างเพื่อดูผังเบาะได้ครับ</div>
+      </div>
+    `;
+    statusEl.innerText = 'เต็มแล้ว';
+    statusEl.className = 'text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/30 px-3 py-1 rounded-full';
+    bookBtn.innerText = '🔴 ที่นั่งเต็มแล้วครับ 👀 กดดูผังเบาะ';
+    bookBtn.className = "block w-[88%] max-w-xs h-12 mx-auto -mt-6 relative z-10 rounded-2xl bg-gray-700 text-gray-300 font-bold text-sm";
+  } else {
+    availEl.innerText = `เหลือ ${avail} ที่ — ${emptySeats.slice(0, 5).join(', ')}${emptySeats.length > 5 ? '...' : ''}`;
+    availEl.className = 'text-sm font-bold ' + (avail <= 5 ? 'text-amber-400' : 'text-emerald-400');
+    statusEl.innerText = 'เปิดจอง';
+    statusEl.className = 'text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full';
+    bookBtn.innerText = 'จองที่นั่ง 🚐';
+  }
+
+  pendingTrip = { name, date: fmtDate, raw: dateStr };
+  document.getElementById('modalBg').classList.remove('hidden-el');
+  document.getElementById('modalBg').classList.add('flex');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalBg').classList.add('hidden-el');
+  document.getElementById('modalBg').classList.remove('flex');
+  document.body.style.overflow = '';
+}
+
+/* ================================================================
+   BOOKING PAGE
+   ================================================================ */
+function goToBook() {
+  closeModal();
+
+  const cleanDate = new Date(pendingTrip.raw);
+  const yyyy = cleanDate.getFullYear();
+  const mm = String(cleanDate.getMonth() + 1).padStart(2, '0');
+  const dd = String(cleanDate.getDate()).padStart(2, '0');
+  const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+  document.getElementById('b-trip').value = pendingTrip.name;
+  document.getElementById('b-date').value = pendingTrip.date;
+  document.getElementById('b-trip-display').innerText = pendingTrip.name;
+  document.getElementById('b-date-display').innerText = '📅 ' + pendingTrip.date;
+  document.getElementById('f-dateraw').value = formattedDate;
+  document.getElementById('f-phone').value = currentUser.phone;
+  document.getElementById('f-nick').value = currentUser.nick;
+  document.getElementById('f-line').value = currentUser.lineName || currentUser.nick;
+
+  const normPhoneForName = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+  const myPastBooking = allBookings.filter(b => b.name && normPhoneForName(b.phone) === normPhoneForName(currentUser.phone)).slice(-1)[0];
+  document.getElementById('f-name').value = myPastBooking ? myPastBooking.name : '';
+
+  selectedSeat = null;
+  document.getElementById('f-seat').value = '';
+  document.getElementById('formFieldsBox2').classList.add('hidden-el');
+  document.getElementById('bookingPage2').classList.remove('hidden-el');
+  document.body.style.overflow = 'hidden';
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  resetPickupSelector();
+  loadSeats(formattedDate, true);
+
+  clearInterval(seatRefreshTimer);
+  seatRefreshTimer = setInterval(() => {
+    const page = document.getElementById('bookingPage2');
+    if (page && !page.classList.contains('hidden-el')) loadSeats(document.getElementById('f-dateraw').value);
+  }, 5000);
+
+  checkBook();
+}
+
+function closeBook() {
+  document.getElementById('bookingPage2').classList.add('hidden-el');
+  document.body.style.overflow = '';
+  clearInterval(seatRefreshTimer);
+  seatRefreshTimer = null;
+  stopSeatCountdown();
+}
+
+function handlePickupSelect() {
+  const select = document.getElementById('f-pickup-select');
+  const otherInput = document.getElementById('f-pickup-other');
+  const hiddenInput = document.getElementById('f-pickup');
+  if (!select || !otherInput || !hiddenInput) return;
+
+  if (select.value === '__other__') {
+    otherInput.style.display = 'block';
+    hiddenInput.value = otherInput.value.trim();
+    otherInput.focus();
+  } else {
+    otherInput.style.display = 'none';
+    otherInput.value = '';
+    hiddenInput.value = select.value;
+  }
+  checkBook();
+}
+
+function resetPickupSelector() {
+  const select = document.getElementById('f-pickup-select');
+  const otherInput = document.getElementById('f-pickup-other');
+  const hiddenInput = document.getElementById('f-pickup');
+  if (!select || !otherInput || !hiddenInput) return;
+  select.selectedIndex = 0;
+  otherInput.style.display = 'none';
+  otherInput.value = '';
+  hiddenInput.value = select.value;
+}
+
+/* ================================================================
+   SEAT MAP RENDERING (Tailwind class-based, ตามสไตล์ตัวอย่างที่ให้มา)
+   ================================================================ */
+function renderVansWithData(bookedList, lockList = []) {
+  const bookedMapping = {};
+  bookedList.forEach(booking => {
+    const seat = String(booking.seat || '').trim();
+    if (seat) bookedMapping[seat] = booking.nickname || 'เต็ม';
+  });
+
+  const lockedMapping = {};
+  lockList.forEach(lock => {
+    const seat = String(lock.seat || '').trim();
+    const isMine = String(lock.session_id || '') === String(MY_SESSION_ID);
+    if (seat && !isMine && !bookedMapping[seat]) lockedMapping[seat] = true;
+  });
+
+  let highlightEl = null;
+
+  ['A', 'B', 'C'].forEach(prefix => {
+    const grid = document.getElementById('vanGrid' + prefix);
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    BUS_GRID_STRUCTURE.forEach(n => {
+      const cell = document.createElement('div');
+
+      if (n === 'driver') {
+        cell.className = SEAT_CLASSES.driver;
+        cell.innerHTML = '<span class="text-base">🧑‍✈️</span><span class="text-[8px] mt-0.5">คนขับ</span>';
+        grid.appendChild(cell);
+        return;
+      }
+      if (n === 'spacer') { cell.className = SEAT_CLASSES.spacer; grid.appendChild(cell); return; }
+
+      const id = prefix + n;
+
+      if (bookedMapping[id]) {
+        if (bookedMapping[id] === 'งดจอง') {
+          cell.className = SEAT_CLASSES.hiddenSeat;
+        } else {
+          cell.className = SEAT_CLASSES.booked;
+          cell.innerHTML = `<span>${id}</span><div class="text-[8px] text-center leading-tight">${bookedMapping[id]}</div>`;
         }
-    </script>
+      } else if (lockedMapping[id]) {
+        cell.className = SEAT_CLASSES.locking;
+        cell.innerHTML = `<span>${id}</span><div class="text-[8px] text-center">มีคนเลือก</div>`;
+      } else {
+        cell.className = (id === selectedSeat ? SEAT_CLASSES.selected : SEAT_CLASSES.empty);
+        cell.innerHTML = `<span class="text-[8px]">เบาะ</span><span class="text-sm">${id}</span>`;
+        cell.onclick = () => pickSeat(cell, id);
+      }
+
+      if (highlightSeatId && id === highlightSeatId) highlightEl = cell;
+      grid.appendChild(cell);
+    });
+  });
+
+  if (highlightEl) {
+    const targetEl = highlightEl;
+    setTimeout(() => {
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      targetEl.classList.add('ring-pulse');
+      setTimeout(() => targetEl.classList.remove('ring-pulse'), 3500);
+    }, 150);
+    highlightSeatId = null;
+  }
+}
+
+async function pickSeat(el, id) {
+  const trip = document.getElementById('b-trip').value.trim();
+  const date = document.getElementById('f-dateraw').value.trim();
+
+  if (!trip || !date) {
+    Swal.fire({ icon: 'error', title: 'ข้อมูลทริปไม่ครบ', text: 'กรุณากลับไปเลือกทริปใหม่', background: '#1E1E24', color: '#f3f4f6', confirmButtonColor: '#FF7A00' });
+    return;
+  }
+
+  const previousSeat = selectedSeat;
+
+  selectedSeat = id;
+  document.querySelectorAll('#vanGridA > div, #vanGridB > div, #vanGridC > div').forEach(seat => {
+    if (seat === el) return;
+    if (seat.className === SEAT_CLASSES.selected) seat.className = SEAT_CLASSES.empty;
+  });
+  el.className = SEAT_CLASSES.selected;
+  document.getElementById('f-seat').value = id;
+  document.getElementById('formFieldsBox2').classList.remove('hidden-el');
+  checkBook();
+
+  setTimeout(() => { document.getElementById('formFieldsBox2').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+
+  function revertToPreviousSeat() {
+    selectedSeat = previousSeat;
+    el.className = SEAT_CLASSES.empty;
+    el.onclick = () => pickSeat(el, id);
+    document.getElementById('f-seat').value = previousSeat || '';
+    if (!previousSeat) {
+      document.getElementById('formFieldsBox2').classList.add('hidden-el');
+    }
+    checkBook();
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      body: new URLSearchParams({ action: 'lockSeat', date, trip, seat: id, session_id: MY_SESSION_ID })
+    });
+    const result = await response.json();
+
+    if (!result.ok) {
+      revertToPreviousSeat();
+      Swal.fire({
+        icon: 'warning', title: 'เบาะนี้ไม่ว่างแล้ว',
+        text: result.error === 'seat_booked' ? 'เบาะนี้ถูกจองไปแล้ว กรุณาเลือกเบาะอื่น' : 'มีคนอื่นกำลังเลือกเบาะนี้ กรุณาเลือกเบาะอื่น',
+        background: '#1E1E24', color: '#f3f4f6', confirmButtonColor: '#FF7A00'
+      });
+      loadSeats(date);
+      return;
+    }
+    startSeatCountdown(true);
+  } catch (error) {
+    startSeatCountdown(true);
+  } finally {
+    el.style.pointerEvents = '';
+  }
+}
+
+function checkBook() {
+  const ok = ['f-name', 'f-nick', 'f-phone', 'f-line', 'f-seat', 'f-pickup'].every(id => document.getElementById(id).value.trim() !== '');
+  const btn = document.getElementById('confirmBtn');
+  btn.disabled = !ok;
+  if (ok) {
+    btn.className = "w-full max-w-md mx-auto block h-12 rounded-2xl bg-gradient-to-r from-accentOrange to-[#FF5500] text-white font-bold text-sm shadow-lg shadow-accentOrange/30 transition-all";
+    btn.innerText = '👉 พร้อมแล้ว...ไปโอนเงินกันเลย! ✨';
+  } else {
+    btn.className = "w-full max-w-md mx-auto block h-12 rounded-2xl bg-gray-800 text-gray-600 font-semibold text-sm transition-all";
+    btn.innerText = '🚀 กรอกข้อมูลให้ครบและเลือกที่นั่ง';
+  }
+}
+
+/* ================================================================
+   SLIP UPLOAD
+   ================================================================ */
+function handleSlipFile(input) {
+  const drop = document.getElementById('slipDrop');
+  const nameEl = document.getElementById('slipName');
+  const preview = document.getElementById('slipPreview');
+  const button = document.getElementById('payOkBtn');
+
+  if (!input.files || !input.files[0]) { resetSlipUpload(); return; }
+
+  const file = input.files[0];
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+  if (!allowedTypes.includes(file.type)) {
+    input.value = '';
+    Swal.fire({ icon: 'warning', title: 'ไฟล์ไม่ถูกต้อง', text: 'กรุณาแนบสลิปชนิด JPG, PNG หรือ WEBP', background: '#1E1E24', color: '#f3f4f6', confirmButtonColor: '#FF7A00' });
+    resetSlipUpload();
+    return;
+  }
+
+  const maxSize = 5 * 1024 * 1024;
+  if (file.size > maxSize) {
+    input.value = '';
+    Swal.fire({ icon: 'warning', title: 'ไฟล์ใหญ่เกินไป', text: 'กรุณาใช้รูปสลิปขนาดไม่เกิน 5MB', background: '#1E1E24', color: '#f3f4f6', confirmButtonColor: '#FF7A00' });
+    resetSlipUpload();
+    return;
+  }
+
+  selectedSlipFile = file;
+  drop.classList.remove('border-gray-700', 'border-dashed');
+  drop.classList.add('border-emerald-500/60', 'border-solid', 'bg-emerald-500/5');
+  nameEl.textContent = '✅ ' + file.name;
+
+  const reader = new FileReader();
+  reader.onload = (event) => { preview.src = event.target.result; preview.classList.remove('hidden-el'); };
+  reader.readAsDataURL(file);
+
+  button.disabled = false;
+  button.className = "w-full h-12 rounded-2xl bg-gradient-to-r from-accentOrange to-[#FF5500] text-white font-bold text-sm shadow-lg shadow-accentOrange/30";
+  button.textContent = '✔️ ส่งสลิปและยืนยันการจอง';
+}
+
+function resetSlipUpload() {
+  selectedSlipFile = null;
+  const input = document.getElementById('slipFile');
+  const drop = document.getElementById('slipDrop');
+  const nameEl = document.getElementById('slipName');
+  const preview = document.getElementById('slipPreview');
+  const button = document.getElementById('payOkBtn');
+
+  if (input) input.value = '';
+  if (drop) { drop.classList.add('border-gray-700', 'border-dashed'); drop.classList.remove('border-emerald-500/60', 'border-solid', 'bg-emerald-500/5'); }
+  if (nameEl) nameEl.textContent = 'แตะเพื่อเลือกรูปสลิป';
+  if (preview) { preview.src = ''; preview.classList.add('hidden-el'); }
+  if (button) { button.disabled = true; button.className = "w-full h-12 rounded-2xl bg-gray-800 text-gray-600 font-semibold text-sm transition-colors"; button.textContent = '🧾 กรุณาแนบสลิปก่อน'; }
+}
+
+function slipFileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || '');
+      const commaIndex = result.indexOf(',');
+      resolve({ name: file.name, mimeType: file.type || 'image/jpeg', data: commaIndex >= 0 ? result.substring(commaIndex + 1) : result });
+    };
+    reader.onerror = () => reject(new Error('ไม่สามารถอ่านรูปสลิปได้'));
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ================================================================
+   PAYMENT
+   ================================================================ */
+function openPay() {
+  if (!selectedSeat) {
+    Swal.fire({ icon: 'warning', title: 'ยังไม่ได้เลือกที่นั่ง', text: 'กรุณาเลือกที่นั่งก่อนชำระเงิน', background: '#1E1E24', color: '#f3f4f6', confirmButtonColor: '#FF7A00' });
+    return;
+  }
+  resetSlipUpload();
+  startSeatCountdown();
+  document.getElementById('payModal').classList.remove('hidden-el');
+  document.getElementById('payModal').classList.add('flex');
+}
+
+function closePay() {
+  document.getElementById('payModal').classList.add('hidden-el');
+  document.getElementById('payModal').classList.remove('flex');
+  clearInterval(seatCountdownTimer);
+  seatCountdownTimer = null;
+}
+
+async function submitBook() {
+  const btn = document.getElementById('payOkBtn');
+
+  const seatValueAtSubmit = document.getElementById('f-seat').value.trim();
+  if (!selectedSeat || !seatValueAtSubmit) {
+    closePay();
+    Swal.fire({ icon: 'warning', title: 'ที่นั่งของคุณถูกปลดล็อกไปแล้ว', text: 'กรุณาเลือกเบาะใหม่แล้วทำรายการอีกครั้งครับ', background: '#1E1E24', color: '#f3f4f6', confirmButtonColor: '#FF7A00' });
+    return;
+  }
+  if (!selectedSlipFile) {
+    Swal.fire({ icon: 'warning', title: 'ยังไม่ได้แนบสลิป', text: 'กรุณาแนบรูปสลิปก่อนยืนยันการจอง', background: '#1E1E24', color: '#f3f4f6', confirmButtonColor: '#FF7A00' });
+    return;
+  }
+
+  btn.innerHTML = '⌛ กำลังส่งข้อมูลและสลิป...';
+  btn.disabled = true;
+
+  try {
+    const slipData = await slipFileToBase64(selectedSlipFile);
+    const bookingId = 'BOOK-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+
+    const payload = {
+      date: document.getElementById('f-dateraw').value,
+      trip: document.getElementById('b-trip').value,
+      seat: document.getElementById('f-seat').value,
+      name: document.getElementById('f-name').value.trim(),
+      nickname: document.getElementById('f-nick').value.trim(),
+      phone: document.getElementById('f-phone').value.trim(),
+      line: document.getElementById('f-line').value.trim(),
+      pickup: document.getElementById('f-pickup').value.trim(),
+      confirm: 'true',
+      bookingId: bookingId,
+      session_id: MY_SESSION_ID,
+      slipBase64: slipData.data,
+      slipName: slipData.name,
+      slipMime: slipData.mimeType
+    };
+
+    const form = document.createElement('form');
+    form.method = 'POST'; form.action = API_URL; form.target = '_ifr_booking'; form.acceptCharset = 'UTF-8'; form.style.display = 'none';
+
+    Object.entries(payload).forEach(([key, value]) => {
+      const field = document.createElement('textarea');
+      field.name = key; field.value = value == null ? '' : String(value); field.style.display = 'none';
+      form.appendChild(field);
+    });
+
+    let iframe = document.getElementById('_ifr_booking');
+    if (!iframe) {
+      iframe = document.createElement('iframe');
+      iframe.name = '_ifr_booking'; iframe.id = '_ifr_booking'; iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+
+    setTimeout(() => {
+      clearInterval(seatRefreshTimer); seatRefreshTimer = null;
+      stopSeatCountdown(); closePay();
+
+      document.getElementById('r-name').innerText = payload.name;
+      document.getElementById('r-trip').innerText = payload.trip;
+      document.getElementById('r-date').innerText = new Date(payload.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+      document.getElementById('r-pickup').innerText = payload.pickup;
+      document.getElementById('r-seat').innerText = payload.seat;
+
+      document.getElementById('successPage2').classList.remove('hidden-el');
+      allBookings.push({ ...payload, paymentStatus: 'รอตรวจสอบสลิป' });
+      renderMyTrips();
+
+      if (form.parentNode) form.remove();
+      selectedSlipFile = null;
+    }, 8000);
+
+  } catch (error) {
+    btn.disabled = false;
+    btn.textContent = '✔️ ส่งสลิปและยืนยันการจอง';
+    Swal.fire({ icon: 'error', title: 'ส่งสลิปไม่สำเร็จ', text: error.message || 'กรุณาลองใหม่อีกครั้ง', background: '#1E1E24', color: '#f3f4f6', confirmButtonColor: '#FF7A00' });
+  }
+}
+
+function backHome() {
+  document.getElementById('successPage2').classList.add('hidden-el');
+  document.getElementById('bookingPage2').classList.add('hidden-el');
+  switchTab('home');
+  renderHome();
+}
+
+/* ================================================================
+   LOGOUT
+   ================================================================ */
+function logOut() {
+  Swal.fire({
+    title: 'ออกจากระบบ?', text: 'ต้องล็อกอินด้วยเบอร์ใหม่อีกครั้ง', icon: 'warning',
+    showCancelButton: true, confirmButtonText: 'ออกเลย', cancelButtonText: 'ยกเลิก',
+    background: '#1E1E24', color: '#f3f4f6', confirmButtonColor: '#ef4444'
+  }).then(r => {
+    if (r.isConfirmed) {
+      localStorage.removeItem('ydtjUser');
+      try { if (typeof liff !== 'undefined' && liff.isLoggedIn && liff.isLoggedIn()) liff.logout(); } catch (e) {}
+      location.reload();
+    }
+  });
+}
+
+/* ================================================================
+   DRAWER
+   ================================================================ */
+function openDrawer() { document.getElementById('drawer').classList.remove('-right-full'); document.getElementById('drawer').classList.add('right-0'); document.getElementById('ov').classList.remove('hidden-el'); }
+function closeDrawer() { document.getElementById('drawer').classList.add('-right-full'); document.getElementById('drawer').classList.remove('right-0'); document.getElementById('ov').classList.add('hidden-el'); }
+
+const MEMORY_PLACEHOLDER_IMAGES = [
+  "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=400&q=70",
+  "https://images.unsplash.com/photo-1500534623283-312aade485b7?w=400&q=70",
+  "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=70",
+  "https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=400&q=70"
+];
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('memGrid');
+  if (grid) grid.innerHTML = MEMORY_PLACEHOLDER_IMAGES.map(src => `<img src="${src}" class="w-full rounded-xl border border-gray-800" onerror="this.style.display='none'">`).join('');
+});
+
+/* ================================================================
+   FLOATING ADMIN TAB
+   ================================================================ */
+let adminTabExpanded = false;
+let adminTabCollapseTimer = null;
+
+function toggleAdminTab(e) {
+  e.stopPropagation();
+  const tab = document.getElementById('adminTab');
+  const label = document.getElementById('adminTabLabel');
+  if (!adminTabExpanded) {
+    tab.classList.add('opacity-100', 'pl-3', 'pr-3.5', 'bg-accentOrange/20');
+    label.classList.remove('max-w-0', 'opacity-0');
+    label.classList.add('max-w-[120px]', 'opacity-100');
+    adminTabExpanded = true;
+    clearTimeout(adminTabCollapseTimer);
+    adminTabCollapseTimer = setTimeout(collapseAdminTab, 4000);
+    return;
+  }
+  window.location.href = 'admin.html';
+}
+
+function collapseAdminTab() {
+  const tab = document.getElementById('adminTab');
+  const label = document.getElementById('adminTabLabel');
+  if (tab) tab.classList.remove('opacity-100', 'pl-3', 'pr-3.5', 'bg-accentOrange/20');
+  if (label) { label.classList.add('max-w-0', 'opacity-0'); label.classList.remove('max-w-[120px]', 'opacity-100'); }
+  adminTabExpanded = false;
+  clearTimeout(adminTabCollapseTimer);
+}
+
+document.addEventListener('click', (e) => {
+  if (!adminTabExpanded) return;
+  const tab = document.getElementById('adminTab');
+  if (tab && !tab.contains(e.target)) collapseAdminTab();
+});
+
+/* ================================================================
+   EQUIPMENT RENTAL (เช่าอุปกรณ์)
+   ================================================================ */
+function getMyUniqueBookings() {
+  const norm = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
+  const mine = allBookings.filter(b => b.trip && b.date && norm(b.phone) === norm(currentUser.phone) && new Date(b.date) >= today);
+
+  const seen = {}; const list = [];
+  mine.forEach(b => {
+    const key = b.trip + '_' + b.date + '_' + (b.seat || '');
+    if (!seen[key]) { seen[key] = 1; list.push(b); }
+  });
+  return list;
+}
+
+function openEquipRent() {
+  eqSelectedTripKey = null;
+  eqQty = { tent: 0, sleepingBag: 0, sleepingPad: 0 };
+  renderEqTripList(); renderEqItemList(); updateEqSummary();
+  document.getElementById('equipPage').classList.remove('hidden-el');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function closeEquipRent() { document.getElementById('equipPage').classList.add('hidden-el'); }
+
+function renderEqTripList() {
+  const box = document.getElementById('eqTripList');
+  const myBookings = getMyUniqueBookings();
+
+  if (myBookings.length === 0) {
+    box.innerHTML = `<p class="text-center text-gray-600 text-xs py-6 bg-cardBg border border-gray-800 rounded-2xl">ยังไม่มีทริปที่จองไว้ครับ 🥲<br>กรุณาจองทริปก่อน ถึงจะเช่าอุปกรณ์ให้ทริปนั้นได้ครับ</p>`;
+    return;
+  }
+
+  box.innerHTML = myBookings.map(b => {
+    const key = b.trip + '_' + b.date + '_' + (b.seat || '');
+    const fmtDate = new Date(b.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+    const selected = key === eqSelectedTripKey;
+    return `
+      <div onclick="selectEqTrip('${key}')" class="flex items-center gap-3 border rounded-2xl p-3.5 cursor-pointer transition-colors ${selected ? 'border-accentOrange bg-accentOrange/10' : 'border-gray-800 bg-cardBg'}">
+        <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${selected ? 'border-accentOrange' : 'border-gray-600'}">
+          ${selected ? '<div class="w-2.5 h-2.5 rounded-full bg-accentOrange"></div>' : ''}
+        </div>
+        <div><h4 class="text-sm font-bold text-white">${b.trip}</h4><p class="text-[11px] text-gray-500 mt-0.5">📅 ${fmtDate} · 🪑 เบาะ ${b.seat || '-'}</p></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectEqTrip(key) { eqSelectedTripKey = key; renderEqTripList(); updateEqSummary(); }
+
+function renderEqItemList() {
+  const box = document.getElementById('eqItemList');
+  box.innerHTML = Object.entries(EQUIP_ITEMS).map(([key, item]) => `
+    <div class="flex gap-3 bg-cardBg border border-gray-800 rounded-2xl p-3">
+      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-white flex items-center justify-center"><img src="${item.img}" onerror="this.style.display='none'" class="w-full h-full object-contain"></div>
+      <div class="flex-1 min-w-0">
+        <h4 class="text-sm font-bold text-white">${item.label}</h4>
+        <p class="text-[11px] text-gray-500 mt-0.5">${item.brand}</p>
+        <p class="text-xs text-accentOrange font-bold mt-1">฿${item.price} / ${item.unit}</p>
+        <div class="flex items-center gap-2.5 mt-2">
+          <button onclick="changeEqQty('${key}', -1)" class="w-7 h-7 rounded-lg bg-gray-800 text-white font-bold flex items-center justify-center">−</button>
+          <div id="eqQtyVal-${key}" class="min-w-[20px] text-center text-sm font-extrabold text-white">0</div>
+          <button onclick="changeEqQty('${key}', 1)" class="w-7 h-7 rounded-lg bg-gray-800 text-white font-bold flex items-center justify-center">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function changeEqQty(key, delta) {
+  const next = Math.max(0, Math.min(10, (eqQty[key] || 0) + delta));
+  eqQty[key] = next;
+  document.getElementById('eqQtyVal-' + key).textContent = next;
+  updateEqSummary();
+}
+
+function getEqSelectedRows() {
+  return Object.entries(EQUIP_ITEMS).filter(([key]) => eqQty[key] > 0).map(([key, item]) => ({ key, item, qty: eqQty[key], subtotal: item.price * eqQty[key] }));
+}
+
+function updateEqSummary() {
+  const rows = getEqSelectedRows();
+  const total = rows.reduce((sum, r) => sum + r.subtotal, 0);
+
+  const summaryBox = document.getElementById('eqSummaryBox');
+  const rowsBox = document.getElementById('eqSummaryRows');
+  const totalEl = document.getElementById('eqTotalPrice');
+  const confirmBtn = document.getElementById('eqConfirmBtn');
+
+  if (rows.length === 0) { summaryBox.classList.add('hidden-el'); }
+  else {
+    summaryBox.classList.remove('hidden-el');
+    rowsBox.innerHTML = rows.map(r => `<div class="flex justify-between"><span>${r.item.label} x${r.qty}</span><span>${r.subtotal.toLocaleString()} บาท</span></div>`).join('');
+    totalEl.textContent = total.toLocaleString() + ' บาท';
+  }
+
+  const ready = Boolean(eqSelectedTripKey) && rows.length > 0;
+  confirmBtn.disabled = !ready;
+  if (ready) {
+    confirmBtn.className = "w-full max-w-md mx-auto block h-12 rounded-2xl bg-gradient-to-r from-accentOrange to-[#FF5500] text-white font-bold text-sm shadow-lg shadow-accentOrange/30 transition-all";
+    confirmBtn.innerText = `👉 ยืนยันเช่าอุปกรณ์ (${total.toLocaleString()} บาท) ✨`;
+  } else {
+    confirmBtn.className = "w-full max-w-md mx-auto block h-12 rounded-2xl bg-gray-800 text-gray-600 font-semibold text-sm transition-all";
+    confirmBtn.innerText = !eqSelectedTripKey ? '🚀 กรุณาเลือกทริปก่อนครับ' : '🚀 กรุณาเลือกอุปกรณ์อย่างน้อย 1 ชิ้น';
+  }
+}
+
+function confirmEquipRent() {
+  const booking = getMyUniqueBookings().find(b => (b.trip + '_' + b.date + '_' + (b.seat || '')) === eqSelectedTripKey);
+  if (!booking) return;
+
+  const rows = getEqSelectedRows();
+  const total = rows.reduce((sum, r) => sum + r.subtotal, 0);
+
+  const btn = document.getElementById('eqConfirmBtn');
+  const originalText = btn.innerText;
+  btn.disabled = true;
+  btn.innerText = '⌛ กำลังบันทึกข้อมูล...';
+
+  const rentId = 'RENT-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+
+  const payload = {
+    action: 'rentEquip', rentId: rentId, trip: booking.trip, date: booking.date, seat: booking.seat || '',
+    name: booking.name || currentUser.nick, nickname: currentUser.nick, phone: currentUser.phone,
+    tent: String(eqQty.tent || 0), sleepingBag: String(eqQty.sleepingBag || 0), sleepingPad: String(eqQty.sleepingPad || 0),
+    itemsSummary: rows.map(r => `${r.item.label} x${r.qty}`).join(', '), total: String(total), session_id: MY_SESSION_ID
+  };
+
+  const form = document.createElement('form');
+  form.method = 'POST'; form.action = API_URL; form.target = '_ifr_equiprent'; form.acceptCharset = 'UTF-8'; form.style.display = 'none';
+
+  Object.entries(payload).forEach(([key, value]) => {
+    const field = document.createElement('textarea');
+    field.name = key; field.value = value == null ? '' : String(value); field.style.display = 'none';
+    form.appendChild(field);
+  });
+
+  let iframe = document.getElementById('_ifr_equiprent');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.name = '_ifr_equiprent'; iframe.id = '_ifr_equiprent'; iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+
+  setTimeout(() => {
+    document.getElementById('eqr-trip').innerText = booking.trip;
+    document.getElementById('eqr-name').innerText = booking.name || currentUser.nick;
+    document.getElementById('eqr-seat').innerText = booking.seat || '-';
+    document.getElementById('eqr-items').innerHTML = rows.map(r => `<div class="flex justify-between text-sm text-gray-700 border-b border-dashed border-gray-200 py-1.5"><span>${r.item.label} (${r.item.brand}) x${r.qty}</span><span>${r.subtotal.toLocaleString()} บาท</span></div>`).join('');
+    document.getElementById('eqr-total').innerText = total.toLocaleString() + ' บาท';
+
+    document.getElementById('equipReceiptPage').classList.remove('hidden-el');
+    if (form.parentNode) form.remove();
+
+    btn.disabled = false;
+    btn.innerText = originalText;
+  }, 2500);
+}
+
+function closeEquipReceipt() {
+  document.getElementById('equipReceiptPage').classList.add('hidden-el');
+  document.getElementById('equipPage').classList.add('hidden-el');
+  switchTab('home');
+}
+</script>
 </body>
 </html>
