@@ -3,260 +3,1169 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+>
+
+<meta name="theme-color" content="#F7F5EF">
+
 <title>ยินดีที่ได้เจอ — จองทริปเดินป่า</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap"
+  rel="stylesheet"
+>
 
 <style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
 :root{
   --pine:#173729;
-  --pine-2:#1E4A36;
-  --pine-3:#265C43;
+  --pine2:#1E4A36;
+  --pine3:#2A6549;
+
   --gold:#F0A93B;
+
   --red:#E5574B;
-  --gray:#C7C4BC;
-  --bg:#F8F5EF;
-  --card:#FFFFFF;
-  --ink:#22261F;
-  --sub:#767268;
-  --line:#EAE5DA;
+
+  --bg:#F7F5EF;
+  --white:#FFFFFF;
+
+  --ink:#20251F;
+  --sub:#77746A;
+
+  --line:#E9E5DA;
+
+  --soft-green:#EEF4EF;
+  --soft-gold:#FFF4DE;
+  --soft-red:#FCEBE8;
+
+  --shadow:0 8px 25px rgba(30,45,32,.07);
+
+  --nav-height:78px;
 }
+
+
+/* =========================================================
+   RESET
+========================================================= */
 
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
+  -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html{
+  width:100%;
   min-height:100%;
+  background:var(--bg);
 }
 
 body{
+  width:100%;
+  min-height:100%;
   font-family:'Prompt',sans-serif;
-  background:#E7E2D6;
+  background:var(--bg);
   color:var(--ink);
-  min-height:100vh;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-  padding:32px 12px;
+  overflow-x:hidden;
 }
 
 button,
-input{
+input,
+textarea,
+select{
   font-family:'Prompt',sans-serif;
 }
 
-.page-note{
-  position:fixed;
-  top:10px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:12px;
-  color:#8b8778;
-  letter-spacing:.02em;
-  z-index:5;
+button{
+  border:0;
 }
 
-/* PHONE */
-
-.phone{
-  width:390px;
+img{
   max-width:100%;
-  height:844px;
-  max-height:92vh;
-  background:var(--bg);
-  border-radius:44px;
-  box-shadow:
-    0 30px 60px rgba(20,30,20,.25),
-    0 0 0 10px #16161a,
-    0 0 0 12px #2c2c33;
-  overflow:hidden;
-  position:relative;
-  display:flex;
-  flex-direction:column;
+  display:block;
 }
 
-.home-indicator{
-  position:absolute;
-  bottom:8px;
-  left:50%;
-  transform:translateX(-50%);
-  width:134px;
-  height:5px;
-  border-radius:3px;
-  background:rgba(0,0,0,.55);
-  z-index:20;
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app{
+  width:100%;
+  min-height:100dvh;
+  background:var(--bg);
+  position:relative;
 }
+
+
+/* =========================================================
+   SCREEN SYSTEM
+========================================================= */
 
 .screens{
-  flex:1;
+  width:100%;
+  min-height:100dvh;
   position:relative;
-  overflow:hidden;
 }
 
 .screen{
-  position:absolute;
-  inset:0;
-  overflow-y:auto;
-  -ms-overflow-style:none;
-  scrollbar-width:none;
   display:none;
-  flex-direction:column;
-  padding-bottom:8px;
-}
+  width:100%;
+  min-height:100dvh;
 
-.screen::-webkit-scrollbar{
-  display:none;
+  padding-bottom:
+    calc(
+      var(--nav-height)
+      + env(safe-area-inset-bottom,0px)
+      + 18px
+    );
 }
 
 .screen.active{
-  display:flex;
+  display:block;
 }
 
-/* SHARED */
 
-.topbar{
+/* =========================================================
+   SCROLL CONTENT
+========================================================= */
+
+.screen-content{
+  width:100%;
+  max-width:600px;
+  margin:0 auto;
+}
+
+
+/* =========================================================
+   TOP HEADER
+========================================================= */
+
+.app-header{
+  padding:
+    calc(14px + env(safe-area-inset-top,0px))
+    20px
+    12px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:18px 20px 14px;
-  flex-shrink:0;
+
+  background:var(--bg);
+
+  position:relative;
+  z-index:5;
 }
 
-.icon-btn{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  background:var(--card);
+.header-left,
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.header-center{
   display:flex;
   align-items:center;
   justify-content:center;
-  border:none;
-  cursor:pointer;
-  color:var(--pine);
-  box-shadow:0 2px 6px rgba(0,0,0,.06);
-}
-
-.icon-btn.ghost{
-  background:rgba(255,255,255,.22);
-  color:#fff;
-  backdrop-filter:blur(4px);
-}
-
-.icon-btn svg{
-  width:18px;
-  height:18px;
+  flex:1;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:8px;
-  font-weight:700;
-  font-size:17px;
+
   color:var(--pine);
+
+  font-size:21px;
+  font-weight:800;
+
+  letter-spacing:-.04em;
 }
 
-.brand svg{
-  width:22px;
-  height:22px;
+.brand-mark{
+  width:29px;
+  height:29px;
 }
 
-h1,h2,h3{
-  font-weight:700;
+.icon-button{
+  width:42px;
+  height:42px;
+
+  border-radius:50%;
+
+  background:#fff;
+
+  color:var(--pine);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  box-shadow:0 5px 16px rgba(30,40,30,.08);
+
+  cursor:pointer;
+}
+
+.icon-button svg{
+  width:21px;
+  height:21px;
+}
+
+
+/* =========================================================
+   HOME HERO
+========================================================= */
+
+.home-hero{
+  padding:4px 20px 0;
+}
+
+.greeting{
+  font-size:13px;
+  color:var(--sub);
+  margin-bottom:3px;
+}
+
+.home-title{
+  font-size:25px;
+  line-height:1.25;
+  font-weight:800;
   color:var(--ink);
+  letter-spacing:-.03em;
 }
 
-.muted{
+
+/* =========================================================
+   WALLET STYLE TRIP CARD
+========================================================= */
+
+.wallet-card{
+  margin:
+    18px 20px
+    0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #173729 0%,
+      #1F503A 58%,
+      #2C674B 100%
+    );
+
+  border-radius:24px;
+
+  padding:21px;
+
+  color:#fff;
+
+  position:relative;
+  overflow:hidden;
+
+  box-shadow:
+    0 14px 30px rgba(23,55,41,.18);
+}
+
+.wallet-card::before{
+  content:"";
+
+  position:absolute;
+
+  width:190px;
+  height:190px;
+
+  border-radius:50%;
+
+  right:-70px;
+  top:-80px;
+
+  background:rgba(255,255,255,.06);
+}
+
+.wallet-card::after{
+  content:"";
+
+  position:absolute;
+
+  width:120px;
+  height:120px;
+
+  border-radius:50%;
+
+  left:-65px;
+  bottom:-75px;
+
+  background:rgba(255,255,255,.04);
+}
+
+.wallet-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+
+  position:relative;
+  z-index:2;
+}
+
+.wallet-label{
+  font-size:12px;
+  opacity:.72;
+}
+
+.wallet-trip{
+  font-size:21px;
+  font-weight:700;
+  margin-top:2px;
+}
+
+.wallet-status{
+  padding:6px 11px;
+
+  border-radius:20px;
+
+  background:rgba(255,255,255,.13);
+
+  font-size:10.5px;
+  font-weight:600;
+}
+
+.wallet-bottom{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+
+  margin-top:25px;
+
+  position:relative;
+  z-index:2;
+}
+
+.wallet-info{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.wallet-info .label{
+  font-size:11px;
+  opacity:.65;
+}
+
+.wallet-info .value{
+  font-size:17px;
+  font-weight:700;
+}
+
+.wallet-action{
+  width:42px;
+  height:42px;
+
+  border-radius:50%;
+
+  background:#fff;
+  color:var(--pine);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+}
+
+.wallet-action svg{
+  width:19px;
+  height:19px;
+}
+
+
+/* =========================================================
+   QUICK MENU
+========================================================= */
+
+.quick-section{
+  padding:20px 20px 4px;
+}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:13px;
+}
+
+.section-head h2{
+  font-size:16px;
+  font-weight:800;
+}
+
+.section-head button{
+  background:none;
+  color:var(--pine3);
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.quick-menu{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+
+.quick-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+
+  cursor:pointer;
+}
+
+.quick-icon{
+  width:53px;
+  height:53px;
+
+  border-radius:18px;
+
+  background:#fff;
+
+  color:var(--pine);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  box-shadow:0 5px 15px rgba(30,40,30,.06);
+}
+
+.quick-icon svg{
+  width:23px;
+  height:23px;
+}
+
+.quick-item span{
+  font-size:10.5px;
+  font-weight:600;
+  color:var(--sub);
+  text-align:center;
+}
+
+
+/* =========================================================
+   CATEGORY FILTER
+========================================================= */
+
+.category-section{
+  padding:21px 20px 8px;
+}
+
+.category-scroll{
+  display:flex;
+  gap:9px;
+
+  overflow-x:auto;
+
+  padding-bottom:3px;
+
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+
+.category-scroll::-webkit-scrollbar{
+  display:none;
+}
+
+.category{
+  flex:0 0 auto;
+
+  padding:9px 17px;
+
+  border-radius:20px;
+
+  border:1px solid var(--line);
+
+  background:#fff;
+
+  color:var(--sub);
+
+  font-size:12.5px;
+  font-weight:600;
+
+  cursor:pointer;
+}
+
+.category.active{
+  background:var(--pine);
+  color:#fff;
+  border-color:var(--pine);
+}
+
+
+/* =========================================================
+   TRIP LIST
+========================================================= */
+
+.trip-section{
+  padding:8px 20px 30px;
+}
+
+.trip-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+
+/* =========================================================
+   TRIP CARD
+========================================================= */
+
+.trip-card{
+  background:#fff;
+
+  border-radius:23px;
+
+  overflow:hidden;
+
+  box-shadow:var(--shadow);
+
+  cursor:pointer;
+
+  transition:
+    transform .12s ease,
+    box-shadow .12s ease;
+}
+
+.trip-card:active{
+  transform:scale(.985);
+}
+
+.trip-image{
+  height:176px;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.trip-image svg{
+  position:absolute;
+  inset:0;
+
+  width:100%;
+  height:100%;
+}
+
+.trip-tag{
+  position:absolute;
+
+  left:15px;
+  top:14px;
+
+  padding:7px 13px;
+
+  border-radius:20px;
+
+  background:rgba(23,55,41,.9);
+
+  color:#fff;
+
+  font-size:11px;
+  font-weight:600;
+
+  z-index:2;
+}
+
+.trip-heart{
+  position:absolute;
+
+  right:14px;
+  top:13px;
+
+  width:40px;
+  height:40px;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,.92);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:var(--pine);
+
+  z-index:2;
+}
+
+.trip-heart svg{
+  position:static;
+  width:20px;
+  height:20px;
+}
+
+.trip-body{
+  padding:17px 18px 18px;
+}
+
+.trip-name{
+  font-size:20px;
+  line-height:1.25;
+
+  font-weight:800;
+
+  margin-bottom:7px;
+}
+
+.trip-location{
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  color:var(--sub);
+
+  font-size:12.5px;
+
+  margin-bottom:6px;
+}
+
+.trip-date{
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  color:var(--sub);
+
+  font-size:12.5px;
+
+  margin-bottom:16px;
+}
+
+.trip-footer{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+}
+
+.trip-seats{
+  display:flex;
+  align-items:center;
+  gap:5px;
+
+  color:var(--pine3);
+
+  font-size:12px;
+  font-weight:700;
+}
+
+.trip-price{
+  color:var(--pine);
+
+  font-size:21px;
+  font-weight:800;
+}
+
+.trip-price small{
+  color:var(--sub);
+  font-size:10.5px;
+  font-weight:500;
+}
+
+
+/* =========================================================
+   EMPTY / PLACEHOLDER
+========================================================= */
+
+.empty-card{
+  background:#fff;
+  border-radius:20px;
+  padding:30px 20px;
+  text-align:center;
   color:var(--sub);
 }
 
-.btn{
-  border:none;
+
+/* =========================================================
+   BOTTOM NAVIGATION
+========================================================= */
+
+.bottom-nav{
+  position:fixed;
+
+  left:0;
+  right:0;
+
+  bottom:0;
+
+  height:
+    calc(
+      var(--nav-height)
+      + env(safe-area-inset-bottom,0px)
+    );
+
+  background:rgba(255,255,255,.96);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  border-top:1px solid rgba(0,0,0,.06);
+
+  display:flex;
+
+  padding:
+    7px 8px
+    env(safe-area-inset-bottom,0px);
+
+  z-index:100;
+}
+
+.nav-button{
+  flex:1;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+
+  gap:3px;
+
+  padding-top:3px;
+
+  background:none;
+
+  color:#858279;
+
   cursor:pointer;
-  font-family:'Prompt',sans-serif;
+}
+
+.nav-button svg{
+  width:23px;
+  height:23px;
+}
+
+.nav-button span{
+  font-size:10px;
   font-weight:600;
-  border-radius:14px;
-  transition:
-    opacity .15s ease,
-    transform .1s ease;
 }
 
-.btn:active{
-  transform:scale(.98);
-}
-
-.btn-primary{
-  background:var(--pine);
-  color:#fff;
-  padding:16px;
-  font-size:15.5px;
-}
-
-.btn-primary:disabled{
-  background:var(--gray);
-  cursor:not-allowed;
-}
-
-.btn-outline{
-  background:transparent;
+.nav-button.active{
   color:var(--pine);
-  border:1.5px solid var(--pine);
-  padding:15px;
 }
 
-/* STEPS */
 
-.steps-bar{
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.page-header{
+  padding:
+    calc(14px + env(safe-area-inset-top,0px))
+    20px
+    14px;
+
   display:flex;
   align-items:center;
-  padding:6px 30px 22px;
+  justify-content:space-between;
+
+  background:var(--bg);
+
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.page-header h1{
+  font-size:16px;
+  font-weight:800;
+}
+
+.header-space{
+  width:42px;
+}
+
+
+/* =========================================================
+   DETAIL
+========================================================= */
+
+.detail-hero{
+  height:285px;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.detail-hero svg{
+  position:absolute;
+  inset:0;
+
+  width:100%;
+  height:100%;
+}
+
+.detail-overlay{
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.18),
+      transparent 40%,
+      rgba(0,0,0,.25)
+    );
+}
+
+.detail-actions{
+  position:absolute;
+
+  left:18px;
+  right:18px;
+  top:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  z-index:4;
+}
+
+.detail-actions-right{
+  display:flex;
+  gap:9px;
+}
+
+.detail-action{
+  width:41px;
+  height:41px;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,.92);
+
+  color:var(--pine);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+}
+
+.detail-action svg{
+  position:static;
+  width:19px;
+  height:19px;
+}
+
+.detail-price{
+  position:absolute;
+
+  right:18px;
+  bottom:17px;
+
+  z-index:4;
+
+  background:rgba(23,55,41,.94);
+
+  color:#fff;
+
+  border-radius:14px;
+
+  padding:9px 13px;
+
+  font-size:15px;
+  font-weight:800;
+}
+
+.detail-price small{
+  display:block;
+  font-size:9px;
+  font-weight:400;
+  opacity:.72;
+}
+
+.detail-body{
+  background:var(--bg);
+
+  margin-top:-18px;
+
+  position:relative;
+  z-index:3;
+
+  border-radius:24px 24px 0 0;
+
+  padding:23px 20px 30px;
+}
+
+.detail-title{
+  font-size:25px;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+.detail-location,
+.detail-date{
+  display:flex;
+  align-items:center;
+  gap:7px;
+
+  color:var(--sub);
+
+  font-size:13px;
+
+  margin-bottom:7px;
+}
+
+.detail-date{
+  color:var(--pine3);
+  font-weight:600;
+  margin-bottom:21px;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+
+  background:#fff;
+
+  border-radius:18px;
+
+  box-shadow:var(--shadow);
+
+  padding:15px 7px;
+
+  margin-bottom:24px;
+}
+
+.stat{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  gap:5px;
+
+  text-align:center;
+}
+
+.stat svg{
+  width:19px;
+  height:19px;
+
+  color:var(--pine3);
+}
+
+.stat-value{
+  font-size:11.5px;
+  font-weight:800;
+}
+
+.stat-label{
+  font-size:9px;
+  color:var(--sub);
+}
+
+
+/* =========================================================
+   DETAIL SECTIONS
+========================================================= */
+
+.content-title{
+  font-size:15.5px;
+  font-weight:800;
+
+  margin-bottom:10px;
+}
+
+.description{
+  font-size:13px;
+  line-height:1.8;
+
+  color:#4E4B43;
+
+  margin-bottom:23px;
+}
+
+.highlight-list{
+  list-style:none;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:11px;
+
+  margin-bottom:25px;
+}
+
+.highlight-list li{
+  display:flex;
+  align-items:flex-start;
+
+  gap:9px;
+
+  font-size:13px;
+
+  color:#3E3C35;
+}
+
+.highlight-list svg{
+  width:17px;
+  height:17px;
+
+  color:var(--pine3);
+
+  flex-shrink:0;
+  margin-top:1px;
+}
+
+
+/* =========================================================
+   STICKY DETAIL BUTTON
+========================================================= */
+
+.detail-bottom{
+  position:fixed;
+
+  left:0;
+  right:0;
+
+  bottom:
+    calc(
+      var(--nav-height)
+      + env(safe-area-inset-bottom,0px)
+    );
+
+  background:rgba(255,255,255,.96);
+
+  backdrop-filter:blur(15px);
+
+  border-top:1px solid var(--line);
+
+  padding:11px 18px;
+
+  display:flex;
+  align-items:center;
+
+  gap:13px;
+
+  z-index:50;
+}
+
+.detail-bottom-price{
+  min-width:105px;
+}
+
+.detail-bottom-price .number{
+  color:var(--pine);
+
+  font-size:19px;
+  font-weight:800;
+}
+
+.detail-bottom-price .label{
+  color:var(--sub);
+  font-size:10px;
+}
+
+.primary-button{
+  flex:1;
+
+  min-height:49px;
+
+  border-radius:15px;
+
+  background:var(--pine);
+
+  color:#fff;
+
+  font-size:14px;
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.primary-button:disabled{
+  background:#BEBBB2;
+}
+
+
+/* =========================================================
+   SEATS
+========================================================= */
+
+.seat-page{
+  padding:0 18px 30px;
+}
+
+.steps{
+  display:flex;
+  align-items:center;
+
+  padding:5px 8px 20px;
 }
 
 .step{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:6px;
-  flex-shrink:0;
+
+  gap:5px;
+
+  min-width:54px;
 }
 
 .step-circle{
-  width:30px;
-  height:30px;
+  width:29px;
+  height:29px;
+
   border-radius:50%;
-  background:#E9E4D7;
+
+  background:#E8E4DA;
+
   color:var(--sub);
+
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:700;
-  font-size:13px;
-  border:2px solid transparent;
+
+  font-size:12px;
+  font-weight:800;
 }
 
+.step.active .step-circle,
 .step.done .step-circle{
-  background:var(--pine-3);
+  background:var(--pine3);
   color:#fff;
 }
 
 .step.active .step-circle{
-  background:var(--pine);
-  color:#fff;
-  box-shadow:0 0 0 4px rgba(23,55,41,.15);
+  box-shadow:0 0 0 4px rgba(42,101,73,.13);
 }
 
 .step-label{
-  font-size:10.5px;
+  font-size:9.5px;
   color:var(--sub);
-  text-align:center;
-  max-width:64px;
   font-weight:600;
+  white-space:nowrap;
 }
 
 .step.active .step-label,
@@ -266,505 +1175,139 @@ h1,h2,h3{
 
 .step-line{
   flex:1;
+
   height:2px;
-  background:#E9E4D7;
-  margin:0 2px 20px;
+
+  background:#E8E4DA;
+
+  margin-bottom:19px;
 }
 
 .step-line.done{
-  background:var(--pine-3);
+  background:var(--pine3);
 }
 
-/* HOME */
+.seat-help{
+  background:var(--soft-green);
 
-#screen-home .topbar{
-  padding-top:14px;
-}
+  border-radius:15px;
 
-.filters{
-  display:flex;
-  gap:8px;
-  padding:2px 20px 16px;
-  overflow-x:auto;
-}
+  padding:12px 14px;
 
-.filters::-webkit-scrollbar{
-  display:none;
-}
+  color:var(--pine);
 
-.chip{
-  flex-shrink:0;
-  padding:9px 18px;
-  border-radius:20px;
-  font-size:13.5px;
-  font-weight:600;
-  background:#fff;
-  color:var(--sub);
-  border:1px solid var(--line);
-  white-space:nowrap;
-  cursor:pointer;
-}
-
-.chip.active{
-  background:var(--pine);
-  color:#fff;
-  border-color:var(--pine);
-}
-
-.trip-list{
-  padding:0 20px 100px;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-}
-
-.trip-card{
-  background:var(--card);
-  border-radius:20px;
-  overflow:hidden;
-  box-shadow:0 3px 14px rgba(30,40,25,.07);
-  cursor:pointer;
-}
-
-.trip-photo{
-  height:150px;
-  position:relative;
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  padding:14px;
-  overflow:hidden;
-  isolation:isolate;
-}
-
-.trip-photo svg{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-}
-
-.tag-badge{
-  position:relative;
-  z-index:2;
-  background:rgba(23,55,41,.85);
-  color:#fff;
   font-size:11.5px;
-  font-weight:600;
-  padding:6px 12px;
-  border-radius:20px;
-  backdrop-filter:blur(2px);
-}
 
-.heart-badge{
-  position:relative;
-  z-index:2;
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  background:rgba(255,255,255,.85);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--pine);
-}
+  margin-bottom:16px;
 
-.trip-body{
-  padding:16px 18px 18px;
-}
-
-.trip-body h3{
-  font-size:17px;
-  margin-bottom:3px;
-}
-
-.trip-loc,
-.trip-date{
-  font-size:13px;
-  color:var(--sub);
-  display:flex;
-  align-items:center;
-  gap:5px;
-}
-
-.trip-loc{
-  margin-bottom:6px;
-}
-
-.trip-date{
-  font-size:12.5px;
-  margin-bottom:14px;
-}
-
-.trip-foot{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.seats-left{
-  font-size:12.5px;
-  color:var(--pine-3);
-  font-weight:600;
-  display:flex;
-  align-items:center;
-  gap:5px;
-}
-
-.price{
-  font-size:16.5px;
-  font-weight:700;
-  color:var(--pine);
-}
-
-.price span{
-  font-size:11px;
-  font-weight:500;
-  color:var(--sub);
-}
-
-/* BOTTOM NAV */
-
-.bottom-nav{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  background:#fff;
-  border-top:1px solid var(--line);
-  display:flex;
-  padding:10px 8px calc(14px + env(safe-area-inset-bottom,0px));
-  z-index:10;
-}
-
-.nav-item{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  color:var(--sub);
-  font-size:10.5px;
-  font-weight:600;
-  cursor:pointer;
-}
-
-.nav-item.active{
-  color:var(--pine);
-}
-
-.nav-item svg{
-  width:21px;
-  height:21px;
-}
-
-/* DETAIL */
-
-.hero-photo{
-  height:280px;
-  position:relative;
-  flex-shrink:0;
-  overflow:hidden;
-}
-
-.hero-photo > svg{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-}
-
-.hero-photo .topbar{
-  position:relative;
-  z-index:3;
-}
-
-.hero-price-badge{
-  position:absolute;
-  top:70px;
-  right:20px;
-  z-index:3;
-  background:rgba(23,55,41,.88);
-  color:#fff;
-  padding:8px 14px;
-  border-radius:12px;
-  font-size:15px;
-  font-weight:700;
-  backdrop-filter:blur(2px);
-}
-
-.hero-price-badge span{
-  display:block;
-}
-
-.hero-price-badge span:first-child{
-  font-size:10px;
-  font-weight:500;
-  opacity:.8;
-}
-
-.detail-body{
-  padding:22px 22px 130px;
-  flex:1;
-}
-
-.detail-title{
-  font-size:23px;
-  margin-bottom:6px;
-}
-
-.detail-loc,
-.detail-date{
-  font-size:14px;
-  color:var(--sub);
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-
-.detail-loc{
-  margin-bottom:6px;
-}
-
-.detail-date{
-  font-size:13.5px;
-  color:var(--pine-3);
-  font-weight:600;
-  margin-bottom:22px;
-}
-
-.stat-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  background:#fff;
-  border-radius:16px;
-  padding:16px 8px;
-  margin-bottom:24px;
-  box-shadow:0 3px 14px rgba(30,40,25,.06);
-}
-
-.stat-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
   text-align:center;
 }
 
-.stat-item svg{
-  width:19px;
-  height:19px;
-  color:var(--pine-3);
-}
 
-.stat-item .v{
-  font-size:12.5px;
-  font-weight:700;
-  color:var(--ink);
-}
-
-.stat-item .l{
-  font-size:10px;
-  color:var(--sub);
-}
-
-.section-title{
-  font-size:15.5px;
-  margin-bottom:10px;
-  margin-top:4px;
-}
-
-.desc-text{
-  font-size:13.5px;
-  color:#4d4a41;
-  line-height:1.75;
-  margin-bottom:24px;
-}
-
-.highlight-list{
-  list-style:none;
-  display:flex;
-  flex-direction:column;
-  gap:11px;
-  margin-bottom:10px;
-}
-
-.highlight-list li{
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
-  font-size:13.5px;
-  color:#3d3a32;
-}
-
-.highlight-list svg{
-  width:17px;
-  height:17px;
-  color:var(--pine-3);
-  flex-shrink:0;
-  margin-top:1px;
-}
-
-.sticky-bottom{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  background:#fff;
-  border-top:1px solid var(--line);
-  padding:14px 20px calc(20px + env(safe-area-inset-bottom,0px));
-  display:flex;
-  align-items:center;
-  gap:14px;
-  z-index:10;
-}
-
-.sticky-bottom .price-block{
-  flex-shrink:0;
-}
-
-.sticky-bottom .price-block .p{
-  font-size:19px;
-  font-weight:700;
-  color:var(--pine);
-}
-
-.sticky-bottom .price-block .l{
-  font-size:10.5px;
-  color:var(--sub);
-}
-
-.sticky-bottom .btn{
-  flex:1;
-}
-
-/* SEATS */
-
-#screen-seats .seats-scroll{
-  padding:0 20px 150px;
-}
-
-.seats-instruction{
-  font-size:13px;
-  color:var(--sub);
-  margin-bottom:18px;
-  text-align:center;
-}
+/* =========================================================
+   VAN CARD
+========================================================= */
 
 .van-card{
   background:#fff;
-  border-radius:20px;
-  padding:20px 16px 18px;
-  margin-bottom:20px;
-  box-shadow:0 3px 14px rgba(30,40,25,.06);
+
+  border-radius:21px;
+
+  padding:17px 14px;
+
+  box-shadow:var(--shadow);
+
+  margin-bottom:17px;
 }
 
-.van-title-row{
+.van-title{
   display:flex;
   align-items:center;
+
   gap:8px;
-  margin-bottom:16px;
-  font-weight:700;
-  font-size:14.5px;
+
   color:var(--pine);
+
+  font-size:14px;
+  font-weight:800;
+
+  margin-bottom:14px;
 }
 
-.van-title-row svg{
-  width:17px;
-  height:17px;
+.van-title svg{
+  width:18px;
+  height:18px;
 }
 
 .van-body{
-  background:#FAF8F3;
-  border-radius:16px;
-  padding:18px 14px 16px;
-  position:relative;
-  border:1.5px solid var(--line);
+  background:#FAF8F2;
+
+  border:1px solid var(--line);
+
+  border-radius:17px;
+
+  padding:15px 11px 14px;
 }
 
-.van-mirrors{
+.driver-area{
   display:flex;
   justify-content:space-between;
-  padding:0 4px 12px;
+
+  padding:0 4px 11px;
 }
 
-.van-mirrors div{
-  width:26px;
+.mirror{
+  width:27px;
   height:12px;
-  border-radius:6px;
-  background:#DAD5C7;
+
+  border-radius:7px;
+
+  background:#D8D3C5;
 }
 
-/*
-  ผัง 4 คอลัมน์
+.driver-label{
+  color:#A19D91;
 
-  A1     A2
-  A3     A4
-  A5     A6
-  A7     A8
-     A9 A10
-*/
+  font-size:9px;
+}
 
 .seat-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:9px;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:8px;
 }
 
 .seat{
-  aspect-ratio:1/1;
-  border-radius:9px;
+  aspect-ratio:1;
+
+  border-radius:10px;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:12.5px;
-  font-weight:700;
-  color:#fff;
+
+  font-size:11.5px;
+  font-weight:800;
+
   cursor:pointer;
+
   user-select:none;
-  transition:transform .12s ease;
-}
 
-.seat:nth-child(1),
-.seat:nth-child(2),
-.seat:nth-child(3),
-.seat:nth-child(4),
-.seat:nth-child(5),
-.seat:nth-child(6),
-.seat:nth-child(7),
-.seat:nth-child(8){
-  /* เบาะ 2 ตัวต่อแถว */
-}
-
-.seat:nth-child(1),
-.seat:nth-child(3),
-.seat:nth-child(5),
-.seat:nth-child(7){
-  grid-column:2;
-}
-
-.seat:nth-child(2),
-.seat:nth-child(4),
-.seat:nth-child(6),
-.seat:nth-child(8){
-  grid-column:3;
-}
-
-.seat:nth-child(9){
-  grid-column:2;
-}
-
-.seat:nth-child(10){
-  grid-column:3;
+  transition:
+    transform .1s ease,
+    opacity .1s ease;
 }
 
 .seat:active{
-  transform:scale(.92);
+  transform:scale(.9);
 }
 
 .seat.available{
-  background:var(--pine-3);
+  background:var(--pine3);
+  color:#fff;
 }
 
 .seat.selected{
@@ -774,643 +1317,1247 @@ h1,h2,h3{
 
 .seat.booked{
   background:var(--red);
+  color:#fff;
+
   cursor:not-allowed;
 }
 
 .seat.disabled{
-  background:var(--gray);
-  color:#8a8778;
-  cursor:not-allowed;
+  background:#C9C6BC;
+  color:#8A877D;
 }
 
-.legend-row{
+.last-row{
+  grid-column:2 / span 2;
+}
+
+.seat-legend{
   display:flex;
   justify-content:center;
-  gap:16px;
   flex-wrap:wrap;
-  padding:20px 10px 4px;
-  font-size:11px;
+
+  gap:13px;
+
+  padding:17px 5px 2px;
+
+  font-size:10px;
+
   color:var(--sub);
 }
 
-.legend-row span{
+.legend{
   display:flex;
   align-items:center;
-  gap:6px;
+  gap:5px;
 }
 
-.legend-row i{
-  width:11px;
-  height:11px;
-  border-radius:4px;
-  display:inline-block;
+.legend-dot{
+  width:10px;
+  height:10px;
+
+  border-radius:3px;
 }
 
-.seat-sticky{
-  position:absolute;
+.seat-bottom{
+  position:fixed;
+
   left:0;
   right:0;
-  bottom:0;
+
+  bottom:
+    calc(
+      var(--nav-height)
+      + env(safe-area-inset-bottom,0px)
+    );
+
   background:var(--pine);
+
   color:#fff;
-  padding:16px 20px calc(20px + env(safe-area-inset-bottom,0px));
+
+  padding:12px 17px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:14px;
-  z-index:10;
+
+  gap:12px;
+
+  z-index:50;
 }
 
-.seat-sticky .info{
+.seat-selected-info{
   min-width:0;
 }
 
-.seat-sticky .info .n{
-  font-size:13px;
-  font-weight:600;
-  opacity:.85;
+.seat-selected-count{
+  font-size:10.5px;
+  opacity:.7;
 }
 
-.seat-sticky .info .codes{
-  font-size:15px;
-  font-weight:700;
+.seat-selected-codes{
+  font-size:14px;
+  font-weight:800;
+
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  max-width:210px;
+
+  max-width:190px;
 }
 
-.seat-sticky .btn-primary{
+.seat-next{
   background:#fff;
   color:var(--pine);
-  padding:13px 22px;
-  white-space:nowrap;
+
+  padding:12px 22px;
+
+  border-radius:13px;
+
+  font-size:13px;
+  font-weight:800;
+
+  cursor:pointer;
 }
 
-.seat-sticky .btn-primary:disabled{
-  background:rgba(255,255,255,.3);
-  color:rgba(255,255,255,.6);
+.seat-next:disabled{
+  background:rgba(255,255,255,.25);
+  color:rgba(255,255,255,.55);
 }
 
-/* PAYMENT */
 
-#screen-payment .pay-body{
-  padding:6px 22px 40px;
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+.payment-page{
+  padding:3px 20px 30px;
 }
 
-.pay-heading{
+.payment-title{
   text-align:center;
-  margin-bottom:4px;
+
+  margin-bottom:19px;
 }
 
-.pay-heading h2{
-  font-size:17px;
+.payment-title h2{
   color:var(--pine);
-  margin-bottom:6px;
+
+  font-size:18px;
+  font-weight:800;
+
+  margin-bottom:5px;
 }
 
-.pay-heading p{
-  font-size:12.5px;
+.payment-title p{
   color:var(--sub);
-  margin-bottom:24px;
+
+  font-size:11.5px;
 }
 
 .bank-card{
   background:#fff;
-  border-radius:20px;
-  padding:24px 20px;
+
+  border-radius:21px;
+
+  padding:20px;
+
   text-align:center;
-  box-shadow:0 3px 14px rgba(30,40,25,.06);
-  margin-bottom:18px;
+
+  box-shadow:var(--shadow);
+
+  margin-bottom:15px;
 }
 
-.bank-row{
+.bank-name{
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
+
   gap:8px;
-  font-weight:700;
+
   font-size:14px;
-  color:var(--ink);
-  margin-bottom:16px;
+  font-weight:800;
+
+  margin-bottom:14px;
 }
 
-.bank-row .bank-icon{
-  width:28px;
-  height:28px;
+.bank-icon{
+  width:29px;
+  height:29px;
+
   border-radius:50%;
-  background:var(--pine-3);
+
+  background:var(--pine3);
+
   color:#fff;
+
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-.bank-row .bank-icon svg{
+.bank-icon svg{
   width:15px;
   height:15px;
 }
 
-.acct-number{
-  font-size:22px;
-  font-weight:700;
-  letter-spacing:.03em;
+.account-number{
   color:var(--pine);
-  margin-bottom:6px;
+
+  font-size:23px;
+  font-weight:800;
+
+  letter-spacing:.04em;
+
+  margin-bottom:3px;
 }
 
-.acct-name{
-  font-size:12.5px;
+.account-name{
   color:var(--sub);
-  margin-bottom:20px;
+
+  font-size:11.5px;
+
+  margin-bottom:16px;
 }
 
-.qr-box{
-  width:170px;
-  height:170px;
-  margin:0 auto 8px;
-  border-radius:14px;
-  border:1.5px solid var(--line);
-  padding:10px;
+.qr{
+  width:180px;
+  height:180px;
+
+  margin:0 auto 7px;
+
+  padding:9px;
+
   background:#fff;
+
+  border:1px solid var(--line);
+
+  border-radius:14px;
 }
 
-.qr-box svg{
+.qr svg{
   width:100%;
   height:100%;
 }
 
 .qr-label{
-  font-size:11px;
+  font-size:10px;
   color:var(--sub);
+}
+
+.upload-card{
+  background:#fff;
+
+  border-radius:19px;
+
+  padding:17px;
+
+  box-shadow:var(--shadow);
+
+  margin-bottom:15px;
+}
+
+.upload-title{
+  font-size:13px;
+  font-weight:800;
+
+  margin-bottom:11px;
 }
 
 .upload-box{
-  background:#fff;
-  border-radius:16px;
-  padding:18px;
-  text-align:center;
-  box-shadow:0 3px 14px rgba(30,40,25,.06);
-  margin-bottom:18px;
-}
+  border:1.5px dashed #CBC5B5;
 
-.upload-box h4{
-  font-size:13.5px;
-  margin-bottom:12px;
-  text-align:left;
-  color:var(--ink);
-}
-
-.upload-drop{
-  border:1.5px dashed #CFC9B8;
-  border-radius:12px;
-  padding:26px 14px;
-  cursor:pointer;
-  color:var(--sub);
-  display:block;
-}
-
-.upload-drop svg{
-  width:26px;
-  height:26px;
-  margin-bottom:8px;
-  color:var(--pine-3);
-}
-
-.upload-drop .t1{
-  font-size:13px;
-  font-weight:600;
-  color:var(--ink);
-  margin-bottom:3px;
-  word-break:break-word;
-}
-
-.upload-drop .t2{
-  font-size:11px;
-}
-
-.upload-drop.filled{
-  border-style:solid;
-  border-color:var(--pine-3);
-  color:var(--pine-3);
-}
-
-.timer-box{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:#FCEFD8;
-  border:1px solid #F1D9A3;
   border-radius:14px;
-  padding:14px 18px;
-  margin-bottom:22px;
+
+  padding:24px 12px;
+
+  text-align:center;
+
+  cursor:pointer;
+
+  color:var(--sub);
 }
 
-.timer-box .t{
-  font-size:12.5px;
-  font-weight:600;
-  color:#8a6a1c;
+.upload-box.filled{
+  border-style:solid;
+  border-color:var(--pine3);
+
+  background:#F2F7F3;
+
+  color:var(--pine);
 }
 
-.timer-box .clock{
-  font-size:19px;
+.upload-box svg{
+  width:28px;
+  height:28px;
+
+  color:var(--pine3);
+
+  margin-bottom:7px;
+}
+
+.upload-main{
+  font-size:12px;
   font-weight:700;
+
+  color:var(--ink);
+
+  margin-bottom:2px;
+}
+
+.upload-sub{
+  font-size:10px;
+}
+
+.timer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:13px 15px;
+
+  border-radius:14px;
+
+  background:#FFF3DA;
+
+  border:1px solid #F1D9A5;
+
+  margin-bottom:15px;
+}
+
+.timer-label{
+  color:#8B6C20;
+
+  font-size:11px;
+  font-weight:600;
+}
+
+.timer-value{
   color:var(--red);
+
+  font-size:19px;
+  font-weight:800;
 }
 
-.expired{
-  opacity:.7;
+.payment-submit{
+  width:100%;
+  min-height:49px;
 }
 
-/* SUMMARY */
 
-#screen-summary .sum-body{
-  padding:36px 22px 40px;
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.summary-page{
+  padding:20px 20px 30px;
+
   text-align:center;
 }
 
-.success-circle{
-  width:76px;
-  height:76px;
+.success{
+  width:78px;
+  height:78px;
+
   border-radius:50%;
-  background:var(--pine-3);
+
+  background:var(--pine3);
+
   color:#fff;
-  margin:0 auto 18px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
+  margin:4px auto 15px;
 }
 
-.success-circle svg{
-  width:36px;
-  height:36px;
+.success svg{
+  width:37px;
+  height:37px;
 }
 
-.sum-body h2{
-  font-size:21px;
-  margin-bottom:6px;
+.summary-page h2{
+  font-size:22px;
+  font-weight:800;
+
+  margin-bottom:5px;
 }
 
-.sum-body .sub{
-  font-size:13px;
+.summary-sub{
   color:var(--sub);
-  margin-bottom:26px;
+
+  font-size:12px;
+
+  margin-bottom:21px;
 }
 
-.sum-card{
+.summary-card{
   background:#fff;
-  border-radius:18px;
-  padding:20px 18px;
+
+  border-radius:19px;
+
+  padding:17px;
+
   text-align:left;
-  box-shadow:0 3px 14px rgba(30,40,25,.06);
-  margin-bottom:16px;
-}
 
-.sum-card h4{
-  font-size:13.5px;
-  color:var(--sub);
+  box-shadow:var(--shadow);
+
   margin-bottom:14px;
-  font-weight:600;
 }
 
-.sum-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-  padding:9px 0;
-  border-bottom:1px solid var(--line);
+.summary-card-title{
   font-size:13px;
+  font-weight:800;
+
+  color:var(--sub);
+
+  margin-bottom:8px;
 }
 
-.sum-row:last-child{
-  border-bottom:none;
+.summary-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+
+  gap:12px;
+
+  padding:10px 0;
+
+  border-bottom:1px solid var(--line);
+
+  font-size:12px;
 }
 
-.sum-row .k{
+.summary-row:last-child{
+  border-bottom:0;
+}
+
+.summary-key{
   color:var(--sub);
   flex-shrink:0;
 }
 
-.sum-row .v{
-  font-weight:600;
+.summary-value{
   text-align:right;
-  color:var(--ink);
-}
-
-.sum-row .v.strong{
-  color:var(--pine-3);
   font-weight:700;
 }
 
-.contact-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:9px 0;
+.summary-value.success-text{
+  color:var(--pine3);
 }
 
-.contact-row .ic{
+.contact{
+  display:flex;
+  align-items:center;
+
+  gap:11px;
+
+  padding:7px 0;
+}
+
+.contact-icon{
   width:36px;
   height:36px;
+
   border-radius:50%;
-  background:#EEF3EC;
-  color:var(--pine-3);
+
+  background:var(--soft-green);
+
+  color:var(--pine3);
+
   display:flex;
   align-items:center;
   justify-content:center;
-  flex-shrink:0;
 }
 
-.contact-row .ic svg{
+.contact-icon svg{
   width:17px;
   height:17px;
 }
 
-.contact-row .tt{
-  font-size:12px;
+.contact-label{
   color:var(--sub);
+  font-size:10px;
 }
 
-.contact-row .vv{
-  font-size:13.5px;
+.contact-value{
+  font-size:12.5px;
+  font-weight:700;
+}
+
+.summary-actions{
+  display:flex;
+  flex-direction:column;
+
+  gap:9px;
+
+  margin-top:5px;
+}
+
+.outline-button{
+  min-height:47px;
+
+  border-radius:14px;
+
+  background:#fff;
+
+  border:1.5px solid var(--pine);
+
+  color:var(--pine);
+
+  font-size:13px;
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+
+/* =========================================================
+   MY TRIPS
+========================================================= */
+
+.mytrips-page{
+  padding:8px 20px 30px;
+}
+
+.booking-card{
+  background:#fff;
+
+  border-radius:20px;
+
+  padding:17px;
+
+  box-shadow:var(--shadow);
+
+  margin-bottom:13px;
+}
+
+.booking-status{
+  display:inline-flex;
+
+  padding:5px 9px;
+
+  border-radius:15px;
+
+  background:var(--soft-green);
+
+  color:var(--pine3);
+
+  font-size:10px;
+  font-weight:700;
+
+  margin-bottom:9px;
+}
+
+.booking-name{
+  font-size:17px;
+  font-weight:800;
+
+  margin-bottom:7px;
+}
+
+.booking-info{
+  display:flex;
+  flex-direction:column;
+
+  gap:5px;
+
+  color:var(--sub);
+
+  font-size:11.5px;
+}
+
+.booking-seat{
+  margin-top:12px;
+
+  padding-top:11px;
+
+  border-top:1px solid var(--line);
+
+  color:var(--pine);
+
+  font-size:12px;
+  font-weight:700;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profile-page{
+  padding:10px 20px 30px;
+}
+
+.profile-card{
+  background:var(--pine);
+
+  color:#fff;
+
+  border-radius:22px;
+
+  padding:20px;
+
+  display:flex;
+  align-items:center;
+
+  gap:14px;
+
+  margin-bottom:16px;
+
+  box-shadow:0 12px 25px rgba(23,55,41,.16);
+}
+
+.avatar{
+  width:58px;
+  height:58px;
+
+  border-radius:50%;
+
+  background:#fff;
+
+  color:var(--pine);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:22px;
+  font-weight:800;
+}
+
+.profile-name{
+  font-size:17px;
+  font-weight:800;
+}
+
+.profile-sub{
+  font-size:11px;
+  opacity:.7;
+}
+
+.profile-menu{
+  background:#fff;
+
+  border-radius:19px;
+
+  overflow:hidden;
+
+  box-shadow:var(--shadow);
+}
+
+.profile-item{
+  width:100%;
+
+  padding:16px;
+
+  background:#fff;
+
+  display:flex;
+  align-items:center;
+
+  gap:12px;
+
+  border-bottom:1px solid var(--line);
+
+  text-align:left;
+
+  cursor:pointer;
+}
+
+.profile-item:last-child{
+  border-bottom:0;
+}
+
+.profile-item-icon{
+  width:38px;
+  height:38px;
+
+  border-radius:12px;
+
+  background:var(--soft-green);
+
+  color:var(--pine3);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.profile-item-icon svg{
+  width:19px;
+  height:19px;
+}
+
+.profile-item-text{
+  flex:1;
+
+  font-size:12.5px;
   font-weight:600;
 }
 
-.sum-actions{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  margin-top:6px;
+.profile-item-arrow{
+  color:#A5A196;
 }
 
-/* MOBILE */
 
-@media (max-width:420px){
+/* =========================================================
+   DESKTOP
+========================================================= */
 
-  html,
+@media(min-width:700px){
+
   body{
-    height:100%;
-    overflow:hidden;
-    padding:0;
-    position:fixed;
-    inset:0;
-    width:100%;
+    background:#E7E2D6;
   }
 
-  .phone{
-    position:fixed;
-    inset:0;
-    width:100%;
-    height:100%;
-    border-radius:0;
-    box-shadow:none;
-  }
+  .app{
+    max-width:600px;
+    margin:0 auto;
 
-  .page-note{
-    display:none;
-  }
+    min-height:100dvh;
 
-  .home-indicator{
-    display:none;
+    background:var(--bg);
+
+    box-shadow:
+      0 0 40px rgba(0,0,0,.08);
   }
 
   .bottom-nav{
-    padding-bottom:
-      calc(10px + env(safe-area-inset-bottom,0px));
+    max-width:600px;
+    left:50%;
+    transform:translateX(-50%);
+  }
+
+  .detail-bottom,
+  .seat-bottom{
+    max-width:600px;
+
+    left:50%;
+    right:auto;
+
+    width:600px;
+
+    transform:translateX(-50%);
   }
 }
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media(max-width:360px){
+
+  .home-title{
+    font-size:22px;
+  }
+
+  .wallet-trip{
+    font-size:18px;
+  }
+
+  .quick-icon{
+    width:48px;
+    height:48px;
+  }
+
+  .quick-item span{
+    font-size:9.5px;
+  }
+
+  .trip-image{
+    height:160px;
+  }
+
+  .trip-name{
+    font-size:18px;
+  }
+
+  .trip-price{
+    font-size:19px;
+  }
+
+  .seat{
+    font-size:10px;
+  }
+}
+
 </style>
 </head>
 
+
 <body>
 
-<div class="page-note">
-  ตัวอย่างต้นแบบ — แตะเพื่อลองใช้งานจริง
-</div>
+<div class="app">
 
-<div class="phone">
+<div class="screens">
 
-<!-- HOME -->
 
-<div class="screen active" id="screen-home">
+<!-- =======================================================
+     HOME
+======================================================= -->
 
-  <div class="topbar">
+<section class="screen active" id="screen-home">
 
-    <button class="icon-btn" aria-label="เมนู">
-      <svg viewBox="0 0 24 24" fill="none"
+<div class="screen-content">
+
+<header class="app-header">
+
+  <div class="header-left">
+
+    <button class="icon-button" aria-label="เมนู">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
         stroke="currentColor"
         stroke-width="2"
-        stroke-linecap="round">
-        <path d="M4 7h16M4 12h16M4 17h16"/>
+        stroke-linecap="round"
+      >
+        <path d="M4 7h16"/>
+        <path d="M4 12h16"/>
+        <path d="M4 17h16"/>
       </svg>
+
     </button>
+
+  </div>
+
+
+  <div class="header-center">
 
     <div class="brand">
 
-      <svg viewBox="0 0 26 26" fill="none">
+      <svg
+        class="brand-mark"
+        viewBox="0 0 30 30"
+        fill="none"
+      >
         <path
-          d="M2 20L9 8L13 14L16 9L24 20H2Z"
-          fill="#173729"/>
-        <circle cx="20" cy="6" r="3"
-          fill="#F0A93B"/>
+          d="M2 24L10 10L15 17L19 11L28 24H2Z"
+          fill="#173729"
+        />
+
+        <circle
+          cx="23"
+          cy="7"
+          r="3.5"
+          fill="#F0A93B"
+        />
       </svg>
 
       ยินดีที่ได้เจอ
 
     </div>
 
-    <button class="icon-btn" aria-label="การแจ้งเตือน">
+  </div>
 
-      <svg viewBox="0 0 24 24"
+
+  <div class="header-right">
+
+    <button class="icon-button">
+
+      <svg
+        viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
         stroke-width="2"
         stroke-linecap="round"
-        stroke-linejoin="round">
+        stroke-linejoin="round"
+      >
+        <path
+          d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"
+        />
 
         <path
-          d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
-
-        <path
-          d="M13.73 21a2 2 0 01-3.46 0"/>
-
+          d="M13.7 21a2 2 0 0 1-3.4 0"
+        />
       </svg>
 
     </button>
 
   </div>
 
-  <div class="filters">
+</header>
 
-    <div class="chip active"
-      onclick="filterTrips('all',this)">
-      ทั้งหมด
+
+<div class="home-hero">
+
+  <div class="greeting">
+    สวัสดี 👋
+  </div>
+
+  <h1 class="home-title">
+    พร้อมออกไปเจอ<br>
+    ธรรมชาติด้วยกันไหม?
+  </h1>
+
+</div>
+
+
+<!-- WALLET CARD -->
+
+<div class="wallet-card">
+
+  <div class="wallet-top">
+
+    <div>
+
+      <div class="wallet-label">
+        ทริปที่กำลังเปิดจอง
+      </div>
+
+      <div class="wallet-trip">
+        เขาช้างเผือก
+      </div>
+
     </div>
 
-    <div class="chip"
-      onclick="filterTrips('coming',this)">
-      กำลังจะมา
-    </div>
-
-    <div class="chip"
-      onclick="filterTrips('เดินป่า',this)">
-      เดินป่า
-    </div>
-
-    <div class="chip"
-      onclick="filterTrips('One Day Trip',this)">
-      One Day Trip
+    <div class="wallet-status">
+      เปิดจองอยู่
     </div>
 
   </div>
 
-  <div class="trip-list" id="trip-list"></div>
 
-  <div class="bottom-nav">
+  <div class="wallet-bottom">
 
-    <div class="nav-item active"
-      onclick="nav('home')">
+    <div class="wallet-info">
 
-      <svg viewBox="0 0 24 24"
+      <div class="label">
+        วันที่เดินทาง
+      </div>
+
+      <div class="value">
+        20 - 21 ก.ย. 69
+      </div>
+
+    </div>
+
+
+    <button
+      class="wallet-action"
+      onclick="openDetail('changphueak')"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
         stroke-width="2"
         stroke-linecap="round"
-        stroke-linejoin="round">
-
-        <path d="M3 11l9-8 9 8"/>
-        <path d="M5 10v10h14V10"/>
-
+        stroke-linejoin="round"
+      >
+        <path d="M5 12h14"/>
+        <path d="M13 6l6 6-6 6"/>
       </svg>
 
-      หน้าแรก
-
-    </div>
-
-    <div class="nav-item"
-      onclick="showMyTrips()">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2">
-
-        <rect x="3" y="5"
-          width="18" height="14" rx="2"/>
-
-        <path d="M3 10h18"/>
-
-      </svg>
-
-      ทริปของฉัน
-
-    </div>
-
-    <div class="nav-item"
-      onclick="scrollToTrips()">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2">
-
-        <rect x="3" y="4"
-          width="18" height="17" rx="2"/>
-
-        <path d="M8 2v4M16 2v4M3 9h18"/>
-
-      </svg>
-
-      จองทริป
-
-    </div>
-
-    <div class="nav-item"
-      onclick="showProfile()">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2">
-
-        <circle cx="12" cy="8" r="4"/>
-
-        <path
-          d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
-
-      </svg>
-
-      โปรไฟล์
-
-    </div>
+    </button>
 
   </div>
 
 </div>
 
 
-<!-- DETAIL -->
+<!-- QUICK MENU -->
 
-<div class="screen" id="screen-detail">
+<section class="quick-section">
 
-  <div class="hero-photo" id="detail-hero">
+  <div class="section-head">
 
-    <div class="topbar">
+    <h2>
+      เมนูลัด
+    </h2>
 
-      <button class="icon-btn ghost"
-        onclick="nav('home')">
+  </div>
 
-        <svg viewBox="0 0 24 24"
+
+  <div class="quick-menu">
+
+    <div
+      class="quick-item"
+      onclick="showScreen('home')"
+    >
+
+      <div class="quick-icon">
+
+        <svg
+          viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           stroke-width="2"
           stroke-linecap="round"
-          stroke-linejoin="round">
+          stroke-linejoin="round"
+        >
+          <path d="M3 11l9-8 9 8"/>
+          <path d="M5 10v10h14V10"/>
+        </svg>
 
+      </div>
+
+      <span>
+        ทริปทั้งหมด
+      </span>
+
+    </div>
+
+
+    <div
+      class="quick-item"
+      onclick="openDetail('changphueak')"
+    >
+
+      <div class="quick-icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect
+            x="3"
+            y="4"
+            width="18"
+            height="17"
+            rx="2"
+          />
+
+          <path d="M8 2v4"/>
+          <path d="M16 2v4"/>
+          <path d="M3 9h18"/>
+        </svg>
+
+      </div>
+
+      <span>
+        จองทริป
+      </span>
+
+    </div>
+
+
+    <div
+      class="quick-item"
+      onclick="showScreen('mytrips')"
+    >
+
+      <div class="quick-icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect
+            x="3"
+            y="5"
+            width="18"
+            height="14"
+            rx="2"
+          />
+
+          <path d="M3 10h18"/>
+        </svg>
+
+      </div>
+
+      <span>
+        ทริปของฉัน
+      </span>
+
+    </div>
+
+
+    <div
+      class="quick-item"
+      onclick="showScreen('profile')"
+    >
+
+      <div class="quick-icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+        </svg>
+
+      </div>
+
+      <span>
+        โปรไฟล์
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CATEGORY -->
+
+<section class="category-section">
+
+  <div class="category-scroll">
+
+    <button
+      class="category active"
+      onclick="filterTrips('all',this)"
+    >
+      ทั้งหมด
+    </button>
+
+    <button
+      class="category"
+      onclick="filterTrips('soon',this)"
+    >
+      กำลังจะมา
+    </button>
+
+    <button
+      class="category"
+      onclick="filterTrips('hiking',this)"
+    >
+      เดินป่า
+    </button>
+
+    <button
+      class="category"
+      onclick="filterTrips('oneday',this)"
+    >
+      One Day Trip
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- TRIPS -->
+
+<section class="trip-section">
+
+  <div class="section-head">
+
+    <h2>
+      ทริปแนะนำ
+    </h2>
+
+    <button>
+      ดูทั้งหมด
+    </button>
+
+  </div>
+
+
+  <div
+    class="trip-list"
+    id="trip-list"
+  ></div>
+
+</section>
+
+</div>
+
+</section>
+
+
+
+<!-- =======================================================
+     DETAIL
+======================================================= -->
+
+<section
+  class="screen"
+  id="screen-detail"
+>
+
+<div class="screen-content">
+
+  <div
+    class="detail-hero"
+    id="detail-hero"
+  >
+
+    <div class="detail-overlay"></div>
+
+
+    <div class="detail-actions">
+
+      <button
+        class="detail-action"
+        onclick="showScreen('home')"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <path d="M15 18l-6-6 6-6"/>
-
         </svg>
 
       </button>
 
-      <div style="display:flex;gap:10px;">
 
-        <button class="icon-btn ghost">
+      <div class="detail-actions-right">
 
-          <svg viewBox="0 0 24 24"
+        <button class="detail-action">
+
+          <svg
+            viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-linejoin="round">
-
+            stroke-linejoin="round"
+          >
             <circle cx="18" cy="5" r="3"/>
             <circle cx="6" cy="12" r="3"/>
             <circle cx="18" cy="19" r="3"/>
 
-            <path
-              d="M8.6 13.5l6.8 3.9M15.4 6.6L8.6 10.5"/>
-
+            <path d="M8.6 13.5l6.8 3.9"/>
+            <path d="M15.4 6.6L8.6 10.5"/>
           </svg>
 
         </button>
 
-        <button
-          class="icon-btn ghost"
-          id="heart-btn"
-          onclick="toggleHeart()">
 
-          <svg viewBox="0 0 24 24"
+        <button
+          class="detail-action"
+          id="heart-button"
+          onclick="toggleHeart()"
+        >
+
+          <svg
+            id="heart-svg"
+            viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-linejoin="round">
-
+            stroke-linejoin="round"
+          >
             <path
-              d="M12 21s-7-4.35-9.5-8.5C.7 9 2 5 6 5c2 0 3.5 1.2 4 2.5C10.5 6.2 12 5 14 5c4 0 5.3 4 3.5 7.5C19 16.65 12 21 12 21z"/>
-
+              d="M12 21s-7-4.35-9.5-8.5C.7 9 2 5 6 5c2 0 3.5 1.2 4 2.5C10.5 6.2 12 5 14 5c4 0 5.3 4 3.5 7.5C19 16.65 12 21 12 21z"
+            />
           </svg>
 
         </button>
@@ -1419,9 +2566,12 @@ h1,h2,h3{
 
     </div>
 
-    <div class="hero-price-badge">
 
-      <span>ราคาเริ่มต้น</span>
+    <div class="detail-price">
+
+      <small>
+        ราคาเริ่มต้น
+      </small>
 
       <span id="detail-price">
         2,690 บาท/ท่าน
@@ -1434,27 +2584,37 @@ h1,h2,h3{
 
   <div class="detail-body">
 
-    <h2 class="detail-title"
-      id="detail-title">
+    <h1
+      class="detail-title"
+      id="detail-title"
+    >
       เขาช้างเผือก
-    </h2>
+    </h1>
 
-    <div class="detail-loc">
 
-      <svg width="14" height="14"
+    <div class="detail-location">
+
+      <svg
+        width="15"
+        height="15"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="2">
-
+        stroke-width="2"
+      >
         <path
-          d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 1118 0z"/>
+          d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 1118 0z"
+        />
 
-        <circle cx="12" cy="10" r="3"/>
+        <circle
+          cx="12"
+          cy="10"
+          r="3"
+        />
 
       </svg>
 
-      <span id="detail-location-text">
+      <span id="detail-location">
         จ.กาญจนบุรี
       </span>
 
@@ -1463,983 +2623,958 @@ h1,h2,h3{
 
     <div class="detail-date">
 
-      <svg width="13" height="13"
+      <svg
+        width="14"
+        height="14"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="2">
+        stroke-width="2"
+      >
+        <rect
+          x="3"
+          y="4"
+          width="18"
+          height="17"
+          rx="2"
+        />
 
-        <rect x="3" y="4"
-          width="18" height="17" rx="2"/>
-
-        <path d="M8 2v4M16 2v4M3 9h18"/>
-
+        <path d="M8 2v4"/>
+        <path d="M16 2v4"/>
+        <path d="M3 9h18"/>
       </svg>
 
-      <span id="detail-date-text">
+      <span id="detail-date">
         20 - 21 ก.ย. 69
       </span>
 
     </div>
 
 
-    <div class="stat-grid"
-      id="detail-stats"></div>
+    <div
+      class="stats"
+      id="detail-stats"
+    ></div>
 
 
-    <div class="section-title">
+    <h2 class="content-title">
       รายละเอียดทริป
-    </div>
-
-    <p class="desc-text"
-      id="detail-desc"></p>
-
-
-    <div class="section-title">
-      ไฮไลท์ทริป
-    </div>
-
-    <ul class="highlight-list"
-      id="detail-highlights"></ul>
-
-  </div>
-
-
-  <div class="sticky-bottom">
-
-    <div class="price-block">
-
-      <div class="p"
-        id="sticky-price">
-        2,690 บาท
-      </div>
-
-      <div class="l">
-        ต่อท่าน
-      </div>
-
-    </div>
-
-    <button
-      class="btn btn-primary"
-      onclick="goFromDetailToSeats()">
-
-      เลือกที่นั่ง
-
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- SEATS -->
-
-<div class="screen" id="screen-seats">
-
-  <div class="topbar">
-
-    <button
-      class="icon-btn"
-      onclick="nav('detail')">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round">
-
-        <path d="M15 18l-6-6 6-6"/>
-
-      </svg>
-
-    </button>
-
-    <h3 style="font-size:15.5px;">
-      ผังที่นั่งรถตู้ 2 คัน
-    </h3>
-
-    <div style="width:36px;"></div>
-
-  </div>
-
-
-  <div class="steps-bar">
-
-    <div class="step active">
-
-      <div class="step-circle">
-        1
-      </div>
-
-      <div class="step-label">
-        เลือกที่นั่ง
-      </div>
-
-    </div>
-
-    <div class="step-line"></div>
-
-    <div class="step">
-
-      <div class="step-circle">
-        2
-      </div>
-
-      <div class="step-label">
-        โอนมัดจำ
-      </div>
-
-    </div>
-
-    <div class="step-line"></div>
-
-    <div class="step">
-
-      <div class="step-circle">
-        3
-      </div>
-
-      <div class="step-label">
-        สรุปการจอง
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="seats-scroll">
-
-    <div class="seats-instruction">
-      กรุณาเลือกที่นั่ง
-      (เลือกได้มากกว่า 1 ที่นั่ง)
-    </div>
-
-
-    <!-- VAN 1 -->
-
-    <div class="van-card">
-
-      <div class="van-title-row">
-
-        <svg viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-
-          <path
-            d="M3 13l1.5-5A2 2 0 016.4 6.5h11.2A2 2 0 0119.5 8L21 13"/>
-
-          <rect x="2" y="13"
-            width="20" height="6" rx="1.5"/>
-
-          <circle cx="7" cy="19" r="1.5"/>
-          <circle cx="17" cy="19" r="1.5"/>
-
-        </svg>
-
-        รถตู้คันที่ 1
-
-      </div>
-
-
-      <div class="van-body">
-
-        <div class="van-mirrors">
-          <div></div>
-          <div></div>
-        </div>
-
-        <div
-          class="seat-grid"
-          id="van1-grid">
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- VAN 2 -->
-
-    <div class="van-card">
-
-      <div class="van-title-row">
-
-        <svg viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-
-          <path
-            d="M3 13l1.5-5A2 2 0 016.4 6.5h11.2A2 2 0 0119.5 8L21 13"/>
-
-          <rect x="2" y="13"
-            width="20" height="6" rx="1.5"/>
-
-          <circle cx="7" cy="19" r="1.5"/>
-          <circle cx="17" cy="19" r="1.5"/>
-
-        </svg>
-
-        รถตู้คันที่ 2
-
-      </div>
-
-
-      <div class="van-body">
-
-        <div class="van-mirrors">
-          <div></div>
-          <div></div>
-        </div>
-
-        <div
-          class="seat-grid"
-          id="van2-grid">
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="legend-row">
-
-      <span>
-        <i style="background:var(--pine-3)"></i>
-        ว่าง
-      </span>
-
-      <span>
-        <i style="background:var(--gold)"></i>
-        เลือกแล้ว
-      </span>
-
-      <span>
-        <i style="background:var(--red)"></i>
-        จองแล้ว
-      </span>
-
-      <span>
-        <i style="background:var(--gray)"></i>
-        ไม่ว่าง
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="seat-sticky">
-
-    <div class="info">
-
-      <div class="n"
-        id="seat-count-label">
-        เลือกแล้ว 0 ที่นั่ง
-      </div>
-
-      <div class="codes"
-        id="seat-codes">
-        —
-      </div>
-
-    </div>
-
-    <button
-      class="btn btn-primary"
-      id="seat-next-btn"
-      disabled
-      onclick="goToPayment()">
-
-      ต่อไป
-
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- PAYMENT -->
-
-<div class="screen" id="screen-payment">
-
-  <div class="topbar">
-
-    <button
-      class="icon-btn"
-      onclick="nav('seats')">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round">
-
-        <path d="M15 18l-6-6 6-6"/>
-
-      </svg>
-
-    </button>
-
-    <h3 style="font-size:15.5px;">
-      โอนมัดจำทริป
-    </h3>
-
-    <div style="width:36px;"></div>
-
-  </div>
-
-
-  <div class="steps-bar">
-
-    <div class="step done">
-
-      <div class="step-circle">
-        ✓
-      </div>
-
-      <div class="step-label">
-        เลือกที่นั่ง
-      </div>
-
-    </div>
-
-    <div class="step-line done"></div>
-
-    <div class="step active">
-
-      <div class="step-circle">
-        2
-      </div>
-
-      <div class="step-label">
-        โอนมัดจำ
-      </div>
-
-    </div>
-
-    <div class="step-line"></div>
-
-    <div class="step">
-
-      <div class="step-circle">
-        3
-      </div>
-
-      <div class="step-label">
-        สรุปการจอง
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="pay-body">
-
-    <div class="pay-heading">
-
-      <h2>
-        ชำระเงินมัดจำเพื่อยืนยันการจอง
-      </h2>
-
-      <p id="pay-instruction">
-        กรุณาโอนมัดจำ ท่านละ 1,000 บาท
-        ภายใน 30 นาที
-      </p>
-
-    </div>
-
-
-    <div class="bank-card">
-
-      <div class="bank-row">
-
-        <span class="bank-icon">
-
-          <svg viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-
-            <path d="M3 10l9-6 9 6"/>
-            <path d="M4 10v9h16v-9"/>
-            <path d="M9 19v-6h6v6"/>
-
-          </svg>
-
-        </span>
-
-        ธนาคารกสิกรไทย
-
-      </div>
-
-
-      <div class="acct-number">
-        123-1-23456-7
-      </div>
-
-      <div class="acct-name">
-        ชื่อบัญชี : ยินดีที่ได้เจอ ทริป
-      </div>
-
-
-      <div class="qr-box">
-
-        <!-- QR ตัวอย่าง -->
-        <svg viewBox="0 0 100 100">
-
-          <rect width="100"
-            height="100"
-            fill="#fff"/>
-
-          <g fill="#173729">
-
-            <rect x="6" y="6"
-              width="24" height="24"/>
-
-            <rect x="12" y="12"
-              width="12" height="12"
-              fill="#fff"/>
-
-            <rect x="16" y="16"
-              width="4" height="4"
-              fill="#173729"/>
-
-
-            <rect x="70" y="6"
-              width="24" height="24"/>
-
-            <rect x="76" y="12"
-              width="12" height="12"
-              fill="#fff"/>
-
-            <rect x="80" y="16"
-              width="4" height="4"
-              fill="#173729"/>
-
-
-            <rect x="6" y="70"
-              width="24" height="24"/>
-
-            <rect x="12" y="76"
-              width="12" height="12"
-              fill="#fff"/>
-
-            <rect x="16" y="80"
-              width="4" height="4"
-              fill="#173729"/>
-
-
-            <rect x="38" y="6"
-              width="6" height="6"/>
-
-            <rect x="48" y="6"
-              width="6" height="6"/>
-
-            <rect x="58" y="12"
-              width="6" height="6"/>
-
-            <rect x="38" y="18"
-              width="6" height="6"/>
-
-            <rect x="52" y="20"
-              width="6" height="6"/>
-
-            <rect x="38" y="30"
-              width="6" height="6"/>
-
-            <rect x="60" y="34"
-              width="6" height="6"/>
-
-            <rect x="70" y="40"
-              width="6" height="6"/>
-
-            <rect x="82" y="40"
-              width="6" height="6"/>
-
-            <rect x="40" y="42"
-              width="6" height="6"/>
-
-            <rect x="50" y="44"
-              width="6" height="6"/>
-
-            <rect x="6" y="42"
-              width="6" height="6"/>
-
-            <rect x="18" y="46"
-              width="6" height="6"/>
-
-            <rect x="30" y="50"
-              width="6" height="6"/>
-
-            <rect x="60" y="52"
-              width="6" height="6"/>
-
-            <rect x="70" y="58"
-              width="6" height="6"/>
-
-            <rect x="84" y="60"
-              width="6" height="6"/>
-
-            <rect x="40" y="60"
-              width="6" height="6"/>
-
-            <rect x="50" y="64"
-              width="6" height="6"/>
-
-            <rect x="6" y="60"
-              width="6" height="6"/>
-
-            <rect x="60" y="70"
-              width="6" height="6"/>
-
-            <rect x="70" y="76"
-              width="6" height="6"/>
-
-            <rect x="80" y="80"
-              width="6" height="6"/>
-
-            <rect x="88" y="70"
-              width="6" height="6"/>
-
-            <rect x="40" y="76"
-              width="6" height="6"/>
-
-            <rect x="50" y="82"
-              width="6" height="6"/>
-
-            <rect x="60" y="88"
-              width="6" height="6"/>
-
-            <rect x="72" y="88"
-              width="6" height="6"/>
-
-            <rect x="84" y="88"
-              width="6" height="6"/>
-
-          </g>
-
-        </svg>
-
-      </div>
-
-      <div class="qr-label">
-        สแกนเพื่อชำระผ่านแอปธนาคาร
-      </div>
-
-    </div>
-
-
-    <div class="upload-box">
-
-      <h4>
-        อัปโหลดสลิปโอนเงิน
-      </h4>
-
-      <label
-        class="upload-drop"
-        id="upload-drop">
-
-        <svg viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-
-          <path d="M12 16V4"/>
-          <path d="M7 9l5-5 5 5"/>
-          <path
-            d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/>
-
-        </svg>
-
-        <div
-          class="t1"
-          id="upload-text">
-
-          คลิกเพื่ออัปโหลดสลิป
-
-        </div>
-
-        <div
-          class="t2"
-          id="upload-sub">
-
-          (รองรับไฟล์ JPG, PNG)
-
-        </div>
-
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          style="display:none"
-          id="upload-input"
-          onchange="fileChosen()">
-
-      </label>
-
-    </div>
-
-
-    <div class="timer-box"
-      id="timer-box">
-
-      <div class="t">
-        เวลาที่เหลือในการชำระเงิน
-      </div>
-
-      <div class="clock"
-        id="pay-timer">
-        30:00
-      </div>
-
-    </div>
-
-
-    <button
-      class="btn btn-primary"
-      id="confirm-payment-btn"
-      style="width:100%;"
-      onclick="confirmPayment()">
-
-      ยืนยันการชำระเงิน
-
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- SUMMARY -->
-
-<div class="screen" id="screen-summary">
-
-  <div class="topbar">
-
-    <button
-      class="icon-btn"
-      onclick="nav('payment')">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round">
-
-        <path d="M15 18l-6-6 6-6"/>
-
-      </svg>
-
-    </button>
-
-    <h3 style="font-size:15.5px;">
-      สรุปการจองทริป
-    </h3>
-
-    <div style="width:36px;"></div>
-
-  </div>
-
-
-  <div class="steps-bar">
-
-    <div class="step done">
-
-      <div class="step-circle">
-        ✓
-      </div>
-
-      <div class="step-label">
-        เลือกที่นั่ง
-      </div>
-
-    </div>
-
-    <div class="step-line done"></div>
-
-    <div class="step done">
-
-      <div class="step-circle">
-        ✓
-      </div>
-
-      <div class="step-label">
-        โอนมัดจำ
-      </div>
-
-    </div>
-
-    <div class="step-line done"></div>
-
-    <div class="step active">
-
-      <div class="step-circle">
-        3
-      </div>
-
-      <div class="step-label">
-        สรุปการจอง
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="sum-body">
-
-    <div class="success-circle">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round">
-
-        <path d="M20 6L9 17l-5-5"/>
-
-      </svg>
-
-    </div>
-
-
-    <h2>
-      จองทริปสำเร็จ!
     </h2>
 
-    <div class="sub">
-      ขอบคุณที่ไว้วางใจ
-      "ยินดีที่ได้เจอ"
+    <p
+      class="description"
+      id="detail-description"
+    ></p>
+
+
+    <h2 class="content-title">
+      ไฮไลท์ทริป
+    </h2>
+
+    <ul
+      class="highlight-list"
+      id="detail-highlights"
+    ></ul>
+
+  </div>
+
+</div>
+
+
+<div class="detail-bottom">
+
+  <div class="detail-bottom-price">
+
+    <div
+      class="number"
+      id="sticky-price"
+    >
+      2,690 บาท
+    </div>
+
+    <div class="label">
+      ต่อท่าน
+    </div>
+
+  </div>
+
+
+  <button
+    class="primary-button"
+    onclick="showScreen('seats')"
+  >
+    เลือกที่นั่ง
+  </button>
+
+</div>
+
+</section>
+
+
+
+<!-- =======================================================
+     SEATS
+======================================================= -->
+
+<section
+  class="screen"
+  id="screen-seats"
+>
+
+<div class="screen-content">
+
+<header class="page-header">
+
+  <button
+    class="icon-button"
+    onclick="showScreen('detail')"
+  >
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+
+  </button>
+
+
+  <h1>
+    เลือกที่นั่ง
+  </h1>
+
+
+  <div class="header-space"></div>
+
+</header>
+
+
+<div class="seat-page">
+
+
+<div class="steps">
+
+  <div class="step active">
+
+    <div class="step-circle">
+      1
+    </div>
+
+    <div class="step-label">
+      เลือกที่นั่ง
+    </div>
+
+  </div>
+
+
+  <div class="step-line"></div>
+
+
+  <div class="step">
+
+    <div class="step-circle">
+      2
+    </div>
+
+    <div class="step-label">
+      โอนมัดจำ
+    </div>
+
+  </div>
+
+
+  <div class="step-line"></div>
+
+
+  <div class="step">
+
+    <div class="step-circle">
+      3
+    </div>
+
+    <div class="step-label">
+      สรุปการจอง
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="seat-help">
+
+  เลือกที่นั่งได้มากกว่า 1 ที่นั่ง
+  <br>
+  สีแดง = มีผู้จองแล้ว
+
+</div>
+
+
+<!-- VAN 1 -->
+
+<div class="van-card">
+
+  <div class="van-title">
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M3 13l1.5-5A2 2 0 016.4 6.5h11.2A2 2 0 0119.5 8L21 13"/>
+      <rect
+        x="2"
+        y="13"
+        width="20"
+        height="6"
+        rx="1.5"
+      />
+      <circle cx="7" cy="19" r="1.5"/>
+      <circle cx="17" cy="19" r="1.5"/>
+    </svg>
+
+    รถตู้คันที่ 1
+
+  </div>
+
+
+  <div class="van-body">
+
+    <div class="driver-area">
+
+      <div class="mirror"></div>
+
+      <div class="driver-label">
+        คนขับ
+      </div>
+
+      <div class="mirror"></div>
+
     </div>
 
 
-    <div class="sum-card">
+    <div
+      class="seat-grid"
+      id="van1-grid"
+    ></div>
 
-      <h4>
-        รายละเอียดการจอง
-      </h4>
 
-      <div class="sum-row">
+  </div>
 
-        <span class="k">
-          รหัสการจอง
-        </span>
+</div>
 
-        <span class="v"
-          id="sum-code">
-          —
-        </span>
 
+<!-- VAN 2 -->
+
+<div class="van-card">
+
+  <div class="van-title">
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M3 13l1.5-5A2 2 0 016.4 6.5h11.2A2 2 0 0119.5 8L21 13"/>
+      <rect
+        x="2"
+        y="13"
+        width="20"
+        height="6"
+        rx="1.5"
+      />
+      <circle cx="7" cy="19" r="1.5"/>
+      <circle cx="17" cy="19" r="1.5"/>
+    </svg>
+
+    รถตู้คันที่ 2
+
+  </div>
+
+
+  <div class="van-body">
+
+    <div class="driver-area">
+
+      <div class="mirror"></div>
+
+      <div class="driver-label">
+        คนขับ
       </div>
 
-
-      <div class="sum-row">
-
-        <span class="k">
-          ทริป
-        </span>
-
-        <span class="v"
-          id="sum-trip">
-          —
-        </span>
-
-      </div>
-
-
-      <div class="sum-row">
-
-        <span class="k">
-          วันที่เดินทาง
-        </span>
-
-        <span class="v"
-          id="sum-date">
-          —
-        </span>
-
-      </div>
-
-
-      <div class="sum-row">
-
-        <span class="k">
-          ที่นั่ง
-        </span>
-
-        <span class="v"
-          id="sum-seats">
-          —
-        </span>
-
-      </div>
-
-
-      <div class="sum-row">
-
-        <span class="k">
-          จำนวนผู้เดินทาง
-        </span>
-
-        <span class="v"
-          id="sum-count">
-          —
-        </span>
-
-      </div>
-
-
-      <div class="sum-row">
-
-        <span class="k">
-          ยอดมัดจำ
-        </span>
-
-        <span class="v"
-          id="sum-deposit">
-          —
-        </span>
-
-      </div>
-
-
-      <div class="sum-row">
-
-        <span class="k">
-          สถานะการชำระเงิน
-        </span>
-
-        <span class="v strong">
-          มัดจำแล้ว
-        </span>
-
-      </div>
+      <div class="mirror"></div>
 
     </div>
 
 
-    <div class="sum-card">
-
-      <h4>
-        ติดต่อทีมงาน
-      </h4>
-
-
-      <div class="contact-row">
-
-        <span class="ic">
-
-          <svg viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-
-            <path
-              d="M22 16.9v3a2 2 0 01-2.2 2
-              19.8 19.8 0 01-8.6-3.1
-              19.5 19.5 0 01-6-6
-              A19.8 19.8 0 012.1 4.2
-              2 2 0 014.1 2h3a2 2 0 012 1.7
-              c.1.9.3 1.8.6 2.7
-              a2 2 0 01-.4 2.1L8 9.9
-              a16 16 0 006 6l1.4-1.4
-              a2 2 0 012.1-.4
-              c.9.3 1.8.5 2.7.6
-              a2 2 0 011.8 2.1z"/>
-
-          </svg>
-
-        </span>
-
-        <div>
-
-          <div class="tt">
-            โทรศัพท์
-          </div>
-
-          <div class="vv">
-            095-123-4567
-          </div>
-
-        </div>
-
-      </div>
+    <div
+      class="seat-grid"
+      id="van2-grid"
+    ></div>
 
 
-      <div class="contact-row">
+  </div>
 
-        <span class="ic">
+</div>
 
-          <svg viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
 
-            <path
-              d="M21 11.5a8.38 8.38 0 01-9 8.4
-              8.5 8.5 0 01-4-1L3 20l1.1-3.9
-              a8.4 8.4 0 01-1-4A8.38 8.38
-              0 0111.5 3a8.5 8.5 0 018 7.5"/>
+<div class="seat-legend">
 
-          </svg>
+  <div class="legend">
+    <span
+      class="legend-dot"
+      style="background:#2A6549"
+    ></span>
+    ว่าง
+  </div>
 
-        </span>
+  <div class="legend">
+    <span
+      class="legend-dot"
+      style="background:#F0A93B"
+    ></span>
+    เลือกแล้ว
+  </div>
 
-        <div>
+  <div class="legend">
+    <span
+      class="legend-dot"
+      style="background:#E5574B"
+    ></span>
+    จองแล้ว
+  </div>
 
-          <div class="tt">
-            Line
-          </div>
+</div>
 
-          <div class="vv">
-            @yindeedeejer
-          </div>
 
-        </div>
+</div>
 
-      </div>
+</div>
+
+
+<div class="seat-bottom">
+
+  <div class="seat-selected-info">
+
+    <div
+      class="seat-selected-count"
+      id="seat-count"
+    >
+      เลือกแล้ว 0 ที่นั่ง
+    </div>
+
+    <div
+      class="seat-selected-codes"
+      id="seat-codes"
+    >
+      —
+    </div>
+
+  </div>
+
+
+  <button
+    class="seat-next"
+    id="seat-next"
+    disabled
+    onclick="goToPayment()"
+  >
+    ต่อไป
+  </button>
+
+</div>
+
+</section>
+
+
+
+<!-- =======================================================
+     PAYMENT
+======================================================= -->
+
+<section
+  class="screen"
+  id="screen-payment"
+>
+
+<div class="screen-content">
+
+<header class="page-header">
+
+  <button
+    class="icon-button"
+    onclick="showScreen('seats')"
+  >
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+
+  </button>
+
+
+  <h1>
+    โอนมัดจำ
+  </h1>
+
+
+  <div class="header-space"></div>
+
+</header>
+
+
+<div class="payment-page">
+
+
+<div class="steps">
+
+  <div class="step done">
+
+    <div class="step-circle">
+      ✓
+    </div>
+
+    <div class="step-label">
+      เลือกที่นั่ง
+    </div>
+
+  </div>
+
+
+  <div class="step-line done"></div>
+
+
+  <div class="step active">
+
+    <div class="step-circle">
+      2
+    </div>
+
+    <div class="step-label">
+      โอนมัดจำ
+    </div>
+
+  </div>
+
+
+  <div class="step-line"></div>
+
+
+  <div class="step">
+
+    <div class="step-circle">
+      3
+    </div>
+
+    <div class="step-label">
+      สรุปการจอง
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="payment-title">
+
+  <h2>
+    ชำระเงินมัดจำ
+  </h2>
+
+  <p id="payment-instruction">
+    กรุณาโอนมัดจำภายใน 30 นาที
+  </p>
+
+</div>
+
+
+<!-- BANK -->
+
+<div class="bank-card">
+
+  <div class="bank-name">
+
+    <span class="bank-icon">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M3 10l9-6 9 6"/>
+        <path d="M4 10v9h16v-9"/>
+        <path d="M9 19v-6h6v6"/>
+      </svg>
+
+    </span>
+
+    ธนาคารกสิกรไทย
+
+  </div>
+
+
+  <div class="account-number">
+    123-1-23456-7
+  </div>
+
+
+  <div class="account-name">
+    ชื่อบัญชี : ยินดีที่ได้เจอ ทริป
+  </div>
+
+
+  <!-- DEMO QR -->
+
+  <div class="qr">
+
+    <svg viewBox="0 0 100 100">
+
+      <rect
+        width="100"
+        height="100"
+        fill="#fff"
+      />
+
+      <g fill="#173729">
+
+        <rect x="6" y="6" width="24" height="24"/>
+        <rect x="12" y="12" width="12" height="12" fill="#fff"/>
+        <rect x="16" y="16" width="4" height="4"/>
+
+        <rect x="70" y="6" width="24" height="24"/>
+        <rect x="76" y="12" width="12" height="12" fill="#fff"/>
+        <rect x="80" y="16" width="4" height="4"/>
+
+        <rect x="6" y="70" width="24" height="24"/>
+        <rect x="12" y="76" width="12" height="12" fill="#fff"/>
+        <rect x="16" y="80" width="4" height="4"/>
+
+        <rect x="38" y="6" width="6" height="6"/>
+        <rect x="48" y="6" width="6" height="6"/>
+        <rect x="58" y="12" width="6" height="6"/>
+
+        <rect x="38" y="18" width="6" height="6"/>
+        <rect x="52" y="20" width="6" height="6"/>
+        <rect x="38" y="30" width="6" height="6"/>
+
+        <rect x="60" y="34" width="6" height="6"/>
+        <rect x="70" y="40" width="6" height="6"/>
+        <rect x="82" y="40" width="6" height="6"/>
+
+        <rect x="40" y="42" width="6" height="6"/>
+        <rect x="50" y="44" width="6" height="6"/>
+
+        <rect x="6" y="42" width="6" height="6"/>
+        <rect x="18" y="46" width="6" height="6"/>
+
+        <rect x="30" y="50" width="6" height="6"/>
+        <rect x="60" y="52" width="6" height="6"/>
+
+        <rect x="70" y="58" width="6" height="6"/>
+        <rect x="84" y="60" width="6" height="6"/>
+
+        <rect x="40" y="60" width="6" height="6"/>
+        <rect x="50" y="64" width="6" height="6"/>
+
+        <rect x="6" y="60" width="6" height="6"/>
+        <rect x="60" y="70" width="6" height="6"/>
+
+        <rect x="70" y="76" width="6" height="6"/>
+        <rect x="80" y="80" width="6" height="6"/>
+        <rect x="88" y="70" width="6" height="6"/>
+
+        <rect x="40" y="76" width="6" height="6"/>
+        <rect x="50" y="82" width="6" height="6"/>
+        <rect x="60" y="88" width="6" height="6"/>
+
+        <rect x="72" y="88" width="6" height="6"/>
+        <rect x="84" y="88" width="6" height="6"/>
+
+      </g>
+
+    </svg>
+
+  </div>
+
+
+  <div class="qr-label">
+    QR ตัวอย่าง — เปลี่ยนเป็น QR รับเงินจริงก่อนใช้งาน
+  </div>
+
+</div>
+
+
+<!-- UPLOAD -->
+
+<div class="upload-card">
+
+  <div class="upload-title">
+    อัปโหลดสลิปโอนเงิน
+  </div>
+
+
+  <label
+    class="upload-box"
+    id="upload-box"
+  >
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M12 16V4"/>
+      <path d="M7 9l5-5 5 5"/>
+      <path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/>
+    </svg>
+
+
+    <div
+      class="upload-main"
+      id="upload-main"
+    >
+      แตะเพื่ออัปโหลดสลิป
+    </div>
+
+
+    <div
+      class="upload-sub"
+      id="upload-sub"
+    >
+      JPG / PNG
+    </div>
+
+
+    <input
+      type="file"
+      accept="image/jpeg,image/png,image/webp"
+      id="slip-input"
+      style="display:none"
+      onchange="fileChosen()"
+    >
+
+  </label>
+
+</div>
+
+
+<!-- TIMER -->
+
+<div class="timer">
+
+  <div class="timer-label">
+    เวลาที่เหลือในการชำระเงิน
+  </div>
+
+  <div
+    class="timer-value"
+    id="timer"
+  >
+    30:00
+  </div>
+
+</div>
+
+
+<button
+  class="primary-button payment-submit"
+  id="payment-submit"
+  onclick="confirmPayment()"
+>
+  ยืนยันการชำระเงิน
+</button>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =======================================================
+     SUMMARY
+======================================================= -->
+
+<section
+  class="screen"
+  id="screen-summary"
+>
+
+<div class="screen-content">
+
+<header class="page-header">
+
+  <button
+    class="icon-button"
+    onclick="showScreen('payment')"
+  >
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+
+  </button>
+
+
+  <h1>
+    การจองสำเร็จ
+  </h1>
+
+
+  <div class="header-space"></div>
+
+</header>
+
+
+<div class="summary-page">
+
+
+<div class="success">
+
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M20 6L9 17l-5-5"/>
+  </svg>
+
+</div>
+
+
+<h2>
+  จองทริปสำเร็จ!
+</h2>
+
+
+<div class="summary-sub">
+  ขอบคุณที่ไว้วางใจ "ยินดีที่ได้เจอ"
+</div>
+
+
+<div class="summary-card">
+
+  <div class="summary-card-title">
+    รายละเอียดการจอง
+  </div>
+
+
+  <div class="summary-row">
+
+    <span class="summary-key">
+      รหัสการจอง
+    </span>
+
+    <span
+      class="summary-value"
+      id="summary-code"
+    >
+      —
+    </span>
+
+  </div>
+
+
+  <div class="summary-row">
+
+    <span class="summary-key">
+      ทริป
+    </span>
+
+    <span
+      class="summary-value"
+      id="summary-trip"
+    >
+      —
+    </span>
+
+  </div>
+
+
+  <div class="summary-row">
+
+    <span class="summary-key">
+      วันที่เดินทาง
+    </span>
+
+    <span
+      class="summary-value"
+      id="summary-date"
+    >
+      —
+    </span>
+
+  </div>
+
+
+  <div class="summary-row">
+
+    <span class="summary-key">
+      ที่นั่ง
+    </span>
+
+    <span
+      class="summary-value"
+      id="summary-seats"
+    >
+      —
+    </span>
+
+  </div>
+
+
+  <div class="summary-row">
+
+    <span class="summary-key">
+      จำนวนผู้เดินทาง
+    </span>
+
+    <span
+      class="summary-value"
+      id="summary-count"
+    >
+      —
+    </span>
+
+  </div>
+
+
+  <div class="summary-row">
+
+    <span class="summary-key">
+      ยอดมัดจำ
+    </span>
+
+    <span
+      class="summary-value"
+      id="summary-deposit"
+    >
+      —
+    </span>
+
+  </div>
+
+
+  <div class="summary-row">
+
+    <span class="summary-key">
+      สถานะ
+    </span>
+
+    <span class="summary-value success-text">
+      มัดจำแล้ว
+    </span>
+
+  </div>
+
+</div>
+
+
+<div class="summary-card">
+
+  <div class="summary-card-title">
+    ติดต่อทีมงาน
+  </div>
+
+
+  <div class="contact">
+
+    <div class="contact-icon">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8 9.9a16 16 0 006 6l1.4-1.4a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.8 2.1z"
+        />
+      </svg>
 
     </div>
 
 
-    <div class="sum-actions">
+    <div>
 
-      <button
-        class="btn btn-primary"
-        onclick="resetAndGoHome()">
+      <div class="contact-label">
+        โทรศัพท์
+      </div>
 
-        กลับหน้าแรก
+      <div class="contact-value">
+        095-123-4567
+      </div>
 
-      </button>
+    </div>
 
-      <button
-        class="btn btn-outline"
-        onclick="nav('home')">
+  </div>
 
-        ดูทริปทั้งหมด
 
-      </button>
+  <div class="contact">
+
+    <div class="contact-icon">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M21 11.5a8.38 8.38 0 01-9 8.4 8.5 8.5 0 01-4-1L3 20l1.1-3.9a8.4 8.4 0 01-1-4A8.38 8.38 0 0111.5 3a8.5 8.5 0 018 7.5"
+        />
+      </svg>
+
+    </div>
+
+
+    <div>
+
+      <div class="contact-label">
+        LINE
+      </div>
+
+      <div class="contact-value">
+        @yindeedeejer
+      </div>
 
     </div>
 
@@ -2448,7 +3583,438 @@ h1,h2,h3{
 </div>
 
 
-<div class="home-indicator"></div>
+<div class="summary-actions">
+
+  <button
+    class="primary-button"
+    onclick="resetAndHome()"
+  >
+    กลับหน้าแรก
+  </button>
+
+
+  <button
+    class="outline-button"
+    onclick="showScreen('mytrips')"
+  >
+    ดูทริปของฉัน
+  </button>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =======================================================
+     MY TRIPS
+======================================================= -->
+
+<section
+  class="screen"
+  id="screen-mytrips"
+>
+
+<div class="screen-content">
+
+<header class="page-header">
+
+  <div class="header-space"></div>
+
+  <h1>
+    ทริปของฉัน
+  </h1>
+
+  <div class="header-space"></div>
+
+</header>
+
+
+<div class="mytrips-page">
+
+<div class="booking-card">
+
+  <div class="booking-status">
+    ยืนยันการจองแล้ว
+  </div>
+
+  <div class="booking-name">
+    เขาช้างเผือก
+  </div>
+
+  <div class="booking-info">
+
+    <div>
+      📅 20 - 21 ก.ย. 69
+    </div>
+
+    <div>
+      📍 จ.กาญจนบุรี
+    </div>
+
+  </div>
+
+
+  <div class="booking-seat">
+    ที่นั่งของคุณจะแสดงที่นี่
+  </div>
+
+</div>
+
+
+<div class="empty-card">
+
+  ทริปที่จองในอนาคต<br>
+  จะแสดงอยู่ที่นี่
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =======================================================
+     PROFILE
+======================================================= -->
+
+<section
+  class="screen"
+  id="screen-profile"
+>
+
+<div class="screen-content">
+
+<header class="page-header">
+
+  <div class="header-space"></div>
+
+  <h1>
+    โปรไฟล์
+  </h1>
+
+  <div class="header-space"></div>
+
+</header>
+
+
+<div class="profile-page">
+
+
+<div class="profile-card">
+
+  <div class="avatar">
+    ย
+  </div>
+
+
+  <div>
+
+    <div class="profile-name">
+      ผู้เดินทาง
+    </div>
+
+    <div class="profile-sub">
+      สมาชิก ยินดีที่ได้เจอ
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="profile-menu">
+
+
+<button class="profile-item">
+
+  <div class="profile-item-icon">
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <circle
+        cx="12"
+        cy="8"
+        r="4"
+      />
+
+      <path
+        d="M4 21c0-4 4-6 8-6s8 2 8 6"
+      />
+    </svg>
+
+  </div>
+
+  <div class="profile-item-text">
+    ข้อมูลส่วนตัว
+  </div>
+
+  <div class="profile-item-arrow">
+    ›
+  </div>
+
+</button>
+
+
+<button class="profile-item">
+
+  <div class="profile-item-icon">
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path
+        d="M12 2l2.2 6.7H21l-5.5 4 2.1 6.8-5.6-4.1-5.6 4.1 2.1-6.8-5.5-4h6.8z"
+      />
+    </svg>
+
+  </div>
+
+  <div class="profile-item-text">
+    รายการโปรด
+  </div>
+
+  <div class="profile-item-arrow">
+    ›
+  </div>
+
+</button>
+
+
+<button class="profile-item">
+
+  <div class="profile-item-icon">
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+      />
+
+      <path
+        d="M12 8v4l3 2"
+      />
+    </svg>
+
+  </div>
+
+  <div class="profile-item-text">
+    ประวัติการจอง
+  </div>
+
+  <div class="profile-item-arrow">
+    ›
+  </div>
+
+</button>
+
+
+<button class="profile-item">
+
+  <div class="profile-item-icon">
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+      />
+
+      <path
+        d="M9.5 9a2.5 2.5 0 015 0c0 1.7-2.5 2-2.5 3.5"
+      />
+
+      <circle
+        cx="12"
+        cy="17"
+        r=".8"
+        fill="currentColor"
+      />
+
+    </svg>
+
+  </div>
+
+  <div class="profile-item-text">
+    ช่วยเหลือและติดต่อทีมงาน
+  </div>
+
+  <div class="profile-item-arrow">
+    ›
+  </div>
+
+</button>
+
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+</div>
+
+
+<!-- =======================================================
+     BOTTOM NAV
+======================================================= -->
+
+<nav class="bottom-nav">
+
+<button
+  class="nav-button active"
+  data-nav="home"
+  onclick="showScreen('home')"
+>
+
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M3 11l9-8 9 8"/>
+    <path d="M5 10v10h14V10"/>
+  </svg>
+
+  <span>
+    หน้าแรก
+  </span>
+
+</button>
+
+
+<button
+  class="nav-button"
+  data-nav="mytrips"
+  onclick="showScreen('mytrips')"
+>
+
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <rect
+      x="3"
+      y="5"
+      width="18"
+      height="14"
+      rx="2"
+    />
+
+    <path d="M3 10h18"/>
+  </svg>
+
+  <span>
+    ทริปของฉัน
+  </span>
+
+</button>
+
+
+<button
+  class="nav-button"
+  data-nav="booking"
+  onclick="openDetail('changphueak')"
+>
+
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <rect
+      x="3"
+      y="4"
+      width="18"
+      height="17"
+      rx="2"
+    />
+
+    <path d="M8 2v4"/>
+    <path d="M16 2v4"/>
+    <path d="M3 9h18"/>
+  </svg>
+
+  <span>
+    จองทริป
+  </span>
+
+</button>
+
+
+<button
+  class="nav-button"
+  data-nav="profile"
+  onclick="showScreen('profile')"
+>
+
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <circle
+      cx="12"
+      cy="8"
+      r="4"
+    />
+
+    <path
+      d="M4 21c0-4 4-6 8-6s8 2 8 6"
+    />
+
+  </svg>
+
+  <span>
+    โปรไฟล์
+  </span>
+
+</button>
+
+</nav>
+
 
 </div>
 
@@ -2456,7 +4022,7 @@ h1,h2,h3{
 <script>
 
 /* =========================================================
-   DATA
+   TRIP DATA
 ========================================================= */
 
 const trips = [
@@ -2466,13 +4032,15 @@ const trips = [
 
     tag:'เดินป่า',
 
+    type:'hiking',
+
     name:'เขาช้างเผือก',
 
     loc:'จ.กาญจนบุรี',
 
     date:'20 - 21 ก.ย. 69 (2 วัน 1 คืน)',
 
-    dateShort:'20-21 ก.ย. 69',
+    dateShort:'20 - 21 ก.ย. 69',
 
     seatsLeft:6,
 
@@ -2487,20 +4055,21 @@ const trips = [
     capacity:'20 ท่าน',
 
     desc:
-      'พิชิตยอดเขาช้างเผือกที่สวยที่สุดแห่งหนึ่งในไทย ชมวิว 360 องศาสุดลูกหูลูกตา ท่ามกลางทะเลหมอกยามเช้า พร้อมทีมงานดูแลอย่างใกล้ชิดตลอดเส้นทาง',
+      'พิชิตยอดเขาช้างเผือก หนึ่งในเส้นทางเดินป่าที่สวยที่สุดของประเทศไทย ชมวิวภูเขาแบบ 360 องศา ทะเลหมอกยามเช้า และพระอาทิตย์ตกบนสันเขา พร้อมทีมงานดูแลตลอดการเดินทาง',
 
     highlights:[
-      'เดินสัมผัสยอดเขาช้างเผือก',
+      'เดินสัมผัสสันเขาช้างเผือก',
       'ชมวิว 360 องศา',
-      'พระอาทิตย์ขึ้นและตกสุดโรแมนติก',
-      'มีทีมดูแลตลอดทริป',
+      'ชมพระอาทิตย์ขึ้นและตก',
+      'มีทีมงานดูแลตลอดเส้นทาง',
       'อาหารจัดเต็ม 3 มื้อ'
     ],
 
     gradient:[
-      '#2E5B41',
+      '#2E6148',
       '#173729'
     ]
+
   },
 
 
@@ -2509,13 +4078,15 @@ const trips = [
 
     tag:'เดินป่า',
 
+    type:'hiking',
+
     name:'น้ำตกทีลอซู',
 
     loc:'จ.ตาก',
 
     date:'27 - 29 ก.ย. 69 (3 วัน 2 คืน)',
 
-    dateShort:'27-29 ก.ย. 69',
+    dateShort:'27 - 29 ก.ย. 69',
 
     seatsLeft:8,
 
@@ -2530,20 +4101,21 @@ const trips = [
     capacity:'18 ท่าน',
 
     desc:
-      'เดินป่าเลียบลำธารสู่น้ำตกทีลอซู หนึ่งในน้ำตกที่ใหญ่และสวยที่สุดในเมืองไทย พักแคมป์ริมป่าลึก ฟังเสียงธรรมชาติยามค่ำคืน',
+      'สัมผัสธรรมชาติในผืนป่าตะวันตก เดินทางสู่น้ำตกทีลอซู พร้อมพักแคมป์ท่ามกลางธรรมชาติและบรรยากาศป่าเขา',
 
     highlights:[
-      'ชมน้ำตกทีลอซูแบบใกล้ชิด',
-      'เดินป่าเลียบลำธารร่มรื่น',
-      'กางเต็นท์ริมป่าธรรมชาติ',
-      'ไกด์ท้องถิ่นผู้เชี่ยวชาญ',
-      'อาหารจัดเต็มทุกมื้อ'
+      'ชมน้ำตกทีลอซู',
+      'เดินป่าเลียบลำธาร',
+      'พักแคมป์ท่ามกลางธรรมชาติ',
+      'ไกด์ท้องถิ่นดูแล',
+      'อาหารครบทุกมื้อ'
     ],
 
     gradient:[
-      '#1F5A73',
-      '#123244'
+      '#23617A',
+      '#123447'
     ]
+
   },
 
 
@@ -2551,6 +4123,8 @@ const trips = [
     id:'saidoi',
 
     tag:'One Day Trip',
+
+    type:'oneday',
 
     name:'ดอยเสมอดาว',
 
@@ -2573,20 +4147,21 @@ const trips = [
     capacity:'25 ท่าน',
 
     desc:
-      'ทริปวันเดียวสัมผัสทะเลหมอกที่ดอยเสมอดาว จุดชมวิวยอดนิยมของน่าน เหมาะสำหรับผู้เริ่มต้นเดินป่าและครอบครัว',
+      'ทริปวันเดียวสำหรับคนที่อยากสัมผัสทะเลหมอกและธรรมชาติ เหมาะสำหรับผู้เริ่มต้นและคนที่อยากเที่ยวแบบสบาย ๆ',
 
     highlights:[
       'ชมทะเลหมอกยามเช้า',
-      'เส้นทางง่าย เหมาะทุกวัย',
-      'จุดถ่ายภาพสวยหลายจุด',
-      'รถตู้รับ-ส่งถึงที่',
+      'เส้นทางเดินง่าย',
+      'จุดถ่ายภาพหลายจุด',
+      'รถตู้รับส่ง',
       'อาหารเช้าริมผา'
     ],
 
     gradient:[
       '#C9762B',
-      '#7A3B1E'
+      '#733C21'
     ]
+
   }
 
 ];
@@ -2596,42 +4171,32 @@ const trips = [
    STATE
 ========================================================= */
 
-let currentTripId = null;
+let currentTripId = 'changphueak';
 
 let heartOn = false;
 
-const selectedSeats = {
+let selectedSeats = {
   1:new Set(),
   2:new Set()
 };
 
-
-/*
-  ที่นั่งที่ถูกจองแล้ว
-  สามารถแก้ตัวเลขตรงนี้ได้
-*/
-
-const seatBooked = {
-
+const bookedSeats = {
   1:[3],
-
   2:[7]
-
 };
 
-
-let depositTimerInterval = null;
+let timerInterval = null;
 
 let secondsLeft = 30 * 60;
 
 
 /* =========================================================
-   MOUNTAIN ART
+   MOUNTAIN SVG
 ========================================================= */
 
 function mountainSVG(c1,c2){
 
-  const gid =
+  const id =
     'g' +
     c1.replace('#','') +
     Math.random()
@@ -2640,106 +4205,117 @@ function mountainSVG(c1,c2){
 
   return `
 
-    <svg
-      viewBox="0 0 400 300"
-      preserveAspectRatio="xMidYMid slice">
+  <svg
+    viewBox="0 0 400 250"
+    preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true"
+  >
 
-      <defs>
+    <defs>
 
-        <linearGradient
-          id="${gid}"
-          x1="0"
-          y1="0"
-          x2="0"
-          y2="1">
+      <linearGradient
+        id="${id}"
+        x1="0"
+        y1="0"
+        x2="0"
+        y2="1"
+      >
 
-          <stop
-            offset="0%"
-            stop-color="${c1}"/>
+        <stop
+          offset="0%"
+          stop-color="${c1}"
+        />
 
-          <stop
-            offset="100%"
-            stop-color="${c2}"/>
+        <stop
+          offset="100%"
+          stop-color="${c2}"
+        />
 
-        </linearGradient>
+      </linearGradient>
 
-      </defs>
-
-
-      <rect
-        width="400"
-        height="300"
-        fill="url(#${gid})"/>
-
-
-      <path
-        d="
-          M0 220
-          L60 150
-          L110 190
-          L170 110
-          L230 180
-          L290 130
-          L340 190
-          L400 150
-          L400 300
-          L0 300 Z"
-        fill="#000"
-        opacity=".14"/>
+    </defs>
 
 
-      <path
-        d="
-          M0 250
-          L50 190
-          L100 220
-          L160 160
-          L210 210
-          L270 170
-          L320 220
-          L400 190
-          L400 300
-          L0 300 Z"
-        fill="#000"
-        opacity=".22"/>
+    <rect
+      width="400"
+      height="250"
+      fill="url(#${id})"
+    />
 
 
-      <circle
-        cx="330"
-        cy="55"
-        r="26"
-        fill="#fff"
-        opacity=".85"/>
+    <circle
+      cx="326"
+      cy="50"
+      r="27"
+      fill="#fff"
+      opacity=".82"
+    />
 
-    </svg>
+
+    <path
+      d="
+        M0 205
+        L58 132
+        L108 182
+        L165 91
+        L230 176
+        L291 121
+        L350 180
+        L400 132
+        L400 250
+        L0 250
+        Z
+      "
+      fill="#0B2D20"
+      opacity=".35"
+    />
+
+
+    <path
+      d="
+        M0 230
+        L48 164
+        L97 206
+        L154 132
+        L212 204
+        L275 146
+        L327 204
+        L400 164
+        L400 250
+        L0 250
+        Z
+      "
+      fill="#071D15"
+      opacity=".55"
+    />
+
+  </svg>
 
   `;
+
 }
 
 
 /* =========================================================
-   HOME
+   RENDER TRIPS
 ========================================================= */
 
-function renderTripList(data = trips){
+function renderTrips(list = trips){
 
-  const list =
+  const container =
     document.getElementById('trip-list');
 
-  if(!data.length){
+  if(!container){
+    return;
+  }
 
-    list.innerHTML = `
 
-      <div style="
-        background:#fff;
-        border-radius:20px;
-        padding:35px 20px;
-        text-align:center;
-        color:var(--sub);
-      ">
+  if(!list.length){
 
-        ยังไม่มีทริปในหมวดนี้
+    container.innerHTML = `
 
+      <div class="empty-card">
+        ไม่พบทริปในหมวดนี้
       </div>
 
     `;
@@ -2748,15 +4324,15 @@ function renderTripList(data = trips){
   }
 
 
-  list.innerHTML =
-    data.map(t => `
+  container.innerHTML =
+    list.map(t => `
 
-      <div
+      <article
         class="trip-card"
-        onclick="openDetail('${t.id}')">
+        onclick="openDetail('${t.id}')"
+      >
 
-
-        <div class="trip-photo">
+        <div class="trip-image">
 
           ${mountainSVG(
             t.gradient[0],
@@ -2764,64 +4340,71 @@ function renderTripList(data = trips){
           )}
 
 
-          <span class="tag-badge">
+          <div class="trip-tag">
             ${t.tag}
-          </span>
+          </div>
 
 
-          <span class="heart-badge">
+          <div class="trip-heart">
 
             <svg
-              width="16"
-              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2">
-
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path
                 d="
-                  M12 21s-7-4.35-9.5-8.5
+                  M12 21
+                  s-7-4.35
+                  -9.5-8.5
                   C.7 9 2 5 6 5
                   c2 0 3.5 1.2 4 2.5
                   C10.5 6.2 12 5 14 5
                   c4 0 5.3 4 3.5 7.5
-                  C19 16.65 12 21 12 21z"/>
-
+                  C19 16.65 12 21 12 21z
+                "
+              />
             </svg>
 
-          </span>
+          </div>
 
         </div>
 
 
         <div class="trip-body">
 
-          <h3>
+          <h3 class="trip-name">
             ${t.name}
           </h3>
 
 
-          <div class="trip-loc">
+          <div class="trip-location">
 
             <svg
-              width="12"
-              height="12"
+              width="13"
+              height="13"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2">
-
+              stroke-width="2"
+            >
               <path
                 d="
-                  M21 10c0 6-9 12-9 12
-                  S3 16 3 10a9 9 0
-                  1118 0z"/>
+                  M21 10
+                  c0 6-9 12-9 12
+                  S3 16 3 10
+                  a9 9 0 1 1 18 0z
+                "
+              />
 
               <circle
                 cx="12"
                 cy="10"
-                r="3"/>
+                r="3"
+              />
 
             </svg>
 
@@ -2833,22 +4416,24 @@ function renderTripList(data = trips){
           <div class="trip-date">
 
             <svg
-              width="11"
-              height="11"
+              width="12"
+              height="12"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2">
-
+              stroke-width="2"
+            >
               <rect
                 x="3"
                 y="4"
                 width="18"
                 height="17"
-                rx="2"/>
+                rx="2"
+              />
 
-              <path
-                d="M8 2v4M16 2v4M3 9h18"/>
+              <path d="M8 2v4"/>
+              <path d="M16 2v4"/>
+              <path d="M3 9h18"/>
 
             </svg>
 
@@ -2857,27 +4442,31 @@ function renderTripList(data = trips){
           </div>
 
 
-          <div class="trip-foot">
+          <div class="trip-footer">
 
-            <div class="seats-left">
+            <div class="trip-seats">
 
               <svg
-                width="12"
-                height="12"
+                width="14"
+                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2">
-
+                stroke-width="2"
+              >
                 <circle
                   cx="12"
                   cy="8"
-                  r="4"/>
+                  r="4"
+                />
 
                 <path
                   d="
-                    M4 21c0-4 4-6 8-6
-                    s8 2 8 6"/>
+                    M4 21
+                    c0-4 4-6 8-6
+                    s8 2 8 6
+                  "
+                />
 
               </svg>
 
@@ -2886,13 +4475,13 @@ function renderTripList(data = trips){
             </div>
 
 
-            <div class="price">
+            <div class="trip-price">
 
               ${t.price.toLocaleString('th-TH')}
 
-              <span>
+              <small>
                 บาท/ท่าน
-              </span>
+              </small>
 
             </div>
 
@@ -2900,9 +4489,10 @@ function renderTripList(data = trips){
 
         </div>
 
-      </div>
+      </article>
 
     `).join('');
+
 }
 
 
@@ -2910,50 +4500,66 @@ function renderTripList(data = trips){
    FILTER
 ========================================================= */
 
-function filterTrips(type,element){
+function filterTrips(type,button){
 
   document
-    .querySelectorAll('.chip')
-    .forEach(chip =>
-      chip.classList.remove('active')
+    .querySelectorAll('.category')
+    .forEach(btn =>
+      btn.classList.remove('active')
     );
 
-  element.classList.add('active');
+
+  button.classList.add('active');
 
 
   let result = trips;
 
 
-  if(type !== 'all'){
+  if(type === 'hiking'){
 
-    if(type === 'coming'){
-
-      result = trips;
-
-    }else{
-
-      result =
-        trips.filter(t => t.tag === type);
-
-    }
+    result =
+      trips.filter(t =>
+        t.type === 'hiking'
+      );
 
   }
 
 
-  renderTripList(result);
+  if(type === 'oneday'){
+
+    result =
+      trips.filter(t =>
+        t.type === 'oneday'
+      );
+
+  }
+
+
+  if(type === 'soon'){
+
+    result =
+      trips.filter(t =>
+        t.id !== 'changphueak'
+      );
+
+  }
+
+
+  renderTrips(result);
+
 }
 
 
 /* =========================================================
-   DETAIL
+   OPEN DETAIL
 ========================================================= */
 
 function openDetail(id){
 
-  const t =
-    trips.find(x => x.id === id);
+  const trip =
+    trips.find(t => t.id === id);
 
-  if(!t){
+  if(!trip){
     return;
   }
 
@@ -2961,252 +4567,318 @@ function openDetail(id){
   currentTripId = id;
 
 
-  const hero =
-    document.getElementById('detail-hero');
+  document
+    .getElementById('detail-hero')
+    .innerHTML = `
+
+      ${mountainSVG(
+        trip.gradient[0],
+        trip.gradient[1]
+      )}
+
+      <div class="detail-overlay"></div>
 
 
-  const oldSvg =
-    hero.querySelector(':scope > svg');
+      <div class="detail-actions">
 
-  if(oldSvg){
-    oldSvg.remove();
-  }
+        <button
+          class="detail-action"
+          onclick="showScreen('home')"
+        >
 
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
 
-  hero.style.background =
-    t.gradient[1];
-
-
-  hero.insertAdjacentHTML(
-    'afterbegin',
-    mountainSVG(
-      t.gradient[0],
-      t.gradient[1]
-    )
-  );
-
-
-  document.getElementById(
-    'detail-title'
-  ).textContent = t.name;
+        </button>
 
 
-  document.getElementById(
-    'detail-location-text'
-  ).textContent = t.loc;
+        <div class="detail-actions-right">
+
+          <button class="detail-action">
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+
+              <path d="M8.6 13.5l6.8 3.9"/>
+              <path d="M15.4 6.6L8.6 10.5"/>
+            </svg>
+
+          </button>
 
 
-  document.getElementById(
-    'detail-date-text'
-  ).textContent = t.date;
+          <button
+            class="detail-action"
+            onclick="toggleHeart()"
+          >
 
+            <svg
+              id="heart-svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="
+                  M12 21
+                  s-7-4.35
+                  -9.5-8.5
+                  C.7 9 2 5 6 5
+                  c2 0 3.5 1.2 4 2.5
+                  C10.5 6.2 12 5 14 5
+                  c4 0 5.3 4 3.5 7.5
+                  C19 16.65 12 21 12 21z
+                "
+              />
+            </svg>
 
-  document.getElementById(
-    'detail-price'
-  ).textContent =
-    t.price.toLocaleString('th-TH')
-    + ' บาท/ท่าน';
+          </button>
 
+        </div>
 
-  document.getElementById(
-    'sticky-price'
-  ).textContent =
-    t.price.toLocaleString('th-TH')
-    + ' บาท';
-
-
-  document.getElementById(
-    'detail-desc'
-  ).textContent = t.desc;
-
-
-  document.getElementById(
-    'detail-stats'
-  ).innerHTML = `
-
-    <div class="stat-item">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2">
-
-        <path
-          d="
-            M12 2l3 7h7l-5.5 4.5
-            L18.5 21
-            12 16.5
-            5.5 21
-            7.5 13.5
-            2 9h7z"/>
-
-      </svg>
-
-      <div class="v">
-        ${t.difficulty}
       </div>
 
-      <div class="l">
-        ระดับความยาก
+
+      <div class="detail-price">
+
+        <small>
+          ราคาเริ่มต้น
+        </small>
+
+        ${trip.price.toLocaleString('th-TH')} บาท/ท่าน
+
       </div>
 
-    </div>
+    `;
 
 
-    <div class="stat-item">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2">
-
-        <path
-          d="
-            M3 12h4l3-9
-            4 18 3-9h4"/>
-
-      </svg>
-
-      <div class="v">
-        ${t.distance}
-      </div>
-
-      <div class="l">
-        ระยะทาง
-      </div>
-
-    </div>
+  document
+    .getElementById('detail-title')
+    .textContent =
+      trip.name;
 
 
-    <div class="stat-item">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2">
-
-        <circle
-          cx="12"
-          cy="12"
-          r="9"/>
-
-        <path
-          d="M12 7v5l3 3"/>
-
-      </svg>
-
-      <div class="v">
-        ${t.duration}
-      </div>
-
-      <div class="l">
-        ระยะเวลา
-      </div>
-
-    </div>
+  document
+    .getElementById('detail-location')
+    .textContent =
+      trip.loc;
 
 
-    <div class="stat-item">
-
-      <svg viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2">
-
-        <circle
-          cx="9"
-          cy="8"
-          r="3"/>
-
-        <path
-          d="
-            M2 20c0-3.5 3-5.5
-            7-5.5s7 2 7 5.5"/>
-
-        <circle
-          cx="17"
-          cy="9"
-          r="2.5"/>
-
-        <path
-          d="
-            M16 14.2
-            c2.7.4 4.5 2
-            4.5 4.8"/>
-
-      </svg>
-
-      <div class="v">
-        ${t.capacity}
-      </div>
-
-      <div class="l">
-        รับจำนวน
-      </div>
-
-    </div>
-
-  `;
+  document
+    .getElementById('detail-date')
+    .textContent =
+      trip.date;
 
 
-  document.getElementById(
-    'detail-highlights'
-  ).innerHTML =
+  document
+    .getElementById('sticky-price')
+    .textContent =
+      trip.price.toLocaleString('th-TH')
+      + ' บาท';
 
-    t.highlights.map(h => `
 
-      <li>
+  document
+    .getElementById('detail-description')
+    .textContent =
+      trip.desc;
+
+
+  document
+    .getElementById('detail-stats')
+    .innerHTML = `
+
+      <div class="stat">
 
         <svg
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2.4">
+          stroke-width="2"
+        >
+          <path
+            d="
+              M12 2
+              l3 7
+              h7
+              l-5.5 4.5
+              L18.5 21
+              12 16.5
+              5.5 21
+              l2-7.5
+              L2 9
+              h7z
+            "
+          />
+        </svg>
 
-          <path d="M20 6L9 17l-5-5"/>
+        <div class="stat-value">
+          ${trip.difficulty}
+        </div>
+
+        <div class="stat-label">
+          ระดับ
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M3 12h4l3-9 4 18 3-9h4"/>
+        </svg>
+
+        <div class="stat-value">
+          ${trip.distance}
+        </div>
+
+        <div class="stat-label">
+          ระยะทาง
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="9"
+          />
+
+          <path
+            d="M12 7v5l3 3"
+          />
+        </svg>
+
+        <div class="stat-value">
+          ${trip.duration}
+        </div>
+
+        <div class="stat-label">
+          ระยะเวลา
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle
+            cx="9"
+            cy="8"
+            r="3"
+          />
+
+          <path
+            d="
+              M2 20
+              c0-3.5 3-5.5 7-5.5
+              s7 2 7 5.5
+            "
+          />
+
+          <circle
+            cx="17"
+            cy="9"
+            r="2.5"
+          />
 
         </svg>
 
-        ${h}
+        <div class="stat-value">
+          ${trip.capacity}
+        </div>
 
-      </li>
+        <div class="stat-label">
+          รับจำนวน
+        </div>
 
-    `).join('');
+      </div>
+
+    `;
+
+
+  document
+    .getElementById('detail-highlights')
+    .innerHTML =
+      trip.highlights.map(h => `
+
+        <li>
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+
+          ${h}
+
+        </li>
+
+      `).join('');
 
 
   heartOn = false;
 
 
-  const heartSvg =
-    document.querySelector(
-      '#heart-btn svg'
-    );
+  showScreen('detail');
 
-
-  if(heartSvg){
-
-    heartSvg.setAttribute(
-      'fill',
-      'none'
-    );
-
-  }
-
-
-  nav('detail');
 }
 
+
+/* =========================================================
+   HEART
+========================================================= */
 
 function toggleHeart(){
 
   heartOn = !heartOn;
 
-
   const svg =
-    document.querySelector(
-      '#heart-btn svg'
-    );
-
+    document.getElementById('heart-svg');
 
   if(svg){
 
@@ -3223,7 +4895,7 @@ function toggleHeart(){
 
 
 /* =========================================================
-   SEATS
+   SEAT LABEL
 ========================================================= */
 
 function seatLabel(van,n){
@@ -3237,57 +4909,59 @@ function seatLabel(van,n){
 }
 
 
-function seatClass(van,n){
+/* =========================================================
+   RENDER SEATS
+========================================================= */
 
-  if(
-    seatBooked[van]
-      .includes(n)
-  ){
-
-    return 'booked';
-
-  }
-
-
-  if(
-    selectedSeats[van]
-      .has(n)
-  ){
-
-    return 'selected';
-
-  }
-
-
-  return 'available';
-
-}
-
-
-function renderVanGrid(van){
+function renderVan(van){
 
   const grid =
     document.getElementById(
       'van' + van + '-grid'
     );
 
+  if(!grid){
+    return;
+  }
+
 
   let html = '';
 
 
-  for(
-    let n=1;
-    n<=10;
-    n++
-  ){
+  for(let n=1;n<=10;n++){
+
+    let cls = 'available';
+
+
+    if(
+      bookedSeats[van]
+      .includes(n)
+    ){
+
+      cls = 'booked';
+
+    }
+    else if(
+      selectedSeats[van]
+      .has(n)
+    ){
+
+      cls = 'selected';
+
+    }
+
+
+    if(n > 8){
+      cls += ' last-row';
+    }
+
 
     html += `
 
       <div
-        class="seat ${seatClass(van,n)}"
-        data-van="${van}"
-        data-n="${n}"
-        onclick="toggleSeat(${van},${n})">
+        class="seat ${cls}"
+        onclick="toggleSeat(${van},${n})"
+      >
 
         ${seatLabel(van,n)}
 
@@ -3303,10 +4977,14 @@ function renderVanGrid(van){
 }
 
 
+/* =========================================================
+   TOGGLE SEAT
+========================================================= */
+
 function toggleSeat(van,n){
 
   if(
-    seatBooked[van]
+    bookedSeats[van]
       .includes(n)
   ){
 
@@ -3323,7 +5001,8 @@ function toggleSeat(van,n){
     selectedSeats[van]
       .delete(n);
 
-  }else{
+  }
+  else{
 
     selectedSeats[van]
       .add(n);
@@ -3331,17 +5010,21 @@ function toggleSeat(van,n){
   }
 
 
-  renderVanGrid(1);
-  renderVanGrid(2);
+  renderVan(1);
+  renderVan(2);
 
-  updateSeatSticky();
+  updateSeatInfo();
 
 }
 
 
-function updateSeatSticky(){
+/* =========================================================
+   UPDATE SEAT INFO
+========================================================= */
 
-  const all = [];
+function updateSeatInfo(){
+
+  const seats = [];
 
 
   [1,2].forEach(van => {
@@ -3349,7 +5032,7 @@ function updateSeatSticky(){
     selectedSeats[van]
       .forEach(n => {
 
-        all.push(
+        seats.push(
           seatLabel(van,n)
         );
 
@@ -3358,51 +5041,24 @@ function updateSeatSticky(){
   });
 
 
-  document.getElementById(
-    'seat-count-label'
-  ).textContent =
-    `เลือกแล้ว ${all.length} ที่นั่ง`;
+  document
+    .getElementById('seat-count')
+    .textContent =
+      `เลือกแล้ว ${seats.length} ที่นั่ง`;
 
 
-  document.getElementById(
-    'seat-codes'
-  ).textContent =
-    all.length
-      ? all.join(', ')
-      : '—';
+  document
+    .getElementById('seat-codes')
+    .textContent =
+      seats.length
+        ? seats.join(', ')
+        : '—';
 
 
-  document.getElementById(
-    'seat-next-btn'
-  ).disabled =
-    all.length === 0;
-
-}
-
-
-/* =========================================================
-   DETAIL -> SEATS
-========================================================= */
-
-function goFromDetailToSeats(){
-
-  if(!currentTripId){
-
-    alert(
-      'กรุณาเลือกทริปก่อน'
-    );
-
-    return;
-
-  }
-
-
-  renderVanGrid(1);
-  renderVanGrid(2);
-
-  updateSeatSticky();
-
-  nav('seats');
+  document
+    .getElementById('seat-next')
+    .disabled =
+      seats.length === 0;
 
 }
 
@@ -3413,49 +5069,38 @@ function goFromDetailToSeats(){
 
 function goToPayment(){
 
-  const totalSeats =
-    selectedSeats[1].size +
+  const count =
+    selectedSeats[1].size
+    +
     selectedSeats[2].size;
 
 
-  if(totalSeats === 0){
-
-    alert(
-      'กรุณาเลือกที่นั่งก่อน'
-    );
-
+  if(count === 0){
     return;
-
   }
 
 
   const deposit =
-    totalSeats * 1000;
+    count * 1000;
 
 
-  document.getElementById(
-    'pay-instruction'
-  ).textContent =
+  document
+    .getElementById('payment-instruction')
+    .textContent =
+      `มัดจำ ${deposit.toLocaleString('th-TH')} บาท • ภายใน 30 นาที`;
 
-    `กรุณาโอนมัดจำ ท่านละ 1,000 บาท ภายใน 30 นาที (รวม ${deposit.toLocaleString('th-TH')} บาท)`;
 
-
-  clearInterval(
-    depositTimerInterval
-  );
+  clearInterval(timerInterval);
 
 
   secondsLeft =
     30 * 60;
 
 
-  updateTimerDisplay();
+  updateTimer();
 
 
-  updateConfirmButton();
-
-
-  depositTimerInterval =
+  timerInterval =
     setInterval(() => {
 
       secondsLeft--;
@@ -3466,59 +5111,35 @@ function goToPayment(){
         secondsLeft = 0;
 
         clearInterval(
-          depositTimerInterval
+          timerInterval
         );
 
-        depositTimerInterval =
-          null;
-
-        updateTimerDisplay();
-
-        updateConfirmButton();
+        alert(
+          'หมดเวลาการชำระเงิน กรุณาเลือกที่นั่งใหม่'
+        );
 
         return;
 
       }
 
 
-      updateTimerDisplay();
-
-      updateConfirmButton();
+      updateTimer();
 
     },1000);
 
 
-  nav('payment');
+  showScreen('payment');
 
 }
 
 
-function updateTimerDisplay(){
+/* =========================================================
+   TIMER
+========================================================= */
 
-  const timer =
-    document.getElementById(
-      'pay-timer'
-    );
+function updateTimer(){
 
-
-  if(secondsLeft <= 0){
-
-    timer.textContent =
-      'หมดเวลา';
-
-    timer.style.color =
-      'var(--red)';
-
-    document
-      .getElementById('timer-box')
-      .classList.add('expired');
-
-    return;
-
-  }
-
-
-  const m =
+  const minutes =
     String(
       Math.floor(
         secondsLeft / 60
@@ -3526,143 +5147,80 @@ function updateTimerDisplay(){
     ).padStart(2,'0');
 
 
-  const s =
+  const seconds =
     String(
       secondsLeft % 60
     ).padStart(2,'0');
 
 
-  timer.textContent =
-    `${m}:${s}`;
+  document
+    .getElementById('timer')
+    .textContent =
+      `${minutes}:${seconds}`;
 
 }
 
 
-function updateConfirmButton(){
-
-  const btn =
-    document.getElementById(
-      'confirm-payment-btn'
-    );
-
-
-  const input =
-    document.getElementById(
-      'upload-input'
-    );
-
-
-  const hasSlip =
-    input.files &&
-    input.files.length > 0;
-
-
-  if(secondsLeft <= 0){
-
-    btn.disabled = true;
-
-    btn.textContent =
-      'หมดเวลาชำระเงิน';
-
-    return;
-
-  }
-
-
-  if(!hasSlip){
-
-    btn.disabled = false;
-
-    btn.textContent =
-      'ยืนยันการชำระเงิน';
-
-    return;
-
-  }
-
-
-  btn.disabled = false;
-
-  btn.textContent =
-    'ยืนยันการชำระเงิน';
-
-}
-
+/* =========================================================
+   FILE
+========================================================= */
 
 function fileChosen(){
 
   const input =
     document.getElementById(
-      'upload-input'
+      'slip-input'
     );
 
 
-  const drop =
+  const box =
     document.getElementById(
-      'upload-drop'
-    );
-
-
-  if(
-    input.files &&
-    input.files[0]
-  ){
-
-    const file =
-      input.files[0];
-
-
-    if(
-      !file.type.startsWith('image/')
-    ){
-
-      alert(
-        'กรุณาเลือกไฟล์รูปภาพเท่านั้น'
-      );
-
-      input.value = '';
-
-      return;
-
-    }
-
-
-    drop.classList.add(
-      'filled'
-    );
-
-
-    document.getElementById(
-      'upload-text'
-    ).textContent =
-      'อัปโหลดแล้ว: ' +
-      file.name;
-
-
-    document.getElementById(
-      'upload-sub'
-    ).textContent =
-      'แตะเพื่อเปลี่ยนไฟล์';
-
-
-    updateConfirmButton();
-
-  }
-
-}
-
-
-function confirmPayment(){
-
-  const input =
-    document.getElementById(
-      'upload-input'
+      'upload-box'
     );
 
 
   if(
     !input.files ||
-    !input.files.length
+    !input.files[0]
+  ){
+
+    return;
+
+  }
+
+
+  box.classList.add('filled');
+
+
+  document
+    .getElementById('upload-main')
+    .textContent =
+      'อัปโหลดสลิปแล้ว';
+
+
+  document
+    .getElementById('upload-sub')
+    .textContent =
+      input.files[0].name;
+
+}
+
+
+/* =========================================================
+   CONFIRM PAYMENT
+========================================================= */
+
+function confirmPayment(){
+
+  const input =
+    document.getElementById(
+      'slip-input'
+    );
+
+
+  if(
+    !input.files ||
+    !input.files[0]
   ){
 
     alert(
@@ -3674,48 +5232,29 @@ function confirmPayment(){
   }
 
 
-  if(secondsLeft <= 0){
-
-    alert(
-      'หมดเวลาชำระเงินแล้ว กรุณาทำรายการใหม่'
-    );
-
-    return;
-
-  }
-
-
   clearInterval(
-    depositTimerInterval
+    timerInterval
   );
-
-
-  depositTimerInterval =
-    null;
 
 
   buildSummary();
 
-  nav('summary');
+
+  showScreen('summary');
 
 }
 
 
 /* =========================================================
-   SUMMARY
+   BUILD SUMMARY
 ========================================================= */
 
 function buildSummary(){
 
-  const t =
+  const trip =
     trips.find(
-      x => x.id === currentTripId
+      t => t.id === currentTripId
     );
-
-
-  if(!t){
-    return;
-  }
 
 
   const all = [];
@@ -3741,100 +5280,107 @@ function buildSummary(){
 
 
   const code =
-    'YDEE' +
-    now.getFullYear()
+    'YDEE'
+    +
+    now
+      .getFullYear()
       .toString()
-      .slice(-2) +
-
+      .slice(-2)
+    +
     String(
       now.getMonth()+1
-    ).padStart(2,'0') +
-
+    ).padStart(2,'0')
+    +
     String(
       now.getDate()
-    ).padStart(2,'0') +
-
-    '-' +
-
-    String(
-      Math.floor(
-        Math.random()*900+100
-      )
+    ).padStart(2,'0')
+    +
+    '-'
+    +
+    Math.floor(
+      Math.random()*900+100
     );
 
 
-  document.getElementById(
-    'sum-code'
-  ).textContent =
-    code;
+  document
+    .getElementById('summary-code')
+    .textContent =
+      code;
 
 
-  document.getElementById(
-    'sum-trip'
-  ).textContent =
-    t.name;
+  document
+    .getElementById('summary-trip')
+    .textContent =
+      trip.name;
 
 
-  document.getElementById(
-    'sum-date'
-  ).textContent =
-    t.date;
+  document
+    .getElementById('summary-date')
+    .textContent =
+      trip.date;
 
 
-  const byVan = {
-    1:[],
-    2:[]
-  };
+  const van1 = [];
+  const van2 = [];
 
 
-  all.forEach(s => {
+  all.forEach(item => {
 
-    byVan[s.van]
-      .push(s.label);
+    if(item.van === 1){
+      van1.push(item.label);
+    }
+    else{
+      van2.push(item.label);
+    }
 
   });
 
 
-  const seatLines = [];
+  const lines = [];
 
 
-  if(byVan[1].length){
+  if(van1.length){
 
-    seatLines.push(
-      `รถตู้คันที่ 1 : ${byVan[1].join(', ')}`
+    lines.push(
+      'รถตู้คันที่ 1 : '
+      +
+      van1.join(', ')
     );
 
   }
 
 
-  if(byVan[2].length){
+  if(van2.length){
 
-    seatLines.push(
-      `รถตู้คันที่ 2 : ${byVan[2].join(', ')}`
+    lines.push(
+      'รถตู้คันที่ 2 : '
+      +
+      van2.join(', ')
     );
 
   }
 
 
-  document.getElementById(
-    'sum-seats'
-  ).innerHTML =
-    seatLines.join('<br>');
+  document
+    .getElementById('summary-seats')
+    .innerHTML =
+      lines.join('<br>');
 
 
-  document.getElementById(
-    'sum-count'
-  ).textContent =
-    all.length + ' ท่าน';
+  document
+    .getElementById('summary-count')
+    .textContent =
+      all.length + ' ท่าน';
 
 
-  document.getElementById(
-    'sum-deposit'
-  ).textContent =
-    (
-      all.length * 1000
-    ).toLocaleString('th-TH')
-    + ' บาท';
+  document
+    .getElementById('summary-deposit')
+    .textContent =
+      (
+        all.length * 1000
+      ).toLocaleString('th-TH')
+      +
+      ' บาท';
 
 }
 
@@ -3843,20 +5389,7 @@ function buildSummary(){
    RESET
 ========================================================= */
 
-function resetAndGoHome(){
-
-  clearInterval(
-    depositTimerInterval
-  );
-
-
-  depositTimerInterval =
-    null;
-
-
-  secondsLeft =
-    30 * 60;
-
+function resetAndHome(){
 
   selectedSeats[1] =
     new Set();
@@ -3867,72 +5400,66 @@ function resetAndGoHome(){
 
   const input =
     document.getElementById(
-      'upload-input'
+      'slip-input'
     );
 
 
-  input.value = '';
+  if(input){
+    input.value = '';
+  }
 
 
-  const drop =
+  const box =
     document.getElementById(
-      'upload-drop'
+      'upload-box'
     );
 
 
-  drop.classList.remove(
-    'filled'
-  );
+  if(box){
+    box.classList.remove(
+      'filled'
+    );
+  }
 
 
-  document.getElementById(
-    'upload-text'
-  ).textContent =
-    'คลิกเพื่ออัปโหลดสลิป';
+  document
+    .getElementById('upload-main')
+    .textContent =
+      'แตะเพื่ออัปโหลดสลิป';
 
 
-  document.getElementById(
-    'upload-sub'
-  ).textContent =
-    '(รองรับไฟล์ JPG, PNG)';
+  document
+    .getElementById('upload-sub')
+    .textContent =
+      'JPG / PNG';
 
 
-  document.getElementById(
-    'pay-timer'
-  ).textContent =
-    '30:00';
+  renderVan(1);
+  renderVan(2);
+
+  updateSeatInfo();
 
 
-  document.getElementById(
-    'timer-box'
-  ).classList.remove(
-    'expired'
-  );
-
-
-  renderVanGrid(1);
-  renderVanGrid(2);
-
-  updateSeatSticky();
-
-  updateConfirmButton();
-
-  nav('home');
+  showScreen('home');
 
 }
 
 
 /* =========================================================
-   NAVIGATION
+   SCREEN NAVIGATION
 ========================================================= */
 
-function nav(name){
+function showScreen(name){
 
   document
     .querySelectorAll('.screen')
-    .forEach(
-      s => s.classList.remove('active')
-    );
+    .forEach(screen => {
+
+      screen.classList.remove(
+        'active'
+      );
+
+    });
 
 
   const target =
@@ -3946,49 +5473,67 @@ function nav(name){
   }
 
 
-  target.classList.add('active');
+  target.classList.add(
+    'active'
+  );
 
-  target.scrollTop = 0;
+
+  window.scrollTo({
+    top:0,
+    behavior:'instant'
+  });
+
+
+  updateBottomNav(name);
 
 }
 
 
 /* =========================================================
-   HOME BUTTONS
+   BOTTOM NAV
 ========================================================= */
 
-function scrollToTrips(){
+function updateBottomNav(name){
 
-  nav('home');
+  document
+    .querySelectorAll('.nav-button')
+    .forEach(button => {
 
-  setTimeout(() => {
+      button.classList.remove(
+        'active'
+      );
 
-    document
-      .getElementById('trip-list')
-      .scrollIntoView({
-        behavior:'smooth',
-        block:'start'
-      });
-
-  },50);
-
-}
+    });
 
 
-function showMyTrips(){
-
-  alert(
-    'ระบบ "ทริปของฉัน" จะเชื่อมกับข้อมูลการจองจริงในขั้นตอนถัดไป'
-  );
-
-}
+  let target = name;
 
 
-function showProfile(){
+  if(
+    name === 'detail' ||
+    name === 'seats' ||
+    name === 'payment' ||
+    name === 'summary'
+  ){
 
-  alert(
-    'ระบบโปรไฟล์จะเพิ่มในขั้นตอนถัดไป'
-  );
+    target = 'booking';
+
+  }
+
+
+  const button =
+    document.querySelector(
+      `.nav-button[data-nav="${target}"]`
+    );
+
+
+  if(button){
+
+    button.classList.add(
+      'active'
+    );
+
+  }
 
 }
 
@@ -3997,17 +5542,49 @@ function showProfile(){
    INIT
 ========================================================= */
 
-renderTripList();
+renderTrips();
 
-renderVanGrid(1);
+renderVan(1);
+renderVan(2);
 
-renderVanGrid(2);
+updateSeatInfo();
 
-updateSeatSticky();
+updateTimer();
 
-updateTimerDisplay();
+updateBottomNav('home');
 
-updateConfirmButton();
+
+/* =========================================================
+   PREVENT DOUBLE TAP ZOOM
+========================================================= */
+
+let lastTouchEnd = 0;
+
+
+document.addEventListener(
+  'touchend',
+  function(event){
+
+    const now =
+      Date.now();
+
+
+    if(
+      now - lastTouchEnd <= 300
+    ){
+
+      event.preventDefault();
+
+    }
+
+
+    lastTouchEnd = now;
+
+  },
+  {
+    passive:false
+  }
+);
 
 </script>
 
