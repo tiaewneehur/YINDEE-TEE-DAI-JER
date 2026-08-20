@@ -46,13 +46,6 @@
     position:relative;
     display:flex; flex-direction:column;
   }
-  .statusbar{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:16px 26px 6px; font-size:14px; font-weight:600; color:var(--ink); flex-shrink:0;
-    background:transparent; position:relative; z-index:3;
-  }
-  .statusbar.on-image{color:#fff;}
-  .statusbar .icons{display:flex; align-items:center; gap:5px;}
   .home-indicator{
     position:absolute; bottom:8px; left:50%; transform:translateX(-50%);
     width:134px; height:5px; border-radius:3px; background:rgba(0,0,0,0.55); z-index:20;
@@ -68,7 +61,7 @@
   /* ---------------- SHARED UI ---------------- */
   .topbar{
     display:flex; align-items:center; justify-content:space-between;
-    padding:6px 20px 14px; flex-shrink:0;
+    padding:18px 20px 14px; flex-shrink:0;
   }
   .icon-btn{
     width:36px; height:36px; border-radius:50%; background:var(--card);
@@ -108,7 +101,7 @@
   .step-line.done{background:var(--pine-3);}
 
   /* ============ HOME ============ */
-  #screen-home .topbar{padding-top:2px;}
+  #screen-home .topbar{padding-top:14px;}
   .filters{display:flex; gap:8px; padding:2px 20px 16px; overflow-x:auto;}
   .filters::-webkit-scrollbar{display:none;}
   .chip{
@@ -124,7 +117,7 @@
   }
   .trip-photo{
     height:150px; position:relative; display:flex; align-items:flex-start; justify-content:space-between;
-    padding:14px; overflow:hidden;
+    padding:14px; overflow:hidden; isolation:isolate;
   }
   .trip-photo svg{position:absolute; inset:0; width:100%; height:100%;}
   .tag-badge{
@@ -302,7 +295,6 @@
 
   <!-- ================= SCREEN: HOME ================= -->
   <div class="screen active" id="screen-home">
-    <div class="statusbar"><span>9:41</span><span class="icons">📶 📡 🔋</span></div>
     <div class="topbar">
       <button class="icon-btn" aria-label="เมนู"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       <div class="brand">
@@ -329,7 +321,6 @@
   <!-- ================= SCREEN: DETAIL ================= -->
   <div class="screen" id="screen-detail">
     <div class="hero-photo" id="detail-hero">
-      <div class="statusbar on-image"><span>9:41</span><span class="icons">📶 📡 🔋</span></div>
       <div class="topbar">
         <button class="icon-btn ghost" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
         <div style="display:flex; gap:10px;">
@@ -360,7 +351,6 @@
 
   <!-- ================= SCREEN: SEATS ================= -->
   <div class="screen" id="screen-seats">
-    <div class="statusbar"><span>9:41</span><span class="icons">📶 📡 🔋</span></div>
     <div class="topbar">
       <button class="icon-btn" onclick="nav('detail')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
       <h3 style="font-size:15.5px;">ผังที่นั่งรถตู้ 2 คัน</h3>
@@ -401,7 +391,6 @@
 
   <!-- ================= SCREEN: PAYMENT ================= -->
   <div class="screen" id="screen-payment">
-    <div class="statusbar"><span>9:41</span><span class="icons">📶 📡 🔋</span></div>
     <div class="topbar">
       <button class="icon-btn" onclick="nav('seats')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
       <h3 style="font-size:15.5px;">โอนมัดจำทริป</h3>
@@ -468,7 +457,6 @@
 
   <!-- ================= SCREEN: SUMMARY ================= -->
   <div class="screen" id="screen-summary">
-    <div class="statusbar"><span>9:41</span><span class="icons">📶 📡 🔋</span></div>
     <div class="topbar">
       <button class="icon-btn" onclick="nav('payment')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
       <h3 style="font-size:15.5px;">สรุปการจองทริป</h3>
