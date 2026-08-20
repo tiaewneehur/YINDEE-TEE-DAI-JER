@@ -1,1 +1,2505 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<title>ยินดีที่ได้เจอ 🌲✨</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+<!-- ============================================================
+     PWA — เพิ่มลงหน้าจอโฮมแบบมีไอคอนแอปตัวเอง (Add to Home Screen)
+     ============================================================ -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#1f5136" />
+<meta name="apple-mobile-web-app-title" content="ยินดีที่ได้เจอ" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-icon" href="logo-yindee.png" />
+<link rel="icon" href="logo-yindee.png" />
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+/* ============================================================
+   RESET & THEME TOKENS
+   — โทน "ป่าไม้ยามเช้า": เขียวมอสเข้มลึก + สีทรายอุ่นเป็นแอคเซนต์
+   ============================================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg: #0b1911;          /* พื้นหลังหลัก เขียวป่าเข้มเกือบดำ */
+  --bg2: #12241a;
+  --bg3: #172d21;
+  --moss: #4f9d6e;        /* เขียวมอส — สีหลักของแบรนด์ */
+  --moss2: #2f7048;
+  --sand: #e3b06f;        /* สีทราย/แดดยามเช้า — แอคเซนต์ CTA */
+  --sand2: #c98f45;
+  --green: var(--moss);
+  --green2: var(--moss2);
+  --red: #e5484d;
+  --yellow: #e3b06f;
+  --text: #f2f0e6;
+  --muted: #6f8a76;
+  --sub: #a9c2ac;
+  --border: rgba(255, 255, 255, 0.07);
+  --card: rgba(255, 255, 255, 0.03);
+}
+
+body {
+  font-family: 'TH Sarabun New', 'THSarabunNew', 'Sarabun', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#pastList.expanded .past-extra { display: block !important; }
+.expanded .hist-extra { display: block !important; }
+
+/* ============================================================
+   LOGIN PAGE
+   ============================================================ */
+#loginPage {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(79, 157, 110, .16), transparent 65%), var(--bg);
+}
+#loginPage.hidden { display: none; }
+
+#loadingScreen {
+  position: fixed; inset: 0; z-index: 9998;
+  display: none; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(79, 157, 110, .16), transparent 65%), var(--bg);
+}
+#loadingScreen.show { display: flex; }
+.loading-ring-wrap { position: relative; width: 116px; height: 116px; display: flex; align-items: center; justify-content: center; }
+.loading-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 4px solid rgba(79, 157, 110, .15);
+  border-top-color: var(--moss); border-right-color: var(--sand);
+  animation: loadingSpin 1s linear infinite;
+}
+.loading-ring::after {
+  content: ''; position: absolute; inset: -4px; border-radius: 50%;
+  border: 4px solid transparent; border-bottom-color: rgba(227, 176, 111, .4);
+  animation: loadingSpin 1.6s linear infinite reverse;
+}
+.loading-logo {
+  width: 88px; height: 88px; border-radius: 50%; object-fit: cover;
+  border: 2px solid rgba(79, 157, 110, .55); box-shadow: 0 0 26px rgba(79, 157, 110, .4);
+}
+@keyframes loadingSpin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 13px; color: var(--sub); font-weight: 600; letter-spacing: .3px; animation: loadingPulse 1.4s ease-in-out infinite; }
+@keyframes loadingPulse { 0%, 100% { opacity: .6; } 50% { opacity: 1; } }
+
+.login-logo { text-align: center; margin-bottom: 28px; }
+.login-logo img {
+  width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--moss);
+  box-shadow: 0 0 28px rgba(79, 157, 110, .35); object-fit: cover; display: block; margin: 0 auto 14px;
+  animation: loginLogoIn .5s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes loginLogoIn { from { opacity: 0; transform: scale(.8) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.login-logo h1 { font-size: 30px; font-weight: 800; color: var(--moss); }
+.login-logo p { font-size: 13px; color: var(--sub); margin-top: 4px; }
+
+.login-card {
+  width: 100%; max-width: 360px; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 24px; padding: 34px 22px 28px; box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  position: relative; overflow: hidden; animation: fadeUp .4s ease .1s both;
+}
+.login-card::before {
+  content: ''; position: absolute; top: 0; left: 18%; right: 18%; height: 3px; border-radius: 0 0 6px 6px;
+  background: linear-gradient(90deg, transparent, var(--moss), transparent); opacity: .8;
+}
+.login-card .inp-wrap { width: 100%; max-width: 100%; }
+.login-card .btn-login { width: 100%; }
+.login-card h2 { font-size: 21px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+.login-card > p { font-size: 13.5px; color: var(--sub); margin-bottom: 22px; line-height: 1.7; }
+
+.inp-wrap { position: relative; margin-bottom: 14px; }
+.inp-pre { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; pointer-events: none; }
+.inp {
+  width: 100%; height: 50px; background: var(--bg3); border: 1.5px solid var(--border); border-radius: 14px;
+  color: #fff; font-size: 15px; font-family: inherit; outline: none; transition: .2s; padding: 0 14px 0 46px;
+}
+.inp:focus { border-color: var(--moss); }
+.inp::placeholder { color: var(--muted); }
+
+.btn-login {
+  width: 100%; height: 50px; border: none; border-radius: 14px;
+  background: linear-gradient(135deg, var(--moss2), var(--moss)); color: #fff; font-size: 15px; font-weight: 700;
+  font-family: inherit; cursor: pointer; box-shadow: 0 6px 20px rgba(47, 112, 72, .35); margin-top: 4px;
+}
+.btn-login:disabled { background: #1e2a22; color: #4a5c50; box-shadow: none; cursor: not-allowed; }
+.login-note { font-size: 11px; color: var(--muted); text-align: center; margin-top: 14px; }
+
+.wave-emoji { display: inline-block; animation: waveHand 2.2s ease-in-out infinite; transform-origin: 70% 70%; }
+@keyframes waveHand { 0%, 55%, 100% { transform: rotate(0deg); } 10% { transform: rotate(14deg); } 20% { transform: rotate(-8deg); } 30% { transform: rotate(14deg); } 40% { transform: rotate(-4deg); } }
+
+.line-profile-card {
+  display: flex; align-items: center; gap: 12px; background: rgba(6, 199, 85, .08);
+  border: 1px solid rgba(6, 199, 85, .28); border-radius: 16px; padding: 12px 14px; margin-bottom: 22px;
+  width: 100%; animation: fadeUp .35s ease;
+}
+.line-profile-card img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid #06C755; flex-shrink: 0; }
+.line-profile-card .name { font-size: 14px; color: #fff; font-weight: 700; }
+.line-profile-card .status { font-size: 11px; color: var(--green); margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+
+.login-note-pill {
+  display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, .04);
+  border: 1px solid var(--border); padding: 8px 16px; border-radius: 999px; margin-top: 18px;
+  font-size: 11px; color: var(--muted);
+}
+
+/* ============================================================
+   APP SHELL / HEADER / BOTTOM NAV
+   ============================================================ */
+#appShell { display: block; }
+
+.hdr {
+  position: sticky; top: 0; z-index: 500; background: rgba(11, 25, 17, .92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border);
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+}
+.hdr-brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.hdr-brand img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--moss); object-fit: cover; }
+.hdr-brand h1 { font-size: 16px; font-weight: 800; color: var(--moss); }
+.hdr-brand span { font-size: 8px; color: #fff; opacity: .7; display: block; }
+.hdr-btn {
+  background: var(--card); border: 1px solid var(--border); color: #fff; padding: 8px 12px; border-radius: 12px;
+  font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap;
+}
+
+.bnav {
+  position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(11, 25, 17, .94);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border);
+  display: flex; z-index: 500; padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.bnav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 12px; cursor: pointer; gap: 4px; }
+.bnav-item .ico { font-size: 22px; height: 24px; display: flex; align-items: center; justify-content: center; }
+.bnav-item .lbl { font-size: 10px; font-weight: 600; color: var(--muted); }
+.bnav-item.active .lbl { color: var(--moss); }
+.bnav-item.active .ico { filter: drop-shadow(0 0 6px rgba(79, 157, 110, .6)); }
+.nav-avatar { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; display: none; border: 1.5px solid var(--muted); }
+.bnav-item.active .nav-avatar { border-color: var(--moss); }
+
+/* ============================================================
+   PAGE / LAYOUT UTILITIES
+   ============================================================ */
+.view-page { display: none; }
+.view-page.active-page { display: block; animation: fadeUp .3s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.main { max-width: 480px; margin: 0 auto; padding: 16px 16px 100px; }
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+/* ============================================================
+   HOME TAB
+   ============================================================ */
+.greet-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: linear-gradient(135deg, rgba(47, 112, 72, .18), rgba(227, 176, 111, .07));
+  border: 1px solid rgba(79, 157, 110, .18); border-radius: 18px; padding: 14px 14px 14px 16px; margin-bottom: 20px;
+}
+.greet-bar .left h2 { font-size: 15px; font-weight: 700; color: #fff; }
+.greet-bar .left p { font-size: 12px; color: var(--sub); margin-top: 2px; }
+.greet-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.qa-mini {
+  width: 66px; height: 66px; border-radius: 18px; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 2px; cursor: pointer; animation: qaBeat 1.8s ease-in-out infinite; transition: transform .15s;
+}
+.qa-mini:active { transform: scale(.92); }
+.qa-mini .qa-mini-ico { font-size: 27px; }
+.qa-mini .qa-mini-label { font-size: 9.5px; font-weight: 800; color: rgba(0, 0, 0, .75); line-height: 1; }
+.qa-trip-mini { background: linear-gradient(145deg, #f3cf94, #e3b06f); box-shadow: 0 5px 14px rgba(227, 176, 111, .4); }
+.qa-rent-mini { background: linear-gradient(145deg, #6fc48c, #2f7048); box-shadow: 0 5px 14px rgba(47, 112, 72, .4); }
+@keyframes qaBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+.sec-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.sec-hdr h3 { font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+
+#upcomingList::-webkit-scrollbar { display: none; }
+#upcomingList { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+#upcomingList .trip-hcard { flex: 0 0 86%; min-height: auto; scroll-snap-align: start; scroll-snap-stop: always; }
+
+.stat-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, rgba(79, 157, 110, .1), rgba(227, 176, 111, .05));
+  border: 1px solid rgba(79, 157, 110, .14); border-radius: 16px; padding: 14px 16px; margin-top: 20px;
+}
+.stat-bar .ico { font-size: 24px; }
+.stat-bar .txt h4 { font-size: 13px; color: #fff; font-weight: 700; }
+.stat-bar .txt p { font-size: 11px; color: var(--sub); margin-top: 2px; }
+
+/* ============================================================
+   TRIP CARD — "ตราประทับเส้นทาง" (trail-stamp) การ์ดสไตล์ป่าไม้
+   ============================================================ */
+.trip-list { display: flex; flex-direction: column; gap: 16px; }
+
+.trip-hcard {
+  position: relative; display: block; background: linear-gradient(165deg, #10201589, #0c1710);
+  background-color: #0f1c14;
+  border: 1px solid rgba(227, 176, 111, .2); border-radius: 22px; overflow: hidden; cursor: pointer;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .04);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.trip-hcard:hover { transform: translateY(-3px); border-color: rgba(227, 176, 111, .5); box-shadow: 0 16px 36px rgba(0, 0, 0, .55); }
+.trip-hcard:active { transform: scale(.985); }
+
+.lux-photo { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #0e1a12; }
+.lux-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.trip-hcard:hover .lux-photo img { transform: scale(1.05); }
+.lux-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14, 26, 18, 0) 42%, rgba(11, 20, 14, .95) 100%); }
+
+.lux-status {
+  position: absolute; top: 12px; left: 12px; z-index: 2; padding: 5px 12px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; letter-spacing: .2px; border: 1px solid rgba(255, 255, 255, .25);
+  backdrop-filter: blur(6px); white-space: nowrap;
+}
+.lux-status.open { background: rgba(79, 157, 110, .9); color: #04150e; }
+.lux-status.almost { background: linear-gradient(135deg, #f3cf94, #c98f45); color: #241800; animation: hb .9s infinite; }
+.lux-status.full { background: rgba(229, 72, 77, .9); color: #fff; }
+.lux-status.soon { background: rgba(255, 255, 255, .14); color: #e3b06f; border-color: rgba(227, 176, 111, .5); }
+.lux-status.done { background: rgba(255, 255, 255, .12); color: #cfe0d1; }
+
+.lux-price {
+  position: absolute; right: 12px; bottom: 12px; z-index: 2; background: linear-gradient(135deg, #f3cf94, #c98f45);
+  color: #241800; font-weight: 800; font-size: 14px; padding: 6px 13px; border-radius: 13px 13px 13px 4px;
+  box-shadow: 0 5px 12px rgba(201, 143, 69, .4);
+}
+.lux-locked-ov {
+  position: absolute; inset: 0; z-index: 3; background: rgba(8, 14, 10, .62); backdrop-filter: blur(2px);
+  display: flex; align-items: center; justify-content: center; font-size: 30px;
+}
+
+.lux-stub { position: relative; border-top: 1.5px dashed rgba(227, 176, 111, .32); }
+.lux-stub::before, .lux-stub::after { content: ''; position: absolute; top: -8px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); }
+.lux-stub::before { left: -8px; }
+.lux-stub::after { right: -8px; }
+
+.lux-body { padding: 16px 16px 14px; }
+.lux-title { font-size: 17.5px; font-weight: 800; color: #f3f0e4; line-height: 1.35; letter-spacing: .2px; margin-bottom: 6px; }
+.lux-loc { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: #a9b8a2; margin-bottom: 12px; }
+.lux-meta-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 12px; border-top: 1px solid rgba(227, 176, 111, .12); flex-wrap: wrap; }
+.lux-meta-row2 { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 7px; flex-wrap: wrap; }
+.lux-date { font-size: 11px; color: #cfd9c6; display: flex; align-items: center; gap: 5px; }
+.lux-days { font-size: 10.5px; color: #83917f; display: flex; align-items: center; gap: 5px; }
+.lux-seats { font-size: 13px; font-weight: 800; }
+.lux-seats.ok { color: #6fd18f; }
+.lux-seats.low { color: #f0c869; }
+.lux-seats.full { color: #ef6a6a; }
+.lux-cta { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 700; color: #e3b06f; }
+
+.trip-hcard.compact .lux-photo { aspect-ratio: 16 / 7; }
+.trip-hcard.compact .lux-status { font-size: 10px; padding: 4px 10px; top: 10px; left: 10px; }
+.trip-hcard.compact .lux-price { font-size: 12px; padding: 5px 10px; right: 10px; bottom: 10px; }
+.trip-hcard.compact .lux-body { padding: 12px 14px 11px; }
+.trip-hcard.compact .lux-title { font-size: 15px; margin-bottom: 4px; }
+.trip-hcard.compact .lux-loc { font-size: 11px; margin-bottom: 8px; }
+.trip-hcard.compact .lux-meta-row { padding-top: 8px; }
+.trip-hcard.compact .lux-meta-row2 { margin-top: 5px; }
+.trip-hcard.compact .lux-days { font-size: 10px; }
+.trip-hcard.compact .lux-seats { font-size: 12px; }
+.trip-hcard.compact .lux-cta { font-size: 11px; }
+
+/* ============================================================
+   PAST TRIPS GRID
+   ============================================================ */
+.past-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.past-card { border-radius: 14px; overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 3 / 4; }
+.past-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.65); }
+.past-card-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(to top, rgba(0, 0, 0, .85), transparent); }
+.past-card-info h5 { font-size: 10px; font-weight: 700; color: #fff; line-height: 1.3; }
+.past-card-info p { font-size: 9px; color: var(--sub); }
+.past-card-rating { position: absolute; top: 6px; right: 6px; font-size: 9px; background: rgba(0, 0, 0, .6); color: #f0c869; padding: 2px 5px; border-radius: 5px; font-weight: 700; }
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+.search-wrap { position: relative; margin-bottom: 18px; }
+.search-wrap input {
+  width: 100%; height: 46px; padding: 0 16px 0 44px; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; color: #fff; font-size: 14px; font-family: inherit; outline: none; transition: .2s;
+}
+.search-wrap input:focus { border-color: var(--moss); }
+.s-ico { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 15px; color: var(--muted); }
+
+/* ============================================================
+   MY TRIPS TAB
+   ============================================================ */
+.my-profile {
+  background: linear-gradient(135deg, rgba(47, 112, 72, .2), rgba(227, 176, 111, .08));
+  border: 1px solid rgba(79, 157, 110, .2); border-radius: 22px; padding: 20px; margin-bottom: 22px;
+  display: flex; align-items: center; gap: 16px;
+}
+.my-ava-col { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
+.my-ava {
+  width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, var(--moss2), var(--moss));
+  display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0;
+  box-shadow: 0 0 20px rgba(79, 157, 110, .35);
+}
+.my-info h3 { font-size: 17px; font-weight: 700; color: #fff; }
+.my-info p { font-size: 12px; color: var(--sub); margin-top: 3px; }
+.my-stats { display: flex; gap: 18px; margin-top: 10px; }
+.my-stat h4 { font-size: 20px; font-weight: 800; color: var(--moss); }
+.my-stat p { font-size: 10px; color: var(--sub); }
+
+.h-item { display: flex; align-items: center; gap: 12px; background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 10px; cursor: pointer; transition: border-color .15s, transform .15s; }
+.h-item:hover { border-color: var(--moss); transform: translateY(-1px); }
+.h-item:active { transform: scale(.99); }
+.h-item img { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+.h-item .hi { flex: 1; }
+.h-item .hi h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.h-item .hi p { font-size: 11px; color: var(--sub); }
+.h-seat { text-align: right; flex-shrink: 0; }
+.h-seat .snum { font-size: 18px; font-weight: 800; color: var(--moss); }
+.h-seat p { font-size: 10px; color: var(--muted); }
+
+.mini-seat {
+  position: relative; min-width: 56px; height: 54px; padding: 0 10px; border-radius: 14px;
+  background: linear-gradient(160deg, #1a2e20, #0d1a11); border: 1px solid rgba(227, 176, 111, .38);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .05);
+}
+.mini-seat::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #f3cf94, #c98f45, transparent); }
+.mini-seat .mini-seat-label { font-size: 7px; font-weight: 800; letter-spacing: .5px; color: rgba(243, 207, 148, .6); margin-bottom: 2px; }
+.mini-seat .mini-seat-num {
+  font-size: 16px; font-weight: 900; color: #f3cf94; line-height: 1.1; max-width: 64px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 0 14px rgba(243, 207, 148, .35);
+}
+
+.hist-group-title { font-size: 13px; font-weight: 700; color: var(--sub); margin: 18px 0 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.hist-group-title:first-child { margin-top: 0; }
+.h-arr { color: var(--moss); font-size: 18px; flex-shrink: 0; padding-left: 2px; }
+
+.empty-st { text-align: center; padding: 50px 20px; color: var(--muted); }
+.empty-st .ico { font-size: 48px; margin-bottom: 12px; }
+
+.btn-logout {
+  width: 100%; height: 46px; border-radius: 12px; border: 1px solid var(--border); background: transparent;
+  color: var(--muted); font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 8px;
+}
+.btn-logout:hover { background: rgba(229, 72, 77, .1); color: var(--red); border-color: rgba(229, 72, 77, .3); }
+
+/* ============================================================
+   NOTIF / INFO TAB
+   ============================================================ */
+.notif-item { display: flex; gap: 12px; background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 10px; }
+.notif-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--moss); flex-shrink: 0; margin-top: 4px; }
+.notif-dot.read { background: var(--muted); }
+.notif-info h4 { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.notif-info p { font-size: 12px; color: var(--sub); line-height: 1.5; }
+.notif-info .time { font-size: 10px; color: var(--muted); margin-top: 6px; }
+
+.chip { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+.chip-blue { background: rgba(79, 157, 110, .14); color: var(--moss); }
+.chip-green { background: rgba(79, 157, 110, .14); color: var(--moss); }
+.chip-yellow { background: rgba(227, 176, 111, .14); color: var(--sand); }
+
+/* ============================================================
+   TRIP DETAIL MODAL (bottom sheet)
+   ============================================================ */
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(8px); z-index: 800;
+  display: none; align-items: center; justify-content: center;
+}
+.modal-bg.show { display: flex; }
+.modal-sheet {
+  width: 90%; max-width: 480px; max-height: 90vh; background: var(--bg2); border-radius: 28px;
+  overflow-y: auto; padding-bottom: 32px; animation: fadeIn .3s ease; position: relative;
+}
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+.modal-x {
+  position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(0, 0, 0, .5); border: none; color: #fff; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; z-index: 10; backdrop-filter: blur(8px);
+}
+.modal-img { width: 100%; height: 220px; object-fit: cover; }
+.modal-body { padding: 18px; }
+.modal-body h2 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+.modal-date { font-size: 13px; color: var(--moss); margin-bottom: 14px; }
+.modal-price {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, rgba(79, 157, 110, .16), rgba(227, 176, 111, .1));
+  border: 1px solid rgba(255, 255, 255, .08); border-radius: 12px; padding: 10px 16px; font-size: 14px;
+  font-weight: 700; color: #fff; margin-bottom: 16px;
+}
+.modal-payment { background: rgba(227, 176, 111, .08); border: 1px solid rgba(227, 176, 111, .22); border-radius: 14px; padding: 10px 14px; font-size: 12px; color: #f0c869; margin-bottom: 16px; }
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.modal-card { background: rgba(255, 255, 255, .04); border: 1px solid var(--border); border-radius: 14px; padding: 12px; }
+.modal-card span { display: block; font-size: 11px; color: var(--sub); margin-bottom: 6px; }
+.modal-card strong { font-size: 14px; color: #fff; }
+.modal-hl {
+  background: linear-gradient(180deg, rgba(79, 157, 110, .1), rgba(79, 157, 110, .03));
+  border: 1px solid rgba(79, 157, 110, .14); border-radius: 16px; padding: 14px; font-size: 13px; line-height: 1.7;
+  color: #e4ede0; margin-bottom: 16px; white-space: pre-line;
+}
+.modal-seat-row {
+  display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, .03);
+  border: 1px solid var(--border); border-radius: 14px; padding: 12px 16px; margin-bottom: 16px;
+}
+.avail { font-size: 13px; font-weight: 700; }
+.avail.ok { color: var(--moss); }
+.avail.low { color: var(--sand); }
+.avail.full { color: var(--red); }
+
+.btn-book {
+  display: block; width: 85%; max-width: 320px; height: 48px; margin: -24px auto 16px auto; border: none;
+  border-radius: 12px; background: linear-gradient(145deg, #e3b06f, #c98f45); color: #241800; font-size: 14px;
+  font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(227, 176, 111, 0.3); animation: hb 0.9s infinite;
+  position: relative; z-index: 10;
+}
+.btn-book:disabled { background: #263329; color: #56695c; box-shadow: none; cursor: not-allowed; animation: none; }
+
+/* ============================================================
+   BOOKING PAGE
+   ============================================================ */
+#bookingPage2 { position: fixed; inset: 0; z-index: 900; background: var(--bg); overflow-y: auto; display: none; }
+#bookingPage2.show { display: block; animation: fadeUp .25s ease; }
+.bk-hdr {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px;
+  border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(11, 25, 17, .92);
+  backdrop-filter: blur(14px); z-index: 10;
+}
+.btn-back { background: none; border: none; color: var(--moss); font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 6px; }
+.bk-body { max-width: 480px; margin: 0 auto; padding: 16px 16px 120px; }
+
+.ig { margin-bottom: 16px; }
+.ig label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--sub); font-weight: 500; margin-bottom: 8px; }
+.ig input {
+  width: 100%; height: 48px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px; color: #fff; font-size: 14px; font-family: inherit; padding: 0 16px; outline: none; transition: all 0.3s ease;
+}
+.ig input:disabled { color: var(--muted); cursor: not-allowed; }
+.ig input:focus { border-color: var(--moss); background: rgba(79, 157, 110, 0.06); box-shadow: 0 0 0 4px rgba(79, 157, 110, 0.12); }
+
+.form-sec-header { display: flex; align-items: center; gap: 12px; margin: 22px 0 18px; }
+.form-sec-ico {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 13px; background: linear-gradient(135deg, var(--moss2), var(--moss));
+  display: flex; align-items: center; justify-content: center; font-size: 19px; box-shadow: 0 4px 14px rgba(47, 112, 72, .4);
+}
+.form-sec-title { font-size: 15px; font-weight: 800; color: #fff; }
+.form-sec-sub { font-size: 11px; color: var(--sub); margin-top: 2px; }
+
+.pickup-select {
+  width: 100%; height: 48px; background: rgba(0, 0, 0, .2); border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 14px; color: #fff; font-size: 14px; font-family: inherit; padding: 0 40px 0 14px; outline: none;
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 8l5 5 5-5' stroke='%234f9d6e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; cursor: pointer;
+}
+.pickup-select:focus { border-color: var(--moss); box-shadow: 0 0 0 4px rgba(79, 157, 110, 0.12); }
+.pickup-select option { background: var(--bg3); color: #fff; }
+.pickup-other-input {
+  width: 100%; height: 46px; margin-top: 10px; background: rgba(0, 0, 0, .2); border: 1px solid rgba(79, 157, 110, .32);
+  border-radius: 12px; color: #fff; font-size: 13.5px; font-family: inherit; padding: 0 14px; outline: none;
+}
+.pickup-other-input:focus { border-color: var(--moss); box-shadow: 0 0 0 4px rgba(79, 157, 110, 0.12); }
+#formFieldsBox2 {
+  display: none; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px; padding: 20px; backdrop-filter: blur(10px); margin-top: 10px;
+}
+#formFieldsBox2.show { display: block; animation: fadeUp .3s ease; }
+
+.sticky-bar {
+  position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(11, 25, 17, .9); backdrop-filter: blur(16px);
+  padding: 14px 16px 28px; border-top: 1px solid var(--border); z-index: 20; display: flex; justify-content: center;
+}
+.btn-confirm {
+  width: 100%; max-width: 440px; height: 50px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700;
+  font-family: inherit; cursor: pointer; background: #17251b; color: #4a5e4e; transition: .25s;
+}
+.btn-confirm.ready { background: linear-gradient(135deg, var(--moss2), var(--moss)); color: #fff; box-shadow: 0 6px 20px rgba(47, 112, 72, .35); }
+
+/* ============================================================
+   SEAT MAP / VAN GRID
+   ============================================================ */
+.van-block { margin-bottom: 20px; }
+.van-block-title {
+  font-size: 14px; color: var(--moss); margin-bottom: 8px; font-weight: 700; text-align: center;
+  background: linear-gradient(180deg, rgba(20, 42, 28, .95), rgba(14, 28, 19, .98)); padding: 12px; border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+}
+.van-grid-header { display: flex; justify-content: space-between; padding: 0 10px; margin-bottom: 6px; font-size: 11px; font-weight: 700; color: var(--moss); opacity: .88; }
+.van-grid-seats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 10px;
+  background: linear-gradient(180deg, rgba(19, 33, 24, .98), rgba(12, 22, 16, .98)); border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, .03); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04), 0 6px 18px rgba(0, 0, 0, .22);
+  position: relative; overflow: hidden;
+}
+.van-grid-seats::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at top, rgba(79, 157, 110, .08), transparent 60%); pointer-events: none; }
+
+.seat { aspect-ratio: 1 / 1; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; transition: .18s; transform: scale(.94); cursor: pointer; overflow: hidden; }
+.seat span:first-child { font-size: 9px; margin-bottom: 2px; opacity: .95; }
+.seat span:last-child { font-size: 15px; line-height: 1.1; }
+
+.seat.driver { background: linear-gradient(145deg, #263c2d, #1a2c20); color: #62806a; border: 2px dashed rgba(255, 255, 255, .14); cursor: default; pointer-events: none; }
+.seat.spacer { visibility: hidden; pointer-events: none; }
+.seat.empty { background: linear-gradient(145deg, #55c383, #2f9d5f); color: #fff; box-shadow: 0 5px 0 #1e7345, 0 8px 14px rgba(47, 157, 95, .16); }
+.seat.booked { background: linear-gradient(145deg, #ea6b6f, #d43e43); color: #fff; box-shadow: 0 5px 0 #9c2226, 0 8px 14px rgba(229, 72, 77, .16); cursor: not-allowed; }
+.seat.selected { background: linear-gradient(145deg, #f3cf94, #e3b06f); color: #241800; transform: scale(.98); box-shadow: 0 0 12px rgba(243, 207, 148, .45), 0 5px 0 #a97a34; animation: hb .9s infinite; }
+.seat.hidden-seat { background: linear-gradient(145deg, rgba(20, 32, 24, .96), rgba(9, 15, 11, .98)); color: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .03); pointer-events: none; }
+
+.seat.locking {
+  background: linear-gradient(145deg, #fb923c, #ea580c); color: #fff; box-shadow: 0 5px 0 #9a3412, 0 8px 14px rgba(249, 115, 22, .22);
+  cursor: not-allowed; pointer-events: none; animation: lockingPulse 1.2s infinite;
+}
+@keyframes lockingPulse { 0%, 100% { transform: scale(.94); } 50% { transform: scale(.98); box-shadow: 0 5px 0 #9a3412, 0 0 17px rgba(249, 115, 22, .5); } }
+@keyframes hb { 0%, 100% { transform: scale(.98); } 50% { transform: scale(1.02); } }
+
+.seat.seat-highlight-pulse { box-shadow: 0 0 0 3px #4f9d6e, 0 0 20px rgba(79, 157, 110, .8); animation: seatHighlightPulse 1s ease-in-out infinite; z-index: 2; }
+@keyframes seatHighlightPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+.seat-legend { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 14px 0 20px; padding: 10px; border-radius: 16px; background: linear-gradient(180deg, rgba(15, 26, 19, .95), rgba(10, 18, 13, .98)); border: 1px solid var(--border); flex-wrap: wrap; }
+.leg-item { font-size: 12px; font-weight: 600; color: #e4ede0; }
+.seat-map-img { width: 100%; border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--border); }
+
+.seat-lock-timer {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 12px 0 16px; padding: 13px 15px;
+  border-radius: 15px; background: rgba(227, 176, 111, .08); border: 1px solid rgba(227, 176, 111, .28);
+}
+.seat-lock-timer strong { display: block; color: #f0c869; font-size: 13px; }
+.seat-lock-timer p { color: var(--sub); font-size: 10px; margin-top: 3px; }
+.seat-lock-time { min-width: 68px; padding: 7px 9px; border-radius: 10px; background: rgba(227, 176, 111, .14); color: #f0c869; font-size: 20px; font-weight: 800; text-align: center; }
+.seat-lock-time.warning { color: #fff; background: rgba(229, 72, 77, .8); animation: lockWarning .8s infinite; }
+@keyframes lockWarning { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+/* ============================================================
+   PAYMENT MODAL
+   ============================================================ */
+.pay-modal {
+  display: none; position: fixed; z-index: 3000; inset: 0; background: rgba(4, 9, 6, .88); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); padding: 16px; padding-bottom: calc(40px + env(safe-area-inset-bottom));
+  align-items: flex-start; justify-content: center; overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+}
+.pay-modal.show { display: flex; }
+.pay-box {
+  background: var(--bg2); width: 100%; max-width: 360px; border-radius: 20px; padding: 24px 20px; text-align: center;
+  border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0, 0, 0, .5); position: relative; margin: auto;
+  height: auto; max-height: none;
+}
+.pay-x { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255, 255, 255, .08); border: none; color: #fff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.pay-box h3 { font-size: 22px; color: var(--sand); margin-bottom: 4px; }
+.pay-box .sub { font-size: 13px; color: var(--red); }
+.qr-img { width: 180px; border-radius: 12px; border: 4px solid #fff; margin: 16px auto; display: block; box-shadow: 0 6px 15px rgba(0, 0, 0, .3); }
+.chk-row { display: flex; align-items: flex-start; gap: 10px; text-align: left; color: #cbd5e1; font-size: 12px; margin: 16px 0; background: rgba(255, 255, 255, .02); padding: 10px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, .04); }
+.chk-row input { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; cursor: pointer; }
+.btn-pay-ok { width: 100%; height: 48px; border-radius: 10px; border: none; background: var(--moss); color: #fff; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; }
+.btn-pay-ok:disabled { background: #1e2a22; color: #4a5c50; cursor: not-allowed; }
+
+.slip-upload { margin: 14px 0 16px; text-align: left; }
+.slip-title { display: flex; align-items: center; gap: 6px; color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.slip-title .req { color: var(--red); }
+.slip-drop {
+  position: relative; display: flex; align-items: center; gap: 12px; width: 100%; padding: 13px; background: var(--bg3);
+  border: 1.5px dashed rgba(255, 255, 255, .14); border-radius: 14px; cursor: pointer; transition: .2s;
+}
+.slip-drop.has-file { border-style: solid; border-color: rgba(79, 157, 110, .5); background: rgba(79, 157, 110, .08); }
+.slip-drop input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.slip-ico { width: 42px; height: 42px; border-radius: 12px; background: rgba(79, 157, 110, .14); display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+.slip-drop.has-file .slip-ico { background: rgba(79, 157, 110, .18); }
+.slip-txt { flex: 1; min-width: 0; }
+.slip-name { color: #fff; font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.slip-sub { color: var(--muted); font-size: 10px; margin-top: 3px; }
+.slip-preview { display: none; width: 100%; max-height: 200px; object-fit: contain; margin-top: 10px; border-radius: 12px; border: 1px solid var(--border); background: #05100a; }
+.slip-preview.show { display: block; }
+
+/* ============================================================
+   SUCCESS PAGE
+   ============================================================ */
+#successPage2 { position: fixed; inset: 0; z-index: 1100; background: var(--bg); display: none; overflow-y: auto; }
+#successPage2.show { display: block; animation: fadeUp .3s ease; }
+.succ-body { max-width: 440px; margin: 0 auto; padding: 40px 20px; text-align: center; }
+.succ-ico { width: 72px; height: 72px; border-radius: 50%; background: var(--moss); display: flex; align-items: center; justify-content: center; font-size: 36px; color: #fff; margin: 0 auto 20px; box-shadow: 0 0 24px rgba(79, 157, 110, .5); }
+.receipt { background: #fff; color: #1e2a22; border-radius: 18px; padding: 20px; text-align: left; box-shadow: 0 10px 25px rgba(0, 0, 0, .3); margin: 20px 0; }
+.r-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 14px; font-weight: 500; }
+.r-row span { color: #64748b; font-weight: 400; }
+.r-seat-box { background: #f0faf3; border: 1px dashed #b7e5c4; padding: 12px; border-radius: 12px; text-align: center; margin-top: 14px; }
+.r-seat-box p { font-size: 11px; color: #2f7048; font-weight: 600; }
+.r-seat-box h4 { font-size: 38px; color: #1f5136; font-weight: 800; }
+.btn-home { width: 100%; height: 50px; border-radius: 12px; border: none; background: linear-gradient(135deg, var(--moss2), var(--moss)); color: #fff; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 8px; }
+
+/* ============================================================
+   DRAWER (สาระแนะนำ)
+   ============================================================ */
+.drawer {
+  position: fixed; top: 0; right: -100%; width: 85%; max-width: 340px; height: 100%; background: #0a1610;
+  z-index: 600; transition: .4s cubic-bezier(.4, 0, .2, 1); padding: 24px 16px; overflow-y: auto;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, .5); border-left: 1px solid var(--border);
+}
+.drawer.open { right: 0; }
+.ov { position: fixed; inset: 0; background: rgba(0, 0, 0, .65); z-index: 599; display: none; backdrop-filter: blur(5px); }
+.info-block { background: rgba(255, 255, 255, .02); padding: 12px; border-radius: 10px; margin-bottom: 8px; border-left: 3px solid var(--sand); font-size: 12px; line-height: 1.5; }
+.mem-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+.mem-grid img { width: 100%; border-radius: 12px; border: 1px solid var(--border); }
+
+/* ============================================================
+   EQUIPMENT RENTAL PAGE
+   ============================================================ */
+#equipPage { position: fixed; inset: 0; z-index: 950; background: var(--bg); overflow-y: auto; display: none; }
+#equipPage.show { display: block; animation: fadeUp .25s ease; }
+.eq-sec-title { font-size: 14px; color: var(--moss); font-weight: 700; margin: 22px 0 12px; display: flex; align-items: center; gap: 8px; }
+
+.eq-trip-card { display: flex; align-items: center; gap: 12px; background: var(--bg2); border: 1.5px solid var(--border); border-radius: 16px; padding: 12px 14px; margin-bottom: 10px; cursor: pointer; transition: .15s; }
+.eq-trip-card.selected { border-color: var(--moss); background: rgba(79, 157, 110, .08); }
+.eq-trip-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--muted); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.eq-trip-card.selected .eq-trip-radio { border-color: var(--moss); }
+.eq-trip-radio::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--moss); display: none; }
+.eq-trip-card.selected .eq-trip-radio::after { display: block; }
+.eq-trip-info h4 { font-size: 13px; color: #fff; font-weight: 700; }
+.eq-trip-info p { font-size: 11px; color: var(--sub); margin-top: 2px; }
+
+.eq-item-card { display: flex; gap: 12px; background: var(--bg2); border: 1px solid var(--border); border-radius: 18px; padding: 12px; margin-bottom: 12px; }
+.eq-item-img { width: 74px; height: 74px; border-radius: 14px; overflow: hidden; flex-shrink: 0; background: #fff; display: flex; align-items: center; justify-content: center; }
+.eq-item-img img { width: 100%; height: 100%; object-fit: contain; }
+.eq-item-info { flex: 1; min-width: 0; }
+.eq-item-info h4 { font-size: 14px; color: #fff; font-weight: 700; }
+.eq-item-info p.model { font-size: 11px; color: var(--sub); margin-top: 2px; }
+.eq-item-info p.price { font-size: 12px; color: var(--moss); font-weight: 700; margin-top: 4px; }
+.eq-stepper { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.eq-step-btn { width: 30px; height: 30px; border-radius: 10px; border: none; background: var(--bg3); color: #fff; font-size: 17px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.eq-step-val { min-width: 22px; text-align: center; font-size: 15px; font-weight: 800; color: #fff; }
+
+.eq-summary-card {
+  background: linear-gradient(180deg, rgba(79, 157, 110, .12), rgba(79, 157, 110, .03));
+  border: 1px solid rgba(79, 157, 110, .2); border-radius: 18px; padding: 14px 16px; margin: 18px 0 100px;
+}
+.eq-summary-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--sub); padding: 4px 0; }
+.eq-summary-row.total { font-size: 15px; font-weight: 800; color: #fff; border-top: 1px solid var(--border); margin-top: 8px; padding-top: 10px; }
+.eq-summary-row.total span:last-child { color: var(--moss); }
+
+.eq-note { font-size: 11px; color: #f0c869; background: rgba(227, 176, 111, .08); border: 1px solid rgba(227, 176, 111, .25); border-radius: 12px; padding: 10px 12px; margin-top: 10px; line-height: 1.6; }
+
+#equipReceiptPage { position: fixed; inset: 0; z-index: 1150; background: var(--bg); display: none; overflow-y: auto; }
+#equipReceiptPage.show { display: block; animation: fadeUp .3s ease; }
+.r-item-row { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; color: #334155; }
+.r-item-row:last-of-type { border-bottom: none; }
+.r-total-row { display: flex; justify-content: space-between; font-size: 16px; font-weight: 800; color: #1f5136; padding-top: 10px; margin-top: 6px; }
+
+/* ============================================================
+   FLOATING ADMIN TAB
+   ============================================================ */
+.admin-tab {
+  position: fixed; top: 50%; right: 0; transform: translateY(-50%); z-index: 700; display: flex; align-items: center;
+  gap: 8px; height: 52px; padding: 0 9px; background: rgba(79, 157, 110, .1); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(79, 157, 110, .18); border-right: none;
+  border-radius: 16px 0 0 16px; cursor: pointer; opacity: .6; transition: opacity .25s ease, padding .25s ease, background .25s ease;
+  overflow: hidden; white-space: nowrap;
+}
+.admin-tab:active { opacity: .8; }
+.admin-tab .admin-tab-dots { font-size: 13px; color: var(--moss); letter-spacing: -1px; flex-shrink: 0; }
+.admin-tab .admin-tab-label { font-size: 11.5px; font-weight: 700; color: var(--moss); max-width: 0; overflow: hidden; opacity: 0; transition: max-width .25s ease, opacity .2s ease .05s; }
+.admin-tab.expanded { opacity: 1; padding: 0 14px 0 10px; background: rgba(79, 157, 110, .18); border-color: rgba(79, 157, 110, .38); box-shadow: -4px 0 16px rgba(47, 112, 72, .28); }
+.admin-tab.expanded .admin-tab-label { max-width: 120px; opacity: 1; }
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     LOGIN PAGE
+     ============================================================ -->
+<div id="loginPage">
+  <div class="login-logo">
+    <img src="logo-yindee.png" onerror="this.src='https://via.placeholder.com/90/1f5136/ffffff?text=🌲'" alt="Logo">
+    <h1>ยินดีที่ได้เจอ</h1>
+    <p>เดินป่าให้เจอกัน 🌲</p>
+  </div>
+  <div class="login-card">
+
+    <!-- STEP 1: เข้าสู่ระบบด้วย LINE -->
+    <div id="lineLoginStep">
+      <h2><span class="wave-emoji">👋</span> ยินดีต้อนรับครับ!</h2>
+      <p>กดปุ่มด้านล่างเพื่อเข้าสู่ระบบด้วย LINE<br>ปลอดภัย ไม่ต้องจำรหัสผ่าน</p>
+      <button id="lineLoginBtn" class="btn-login" style="background:#06C755;display:none" onclick="loginWithLine()">
+        <span style="display:inline-flex;align-items:center;justify-content:center;gap:8px">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" style="width:20px;height:20px">
+          เข้าสู่ระบบด้วย LINE
+        </span>
+      </button>
+      <p id="lineLoginLoading" class="login-note">⌛ กำลังเชื่อมต่อกับ LINE...</p>
+    </div>
+
+    <!-- STEP 2: กรอกเบอร์โทร (โผล่หลังล็อกอิน LINE สำเร็จ) -->
+    <div id="phoneStep" style="display:none;width:100%">
+      <div class="line-profile-card">
+        <img id="linePicPreview" src="">
+        <div style="text-align:left">
+          <div class="name" id="lineNamePreview">-</div>
+          <div class="status">✅ เข้าสู่ระบบด้วย LINE แล้ว</div>
+        </div>
+      </div>
+      <h2>ใส่ข้อมูลของคุณ 📞</h2>
+      <p>ใช้ผูกกับประวัติการจองของคุณเท่านั้น</p>
+      <div class="inp-wrap">
+        <span class="inp-pre">🏷️</span>
+        <input id="loginNick" class="inp" type="text" placeholder="พิมพ์ชื่อเล่นเพื่อแสดงบนผังเบาะ" maxlength="30" oninput="checkReady()">
+      </div>
+      <div class="inp-wrap">
+        <span class="inp-pre">🇹🇭</span>
+        <input id="loginPhone" class="inp" type="tel" placeholder="063xxxxxxx" maxlength="10" oninput="checkReady()">
+      </div>
+      <button id="loginBtn" class="btn-login" disabled onclick="doLogin()">เข้าสู่ระบบ →</button>
+    </div>
+
+    <p class="login-note-pill">🔒 ใช้เบอร์ดึงประวัติการจองของคุณเท่านั้น</p>
+  </div>
+</div>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <div class="loading-ring-wrap">
+    <div class="loading-ring"></div>
+    <img class="loading-logo" src="logo-yindee.png" onerror="this.src='https://via.placeholder.com/88/1f5136/ffffff?text=🌲'" alt="กำลังโหลด">
+  </div>
+  <p class="loading-text">กำลังโหลดข้อมูล...</p>
+</div>
+
+<!-- APP SHELL -->
+<div id="appShell">
+  <div class="hdr">
+    <div class="hdr-brand" onclick="switchTab('home')">
+      <img src="logo-yindee.png" onerror="this.src='https://via.placeholder.com/44/1f5136/ffffff?text=🌲'" alt="Logo">
+      <div>
+        <h1>ยินดีที่ได้เจอ</h1>
+        <span>เดินป่าให้เจอกัน 🌲</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-left:auto">
+      <button onclick="openDrawer()" style="display:flex;align-items:center;gap:5px;background:rgba(79,157,110,.12);border:1px solid rgba(79,157,110,.3);color:var(--moss);padding:6px 11px;border-radius:999px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">📋 สาระแนะนำ</button>
+      <button onclick="document.getElementById('adminPopup').style.display='flex'" style="display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--moss2),var(--moss));border:none;color:#fff;padding:6px 11px;border-radius:999px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 3px 10px rgba(47,112,72,.35)">👤 ติดต่อ</button>
+    </div>
+  </div>
+
+  <div id="tab-home" class="view-page active-page"><div class="main" id="homeContent"></div></div>
+
+  <div id="tab-trips" class="view-page">
+    <div class="main">
+      <div class="search-wrap">
+        <span class="s-ico">🔍</span>
+        <input id="searchInput" placeholder="ค้นหาชื่อทริป..." oninput="searchTrips()">
+      </div>
+      <div id="tripListFull" class="trip-list">
+        <p style="text-align:center;color:var(--moss);padding:30px">⌛ กำลังโหลด...</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-mytrips" class="view-page"><div class="main" id="myContent"></div></div>
+  <div id="tab-notif" class="view-page"><div class="main" id="notifContent"></div></div>
+
+  <div class="bnav">
+    <div class="bnav-item active" id="nav-home" onclick="switchTab('home')"><div class="ico">🏠</div><div class="lbl">หน้าหลัก</div></div>
+    <div class="bnav-item" id="nav-trips" onclick="switchTab('trips')"><div class="ico">🥾</div><div class="lbl">ทริปทั้งหมด</div></div>
+    <div class="bnav-item" id="nav-mytrips" onclick="switchTab('mytrips')">
+      <div class="ico">
+        <img id="navProfilePic" class="nav-avatar" src="" alt="">
+        <span id="navProfileEmoji">🪪</span>
+      </div>
+      <div class="lbl">โปรไฟล์</div>
+    </div>
+    <div class="bnav-item" id="nav-notif" onclick="switchTab('notif')"><div class="ico">🔔</div><div class="lbl">เผื่อจำเป็น</div></div>
+  </div>
+</div>
+
+<!-- TRIP DETAIL BOTTOM SHEET -->
+<div id="modalBg" class="modal-bg" onclick="if(event.target===this) closeModal()">
+  <div class="modal-sheet">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <img id="md-img" class="modal-img" src="" onerror="this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80'">
+
+    <button id="md-bookBtn" class="btn-book" onclick="goToBook()">จองที่นั่ง 🌲</button>
+
+    <div class="modal-body">
+      <h2 id="md-name"></h2>
+      <div id="md-date" class="modal-date"></div>
+      <div id="md-price" class="modal-price"></div>
+      <div class="modal-grid">
+        <div class="modal-card"><span>⏳ จำนวนวัน</span><strong id="md-days">-</strong></div>
+        <div class="modal-card"><span>🥾 ระยะเดิน</span><strong id="md-dist">-</strong></div>
+        <div class="modal-card"><span>🔥 ความยาก</span><strong id="md-level">-</strong></div>
+        <div class="modal-card"><span>🚐 การเดินทาง</span><strong>รถตู้ VIP</strong></div>
+      </div>
+      <div id="md-hl" class="modal-hl"></div>
+      <div id="md-payment" class="modal-payment"></div>
+      <div class="modal-seat-row">
+        <div>
+          <p style="font-size:11px;color:var(--sub);margin-bottom:4px">ที่นั่งคงเหลือ</p>
+          <div id="md-avail" class="avail ok">-</div>
+        </div>
+        <div id="md-status" class="chip chip-green">เปิดจอง</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKING PAGE -->
+<div id="bookingPage2">
+  <div class="bk-hdr">
+    <button class="btn-back" onclick="closeBook()">⬅ ย้อนกลับ</button>
+    <span class="chip chip-green" style="font-size:11px">ขั้นตอนที่ 2: จองที่นั่ง</span>
+  </div>
+
+  <div class="bk-body">
+    <div style="text-align:center;margin-bottom:20px">
+      <h2 style="font-size:20px;font-weight:700;color:#fff">จองที่นั่งรถตู้ 🌲✨</h2>
+      <p style="font-size:12px;color:var(--sand);margin-top:4px">เลือกทำเลดีๆ ก่อนตกรถนะครับ ⚡</p>
+    </div>
+
+    <div class="ig"><label>🥾 ชื่อทริป</label><input id="b-trip" disabled></div>
+    <div class="ig"><label>📅 วันที่จัดทริป</label><input id="b-date" disabled></div>
+
+    <label style="font-size:13px;color:var(--sub);font-weight:500;display:block;margin-bottom:8px">🚌 เลือกที่นั่งที่คุณต้องการ</label>
+    <img src="seat-map.jpg" class="seat-map-img" onerror="this.style.display='none'">
+
+    <div class="seat-legend">
+      <div class="leg-item">🟢 ว่าง</div>
+      <div class="leg-item">🟠 กำลังเลือก</div>
+      <div class="leg-item">🔴 ถูกจอง</div>
+      <div class="leg-item">🟡 ของคุณ</div>
+      <div class="leg-item">⚫ งดจอง</div>
+    </div>
+
+    <div class="van-block">
+      <div class="van-block-title">🚐 คันที่ 1 (ตู้ A)</div>
+      <div class="van-grid-header"><span>⬅ ด้านหน้า</span><span>ด้านหลัง ➡</span></div>
+      <div id="vanGridA" class="van-grid-seats"></div>
+    </div>
+    <div class="van-block">
+      <div class="van-block-title">🚐 คันที่ 2 (ตู้ B)</div>
+      <div class="van-grid-header"><span>⬅ ด้านหน้า</span><span>ด้านหลัง ➡</span></div>
+      <div id="vanGridB" class="van-grid-seats"></div>
+    </div>
+    <div class="van-block">
+      <div class="van-block-title">🚐 คันที่ 3 (ตู้ C)</div>
+      <div class="van-grid-header"><span>⬅ ด้านหน้า</span><span>ด้านหลัง ➡</span></div>
+      <div id="vanGridC" class="van-grid-seats"></div>
+    </div>
+
+    <div id="formFieldsBox2">
+      <div class="form-sec-header">
+        <div class="form-sec-ico">📝</div>
+        <div>
+          <div class="form-sec-title">กรอกข้อมูลผู้จอง</div>
+          <div class="form-sec-sub">ใช้ยืนยันตัวตนตอนขึ้นรถ กรอกให้ครบนะครับ</div>
+        </div>
+      </div>
+
+      <div class="ig"><label>🤦 ชื่อ-นามสกุลจริง</label><input id="f-name" placeholder="ระบุชื่อ-นามสกุลจริง..." oninput="checkBook()"></div>
+      <div class="ig"><label>🏷️ ชื่อเล่น</label><input id="f-nick" placeholder="ชื่อเล่น" oninput="checkBook()"></div>
+      <div class="ig"><label>📞 เบอร์โทรศัพท์</label><input id="f-phone" type="tel" oninput="checkBook()"></div>
+      <div class="ig"><label>💬 ชื่อ LINE</label><input id="f-line" placeholder="ชื่อไลน์ของคุณ" oninput="checkBook()"></div>
+
+      <div class="ig">
+        <label>🚏 จุดขึ้นรถ</label>
+        <select id="f-pickup-select" class="pickup-select" onchange="handlePickupSelect()">
+          <option value="ลานจอด BTS หมอชิต">ลานจอด BTS หมอชิต</option>
+          <option value="สี่แยกสแควร์หลักสี่">สี่แยกสแควร์หลักสี่</option>
+          <option value="ศาลาหน้าดอนเมือง">ศาลาหน้าดอนเมือง</option>
+          <option value="หน้าโลตัสรังสิต">หน้าโลตัสรังสิต</option>
+          <option value="__other__">📍 แวะรับจุดอื่น (ระบุเอง)</option>
+        </select>
+        <input id="f-pickup-other" class="pickup-other-input" placeholder="ระบุจุดที่ต้องการให้แวะรับ..." style="display:none"
+          oninput="document.getElementById('f-pickup').value=this.value.trim(); checkBook()">
+        <input type="hidden" id="f-pickup" value="ลานจอด BTS หมอชิต">
+      </div>
+
+      <input type="hidden" id="f-seat">
+      <input type="hidden" id="f-dateraw">
+    </div>
+  </div>
+
+  <div class="sticky-bar">
+    <button id="confirmBtn" class="btn-confirm" disabled onclick="openPay()">🚀 กรอกข้อมูลให้ครบและเลือกที่นั่ง</button>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div id="payModal" class="pay-modal">
+  <div class="pay-box">
+    <button class="pay-x" onclick="closePay()">✕</button>
+    <span class="chip chip-green" style="font-size:11px;position:absolute;top:16px;left:16px">ขั้นตอนที่ 3: ชำระเงิน</span>
+    <h3 style="margin-top:22px">💰 ชำระเงินค่ามัดจำทริป 💰</h3>
+    <p class="sub">(สแกน QR หรือบันทึกภาพเพื่อชำระเงิน)</p>
+    <img src="slip-qr.png" class="qr-img" onerror="this.src='https://via.placeholder.com/200/1f5136/ffffff?text=PROMPTPAY+QR'">
+
+    <div id="seatLockTimerBox" class="seat-lock-timer">
+      <div>
+        <strong>⏳ ระบบล็อกที่นั่งของคุณไว้</strong>
+        <p>กรุณาชำระเงินและแนบสลิปภายใน 5 นาที</p>
+      </div>
+      <div id="seatLockTimer" class="seat-lock-time">05:00</div>
+    </div>
+
+    <div class="slip-upload">
+      <div class="slip-title">🧾 แนบสลิปการโอนเงิน <span class="req">*</span></div>
+      <div class="slip-drop" id="slipDrop">
+        <div class="slip-ico">🧾</div>
+        <div class="slip-txt">
+          <div class="slip-name" id="slipName">แตะเพื่อเลือกรูปสลิป</div>
+          <div class="slip-sub">JPG, PNG หรือ WEBP ไม่เกิน 5MB</div>
+        </div>
+        <input type="file" id="slipFile" accept="image/jpeg,image/png,image/webp" onchange="handleSlipFile(this)">
+      </div>
+      <img id="slipPreview" class="slip-preview" alt="ตัวอย่างสลิป">
+    </div>
+
+    <button id="payOkBtn" class="btn-pay-ok" disabled onclick="submitBook()">🧾 กรุณาแนบสลิปก่อน</button>
+    <p onclick="closePay()" style="font-size:13px;color:var(--muted);margin-top:14px;cursor:pointer">ย้อนกลับไปแก้ไข</p>
+  </div>
+</div>
+
+<!-- SUCCESS PAGE -->
+<div id="successPage2">
+  <div class="succ-body">
+    <div class="succ-ico">✓</div>
+    <h2 style="font-size:26px;font-weight:700;color:#fff">จองสำเร็จ! 🎉</h2>
+    <div class="receipt" id="r-receipt-card">
+      <div class="r-row">👤 <span>ผู้จอง:</span> <strong id="r-name">-</strong></div>
+      <div class="r-row">🥾 <span>ทริป:</span> <strong id="r-trip">-</strong></div>
+      <div class="r-row">📅 <span>วันที่:</span> <strong id="r-date">-</strong></div>
+      <div class="r-row">🚏 <span>จุดขึ้นรถ:</span> <strong id="r-pickup">-</strong></div>
+      <div class="r-seat-box">
+        <p>หมายเลขที่นั่งของคุณ</p>
+        <h4 id="r-seat">-</h4>
+      </div>
+    </div>
+    <p style="font-size:16px;color:var(--red);line-height:1.5;margin-bottom:16px">
+      ทักไลน์แอดมินส่งหลักฐานการจองเพื่อให้แอดมินดึงเข้ากลุ่ม
+      <br><span style="font-size:16px;color:var(--muted)">(แคปหน้าจอไว้เป็นหลักฐานได้เลยครับ)</span>
+    </p>
+    <a href="https://line.me/ti/p/~yourlineid" target="_blank" rel="noopener noreferrer"
+       style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;background:#06C755;color:#fff;padding:14px;border-radius:14px;font-size:15px;font-weight:700;margin-bottom:12px;box-shadow:0 6px 18px rgba(6,199,85,.3)">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" style="width:22px;height:22px"> ทักไลน์แอดมินเลย
+    </a>
+    <button class="btn-home" onclick="backHome()">กลับสู่หน้าหลัก 🏠</button>
+  </div>
+</div>
+
+<!-- DRAWER -->
+<div id="ov" class="ov" onclick="closeDrawer()"></div>
+<div id="drawer" class="drawer">
+  <h3 style="color:var(--sand);font-size:15px;margin-bottom:12px">💡 สาระความรู้ & ข้อแนะนำ</h3>
+  <div class="info-block"><strong>🚌 การเลือกที่นั่ง:</strong> แถวหน้าสุดเหมาะสำหรับผู้ที่เมารถง่าย แถวหลังสุดจะได้รับความสะเทือนมากกว่าปกติเล็กน้อย</div>
+  <div class="info-block"><strong>🎒 สัมภาระเดินทาง:</strong> แนะนำกระเป๋าขนาดพอดี ของมีค่าและยาประจำตัวควรพกติดตัวไว้ตลอดเวลาครับ</div>
+  <div class="info-block"><strong>⏰ การรักษาเวลา:</strong> กรุณามาถึงจุดนัดพบก่อนเวลาออกเดินทางอย่างน้อย 15 นาทีครับ</div>
+
+  <h3 style="color:var(--moss);font-size:14px;margin-top:20px;margin-bottom:10px;font-weight:700">🗺️ ข้อมูลดูแลร่างกายเวลาเดินป่า</h3>
+  <img src="body-care.jpg" style="width:100%;border-radius:16px;border:1px solid var(--border)" onerror="this.style.display='none'">
+
+  <h3 style="color:var(--moss);font-size:14px;margin-top:20px;margin-bottom:10px;font-weight:700">✨ ภาพความทรงจำจากทริปที่ผ่านมา</h3>
+  <div class="mem-grid" id="memGrid"></div>
+</div>
+
+<!-- ADMIN CONTACT POPUP -->
+<div id="adminPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);z-index:2000;align-items:center;justify-content:center" onclick="if(event.target===this) this.style.display='none'">
+  <div style="width:90%;max-width:480px;background:#12241a;border-radius:28px;padding:28px 20px 40px;border:1px solid rgba(255,255,255,.07);position:relative;overflow-y:auto;max-height:90vh">
+    <button onclick="document.getElementById('adminPopup').style.display='none'" style="position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:none;color:#fff;font-size:18px;cursor:pointer">✕</button>
+
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+      <img src="admin.jpg" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid #4f9d6e" onerror="this.src='https://via.placeholder.com/64/1f5136/ffffff?text=👤'">
+      <div>
+        <h3 style="font-size:17px;color:#fff">แอดมิน</h3>
+        <p style="font-size:12px;color:#4f9d6e;font-weight:600">เจ้าของเพจ "ยินดีที่ได้เจอ"</p>
+      </div>
+    </div>
+
+    <p style="font-size:13px;line-height:1.8;color:#cbd5e1;margin-bottom:20px">ชวนทุกคนออกไปเห็นโลกอีกมุม เห็นหมอกตอนเช้า เห็นดาวตอนกลางคืน และได้เจอมิตรภาพดีๆ ระหว่างทาง 🌿</p>
+
+    <div style="margin-top:18px;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.07);background:#0e1c14">
+      <img src="team.jpg" onerror="this.src='https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=480&q=70'" style="width:100%;display:block">
+      <div style="padding:16px">
+        <h3 style="color:#fff;font-size:18px;margin-bottom:8px">🔥 ทีมงานยินดีที่ได้เจอ</h3>
+        <p style="color:#cbd5e1;font-size:13px;line-height:1.7">ทีมงานสายลุยที่พร้อมพาทุกคนออกเดินทาง ตั้งแต่ขึ้นรถ ยันถึงยอดเขา ⛰️</p>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
+      <a href="https://line.me/ti/p/~yourlineid" target="_blank" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;background:#06C755;color:#fff;padding:12px;border-radius:999px;font-size:13px;font-weight:600"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" style="width:18px;height:18px"> LINE</a>
+      <a href="#" target="_blank" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;background:#1877F2;color:#fff;padding:12px;border-radius:999px;font-size:13px;font-weight:600"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" style="width:18px;height:18px"> Facebook</a>
+      <a href="#" target="_blank" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;padding:12px;border-radius:999px;font-size:13px;font-weight:600"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" style="width:18px;height:18px"> Instagram</a>
+    </div>
+  </div>
+</div>
+
+<!-- EQUIPMENT RENTAL PAGE -->
+<div id="equipPage">
+  <div class="bk-hdr">
+    <button class="btn-back" onclick="closeEquipRent()">⬅ ย้อนกลับ</button>
+    <span class="chip chip-green" style="font-size:11px">เช่าอุปกรณ์แคมป์</span>
+  </div>
+
+  <div class="bk-body">
+    <div style="text-align:center;margin-bottom:6px">
+      <h2 style="font-size:20px;font-weight:700;color:#fff">🏕️ เช่าอุปกรณ์แคมป์</h2>
+      <p style="font-size:12px;color:var(--sand);margin-top:4px">เลือกทริปที่จะไป แล้วเลือกของที่อยากเช่าได้เลยครับ</p>
+    </div>
+
+    <div class="eq-sec-title">🥾 เลือกทริปที่จะไป</div>
+    <div id="eqTripList"></div>
+
+    <div class="eq-sec-title">🧺 เลือกอุปกรณ์ที่ต้องการเช่า</div>
+    <div id="eqItemList"></div>
+
+    <div id="eqSummaryBox" class="eq-summary-card" style="display:none">
+      <div id="eqSummaryRows"></div>
+      <div class="eq-summary-row total"><span>ยอดรวมที่ต้องจ่าย</span><span id="eqTotalPrice">0 บาท</span></div>
+      <div class="eq-note">⚠️ ทางแอดมินจะเรียกเก็บเงินค่าเช่าอุปกรณ์นี้ในกลุ่มอีกครั้งครับ ไม่ต้องโอนตอนนี้</div>
+    </div>
+  </div>
+
+  <div class="sticky-bar">
+    <button id="eqConfirmBtn" class="btn-confirm" disabled onclick="confirmEquipRent()">🚀 กรุณาเลือกทริปก่อนครับ</button>
+  </div>
+</div>
+
+<!-- EQUIPMENT RENTAL RECEIPT -->
+<div id="equipReceiptPage">
+  <div class="succ-body">
+    <div class="succ-ico">✓</div>
+    <h2 style="font-size:24px;font-weight:700;color:#fff">ใบเสร็จค่าเช่าอุปกรณ์</h2>
+    <div class="receipt" id="eqr-receipt-card">
+      <div class="r-row">🥾 <span>ทริป:</span> <strong id="eqr-trip">-</strong></div>
+      <div class="r-row">👤 <span>ผู้จอง:</span> <strong id="eqr-name">-</strong></div>
+      <div class="r-row">🪑 <span>เบาะ:</span> <strong id="eqr-seat">-</strong></div>
+      <div style="height:1px;background:#e2e8f0;margin:12px 0"></div>
+      <div id="eqr-items"></div>
+      <div class="r-total-row"><span>ยอดรวม</span><span id="eqr-total">0 บาท</span></div>
+    </div>
+    <p style="font-size:15px;color:var(--red);line-height:1.6;margin-bottom:20px">
+      ⚠️ ทางแอดมินจะเรียกเก็บเงินค่าเช่าอุปกรณ์นี้ในกลุ่มอีกครั้งครับ ไม่ต้องโอนตอนนี้
+      <br><span style="font-size:13px;color:var(--muted)">(แคปหน้าจอไว้เป็นหลักฐานได้เลยครับ)</span>
+    </p>
+    <button class="btn-home" onclick="closeEquipReceipt()">กลับสู่หน้าหลัก 🏠</button>
+  </div>
+</div>
+
+<!-- FLOATING ADMIN TAB -->
+<div id="adminTab" class="admin-tab" onclick="toggleAdminTab(event)">
+  <span class="admin-tab-dots">⋮</span>
+  <span class="admin-tab-label">สำหรับแอดมิน</span>
+</div>
+
+<script>
+/* ================================================================
+   CONFIG / CONSTANTS
+   ⚠️ ใส่เป็น placeholder ไว้ก่อน — เปลี่ยนเป็นของจริงตอนขึ้นระบบ:
+   1) API_URL: URL ของ Google Apps Script Web App ที่ deploy จากชีทของลูกค้าเจ้านี้
+   2) LIFF_ID: สร้าง LIFF ใหม่ใน LINE Developers Console ผูกกับ Official Account ของเพจนี้
+      (ห้ามใช้ LIFF ID เดิมของเพจอื่นซ้ำ เพราะจะข้าม callback ผิดเพจ)
+   ================================================================ */
+const API_URL = "https://script.google.com/macros/s/PUT_YOUR_APPS_SCRIPT_DEPLOYMENT_ID_HERE/exec";
+const QUERY_URL = API_URL + "?action=read";
+
+const LIFF_ID = "PUT_YOUR_LIFF_ID_HERE";
+
+/* 🔧 สวิตช์ตัดหน้าล็อกอินออกไปก่อน (ยังไม่ต่อ LINE/LIFF จริง)
+   - true  = ข้ามหน้าล็อกอิน เข้าแอปเลยด้วยผู้ใช้ตัวอย่าง (ไว้ทดสอบ/เดโมหน้าตา)
+   - false = กลับไปใช้ flow ล็อกอินด้วย LINE ตามปกติ (ตอนพร้อมต่อ LIFF จริงค่อยเปลี่ยนกลับ)
+   โค้ดล็อกอินทั้งหมดยังอยู่ครบ ไม่ได้ลบทิ้ง แค่ไม่ถูกเรียกใช้ตอนนี้ */
+const SKIP_LOGIN = true;
+const GUEST_USER = { phone: "0800000000", nick: "ผู้ใช้ทดสอบ", lineName: "ผู้ใช้ทดสอบ", lineUserId: null, linePicture: null };
+
+// ทริปที่ปิดรับจองชั่วคราว (ยังไม่เปิดจอง)
+const CLOSED_TRIPS = [""];
+
+const BUS_GRID_STRUCTURE = ['driver', 3, 6, 9, 'spacer', 2, 5, 8, 'เบาะซ้าย', 1, 4, 7];
+
+const SEAT_LOCK_MINUTES = 5;
+const SEAT_LOCK_DURATION = SEAT_LOCK_MINUTES * 60 * 1000;
+
+/* ตัวอย่างข้อมูลทริป — แทนที่ด้วยข้อมูลจริงของลูกค้าตอนส่งมอบงาน
+   คีย์ = ชื่อทริป (ต้องตรงกับข้อมูลจาก backend เป๊ะๆ) */
+const TRIP_DETAILS = {
+  "ดอยม่อนล้าน 2 วัน 1 คืน": {
+    days: "2 วัน 1 คืน", distance: "8-10 กม.", level: "🟡 ปานกลาง", price: "2,290 บาท",
+    paymentNote: "ชำระส่วนที่เหลือก่อนเดินทาง 15 วัน",
+    highlight: "ทะเลหมอกยามเช้า ทุ่งดอกไม้ป่าเต็มเนินเขา แคมป์ไฟยามค่ำคืนพร้อมเพื่อนใหม่ ✅",
+    image: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=700&q=80", loc: "จ.เชียงใหม่"
+  },
+  "ผาช้างน้อย 3 วัน 2 คืน": {
+    days: "3 วัน 2 คืน", distance: "15-18 กม.", level: "🔴 ยาก", price: "3,490 บาท",
+    paymentNote: "ชำระส่วนที่เหลือก่อนเดินทาง 15 วัน",
+    highlight: "วิวพระอาทิตย์ขึ้นเหนือทะเลหมอก 360 องศา เส้นทางเดินสันเขาสวยที่สุดแห่งหนึ่ง",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=700&q=80", loc: "จ.น่าน"
+  },
+  "น้ำตกซ่อนวารี 2 วัน 1 คืน": {
+    days: "2 วัน 1 คืน", distance: "6-8 กม.", level: "🟢 ง่าย", price: "2,150 บาท",
+    paymentNote: "ชำระส่วนที่เหลือก่อนเดินทาง 15 วัน",
+    highlight: "น้ำตกกลางป่าดิบชื้น เล่นน้ำใสเย็น เหมาะกับมือใหม่หัดเดินป่า",
+    image: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=700&q=80", loc: "จ.กาญจนบุรี"
+  }
+};
+
+const TRIP_IMAGES = Object.fromEntries(Object.entries(TRIP_DETAILS).map(([name, info]) => [name, info.image]));
+
+// ทริปที่ผ่านมาแล้ว (โชว์ในหน้าแรก) — ตัวอย่าง
+const PAST_TRIPS = [
+  { name: "ดอยม่อนล้าน 2 วัน 1 คืน", rounds: 1, people: 18, rating: 4.8, img: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=300&q=60" },
+  { name: "ผาช้างน้อย 3 วัน 2 คืน", rounds: 1, people: 22, rating: 4.6, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&q=60" },
+  { name: "น้ำตกซ่อนวารี 2 วัน 1 คืน", rounds: 2, people: 16, rating: 4.9, img: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=300&q=60" }
+];
+
+const EQUIP_ITEMS = {
+  tent: { label: "เต็นท์", brand: "Quechua MH100", price: 300, unit: "หลัง/ทริป", img: "https://contents.mediadecathlon.com/p2754515/k$0c5138baa6a18029208375492aa8e649/picture.jpg?format=auto&f=800x0" },
+  sleepingBag: { label: "ถุงนอน", brand: "Quechua Arpenaz 20°", price: 100, unit: "ใบ/ทริป", img: "https://contents.mediadecathlon.com/p2455218/k$ccb8b375884f01d6a31a25868874a4cc/camping-sleeping-bag-arpenaz-20-quechua-8648438.jpg" },
+  sleepingPad: { label: "แผ่นรองนอน", brand: "Forclaz Trek100", price: 100, unit: "แผ่น/ทริป", img: "https://www.decathlon.com/cdn/shop/files/8492712-product_image-p2422856.jpg?v=1701346667" }
+};
+
+/* ================================================================
+   GLOBAL STATE
+   ================================================================ */
+let currentUser = null;
+let allBookings = [];
+let allEquipRentals = [];
+let cacheTrips = [];
+let pendingTrip = null;
+let selectedSeat = null;
+let highlightSeatId = null;
+let selectedSlipFile = null;
+
+let eqSelectedTripKey = null;
+let eqQty = { tent: 0, sleepingBag: 0, sleepingPad: 0 };
+
+let seatRefreshTimer = null;
+let seatCountdownTimer = null;
+let seatLockExpiresAt = 0;
+let latestSeatRequestId = 0;
+
+const MY_SESSION_ID =
+  sessionStorage.getItem('ydtj_session_id') ||
+  ('SESSION-' + Date.now() + '-' + Math.random().toString(36).substring(2, 10));
+sessionStorage.setItem('ydtj_session_id', MY_SESSION_ID);
+
+/* ================================================================
+   SEAT LOCK COUNTDOWN
+   ================================================================ */
+function startSeatCountdown(resetTime = false) {
+  clearInterval(seatCountdownTimer);
+  if (resetTime || !seatLockExpiresAt || seatLockExpiresAt <= Date.now()) {
+    seatLockExpiresAt = Date.now() + SEAT_LOCK_DURATION;
+  }
+  const box = document.getElementById('seatLockTimerBox');
+  const timer = document.getElementById('seatLockTimer');
+  if (box) box.style.display = 'flex';
+  if (timer) timer.classList.remove('warning');
+  updateSeatCountdown();
+  seatCountdownTimer = setInterval(updateSeatCountdown, 1000);
+}
+
+function updateSeatCountdown() {
+  const timer = document.getElementById('seatLockTimer');
+  if (!timer) return;
+  const remaining = seatLockExpiresAt - Date.now();
+  if (remaining <= 0) {
+    clearInterval(seatCountdownTimer);
+    seatCountdownTimer = null;
+    timer.textContent = '00:00';
+    timer.classList.add('warning');
+    handleSeatLockExpired();
+    return;
+  }
+  const totalSeconds = Math.ceil(remaining / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  timer.textContent = String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+  timer.classList.toggle('warning', remaining <= 60 * 1000);
+}
+
+function stopSeatCountdown() {
+  clearInterval(seatCountdownTimer);
+  seatCountdownTimer = null;
+  seatLockExpiresAt = 0;
+  const box = document.getElementById('seatLockTimerBox');
+  const timer = document.getElementById('seatLockTimer');
+  if (box) box.style.display = 'none';
+  if (timer) { timer.textContent = '05:00'; timer.classList.remove('warning'); }
+}
+
+function handleSeatLockExpired() {
+  seatLockExpiresAt = 0;
+  selectedSeat = null;
+  document.getElementById('f-seat').value = '';
+  document.getElementById('formFieldsBox2').classList.remove('show');
+  checkBook();
+
+  const payModalWasOpen = document.getElementById('payModal').classList.contains('show');
+  document.getElementById('payModal').classList.remove('show');
+
+  const date = document.getElementById('f-dateraw').value;
+  loadSeats(date);
+
+  Swal.fire({
+    icon: 'warning', title: 'หมดเวลาล็อกเบาะแล้ว',
+    text: payModalWasOpen
+      ? 'ที่นั่งของคุณถูกปลดล็อกอัตโนมัติระหว่างที่คุณกำลังชำระเงิน กรุณาเลือกเบาะใหม่แล้วทำรายการอีกครั้งครับ'
+      : 'ระบบปลดล็อกที่นั่งอัตโนมัติ กรุณาเลือกเบาะใหม่ครับ',
+    background: '#12241a', color: '#f2f0e6', confirmButtonColor: '#2f7048'
+  });
+}
+
+/* ================================================================
+   LOGIN (LINE Login ผ่าน LIFF SDK)
+   ================================================================ */
+let lineProfile = null;
+
+function checkReady() {
+  const p = document.getElementById('loginPhone').value.trim();
+  const n = document.getElementById('loginNick').value.trim();
+  document.getElementById('loginBtn').disabled = !(p.length >= 9 && n.length > 0);
+}
+
+function doLogin() {
+  const phone = document.getElementById('loginPhone').value.trim();
+  const nick = document.getElementById('loginNick').value.trim() || (lineProfile && lineProfile.displayName) || 'ผู้ใช้ LINE';
+
+  currentUser = {
+    phone, nick,
+    lineName: (lineProfile && lineProfile.displayName) || nick,
+    lineUserId: lineProfile ? lineProfile.userId : null,
+    linePicture: lineProfile ? lineProfile.pictureUrl : null
+  };
+  localStorage.setItem('ydtjUser', JSON.stringify(currentUser));
+  if (lineProfile && lineProfile.userId) localStorage.setItem('ydtjPhone_' + lineProfile.userId, phone);
+
+  enterApp();
+}
+
+function enterApp() {
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('appShell').classList.add('show');
+  document.getElementById('loadingScreen').classList.add('show');
+  document.getElementById('f-phone').value = currentUser.phone;
+  document.getElementById('f-nick').value = currentUser.nick;
+  updateNavAvatar();
+  fetchData();
+}
+
+function updateNavAvatar() {
+  const img = document.getElementById('navProfilePic');
+  const emoji = document.getElementById('navProfileEmoji');
+  if (!img) return;
+  if (currentUser && currentUser.linePicture) {
+    img.src = currentUser.linePicture; img.style.display = 'block';
+    if (emoji) emoji.style.display = 'none';
+  } else {
+    img.style.display = 'none';
+    if (emoji) emoji.style.display = 'block';
+  }
+}
+
+async function initLiff() {
+  const saved = localStorage.getItem('ydtjUser');
+  if (saved) {
+    try { currentUser = JSON.parse(saved); enterApp(); return; }
+    catch (e) { localStorage.removeItem('ydtjUser'); }
+  }
+
+  const stuckTimer = setTimeout(() => {
+    showLineLoginRetry('⚠️ เชื่อมต่อ LINE ช้ากว่าปกติ กรุณากดปุ่มด้านล่างเพื่อลองใหม่');
+  }, 8000);
+
+  try {
+    await liff.init({ liffId: LIFF_ID });
+  } catch (err) {
+    console.error('LIFF init error', err);
+    clearTimeout(stuckTimer);
+    showLineLoginRetry('⚠️ เชื่อมต่อ LINE ไม่สำเร็จ กรุณากดปุ่มด้านล่างเพื่อลองใหม่ (ตรวจสอบ LIFF_ID ในโค้ดด้วยครับ)');
+    return;
+  }
+
+  try {
+    if (liff.isLoggedIn()) {
+      await afterLineLogin();
+    } else if (liff.isInClient()) {
+      liff.login();
+    } else {
+      showLineLoginRetry(null);
+    }
+  } catch (err) {
+    console.error('LIFF login flow error', err);
+    showLineLoginRetry('⚠️ เข้าสู่ระบบ LINE ไม่สำเร็จ กรุณากดปุ่มด้านล่างเพื่อลองใหม่');
+  } finally {
+    clearTimeout(stuckTimer);
+  }
+}
+
+function showLineLoginRetry(message) {
+  const loading = document.getElementById('lineLoginLoading');
+  const btn = document.getElementById('lineLoginBtn');
+  if (loading) {
+    if (message) { loading.textContent = message; loading.style.display = 'block'; }
+    else { loading.style.display = 'none'; }
+  }
+  if (btn) btn.style.display = 'block';
+}
+
+function loginWithLine() {
+  document.getElementById('lineLoginBtn').style.display = 'none';
+  document.getElementById('lineLoginLoading').style.display = 'block';
+  document.getElementById('lineLoginLoading').textContent = '⌛ กำลังพาไปเข้าสู่ระบบ LINE...';
+  liff.login({ redirectUri: window.location.href });
+}
+
+async function afterLineLogin() {
+  try {
+    const profile = await liff.getProfile();
+    lineProfile = { userId: profile.userId, displayName: profile.displayName, pictureUrl: profile.pictureUrl || '' };
+
+    document.getElementById('lineLoginStep').style.display = 'none';
+    document.getElementById('phoneStep').style.display = 'block';
+    document.getElementById('lineNamePreview').textContent = lineProfile.displayName;
+    if (lineProfile.pictureUrl) document.getElementById('linePicPreview').src = lineProfile.pictureUrl;
+
+    const savedPhone = localStorage.getItem('ydtjPhone_' + lineProfile.userId);
+    if (savedPhone) document.getElementById('loginPhone').value = savedPhone;
+    checkReady();
+  } catch (err) {
+    console.error('getProfile error', err);
+    try { if (liff.isLoggedIn()) liff.logout(); } catch (e) {}
+    showLineLoginRetry('⚠️ เชื่อมต่อ LINE ไม่สำเร็จ (อาจเป็นเพราะสิทธิ์การเชื่อมต่อถูกยกเลิก) กรุณากดปุ่มด้านล่างเพื่อเข้าสู่ระบบใหม่');
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('loginPhone').addEventListener('input', checkReady);
+  document.getElementById('loginNick').addEventListener('input', checkReady);
+
+  if (SKIP_LOGIN) {
+    // ข้ามหน้าล็อกอิน/LIFF ไปก่อน — เข้าแอปด้วยผู้ใช้ตัวอย่างทันที
+    currentUser = { ...GUEST_USER };
+    enterApp();
+    return;
+  }
+
+  initLiff();
+});
+
+/* ================================================================
+   DATA FETCH (JSONP ไป Google Apps Script)
+   ================================================================ */
+function fetchData() {
+  const cb = 'cb_' + Date.now();
+  let finished = false;
+
+  window[cb] = (res) => {
+    finished = true;
+    allBookings = res.bookings || [];
+    allEquipRentals = res.rentals || [];
+
+    const seen = {};
+    cacheTrips = [];
+    allBookings.forEach(b => {
+      if (!b.trip || !b.date) return;
+      const key = b.trip + '_' + b.date;
+      if (!seen[key]) { seen[key] = 1; cacheTrips.push({ trip: b.trip, date: b.date }); }
+    });
+
+    // ถ้ายังไม่มี booking ในระบบเลย (ตอนตั้งค่าเว็บใหม่) ให้โชว์ทริปตัวอย่างจาก TRIP_DETAILS ไปพลางๆ
+    if (cacheTrips.length === 0) {
+      const demoDate = new Date(); demoDate.setDate(demoDate.getDate() + 14);
+      cacheTrips = Object.keys(TRIP_DETAILS).map((name, i) => {
+        const d = new Date(demoDate); d.setDate(d.getDate() + i * 10);
+        return { trip: name, date: d.toISOString().slice(0, 10) };
+      });
+    }
+
+    renderHome();
+    renderTripList(cacheTrips);
+    renderMyTrips();
+    renderNotif();
+
+    const today = new Date(new Date().setHours(0, 0, 0, 0));
+    const upcomingEl = document.getElementById('upcomingList');
+    if (upcomingEl) {
+      const upcoming = cacheTrips.filter(t => new Date(t.date) >= today);
+      upcomingEl.innerHTML = upcoming.map(t => cardHTML(t)).join('')
+        || '<p style="text-align:center;color:var(--muted);padding:20px">ยังไม่มีทริปเปิดจองครับ</p>';
+      setupCarouselAutoScroll('upcoming', upcomingEl, 2000);
+    }
+
+    document.getElementById('loadingScreen').classList.remove('show');
+    delete window[cb];
+  };
+
+  const script = document.createElement('script');
+  script.src = QUERY_URL + '&callback=' + cb;
+  script.onerror = () => {
+    if (finished) return;
+    // ยังไม่ได้ต่อ backend จริง (placeholder URL) — ใช้ข้อมูลตัวอย่างแทน ไม่ต้องเด้ง error ใส่ผู้ใช้
+    allBookings = []; allEquipRentals = [];
+    const demoDate = new Date(); demoDate.setDate(demoDate.getDate() + 14);
+    cacheTrips = Object.keys(TRIP_DETAILS).map((name, i) => {
+      const d = new Date(demoDate); d.setDate(d.getDate() + i * 10);
+      return { trip: name, date: d.toISOString().slice(0, 10) };
+    });
+    renderHome(); renderTripList(cacheTrips); renderMyTrips(); renderNotif();
+    document.getElementById('loadingScreen').classList.remove('show');
+  };
+  document.body.appendChild(script);
+}
+
+function loadSeats(date, showLoading = false) {
+  const requestId = ++latestSeatRequestId;
+  if (!date) return;
+  const trip = document.getElementById('b-trip').value.trim();
+  if (!trip) return;
+
+  if (showLoading) {
+    ['A', 'B', 'C'].forEach(prefix => {
+      const grid = document.getElementById('vanGrid' + prefix);
+      if (grid) {
+        grid.innerHTML = `<div style="grid-column:1 / -1;display:flex;align-items:center;justify-content:center;height:20px;color:var(--moss);font-size:12px;">⌛ กำลังดึงข้อมูลจากหลังบ้าน...</div>`;
+      }
+    });
+  }
+
+  const callback = 'cbs_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+  window[callback] = function (res) {
+    if (requestId !== latestSeatRequestId) { delete window[callback]; return; }
+    renderVansWithData(res.bookings || [], res.locks || []);
+    delete window[callback];
+  };
+
+  const s = document.createElement('script');
+  s.src = QUERY_URL + '&date=' + encodeURIComponent(date) + '&trip=' + encodeURIComponent(trip) + '&callback=' + callback;
+  s.onerror = () => { renderVansWithData([], []); };
+  document.body.appendChild(s);
+}
+
+window._carouselControllers = window._carouselControllers || {};
+
+function setupCarouselAutoScroll(key, el, intervalMs) {
+  if (window._carouselControllers[key]) { window._carouselControllers[key].destroy(); window._carouselControllers[key] = null; }
+  if (!el) return;
+
+  let timer = null, resumeTimer = null, isProgrammatic = false;
+
+  function tick() {
+    if (el.children.length < 2) return;
+    const cardW = el.children[0].offsetWidth + 12;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    isProgrammatic = true;
+    el.scrollLeft = el.scrollLeft >= maxScroll - 5 ? 0 : el.scrollLeft + cardW;
+  }
+  function start() { clearInterval(timer); timer = setInterval(tick, intervalMs); }
+  function pauseThenResume() { clearInterval(timer); clearTimeout(resumeTimer); resumeTimer = setTimeout(start, intervalMs + 2000); }
+  function onScroll() { if (isProgrammatic) { isProgrammatic = false; return; } pauseThenResume(); }
+
+  el.addEventListener('scroll', onScroll, { passive: true });
+  start();
+
+  window._carouselControllers[key] = {
+    destroy() { clearInterval(timer); clearTimeout(resumeTimer); el.removeEventListener('scroll', onScroll); }
+  };
+}
+
+/* ================================================================
+   HOME TAB
+   ================================================================ */
+function renderHome() {
+  const h = new Date().getHours();
+  const greeting = h < 12 ? '🌄 อรุณสวัสดิ์' : h < 17 ? '☀️ สวัสดีตอนบ่าย' : '🌙 สวัสดีตอนเย็น';
+  const norm = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+  const myTripCount = allBookings.filter(b => norm(b.phone) === norm(currentUser.phone)).length;
+
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
+  const closedTrips = cacheTrips.filter(t => CLOSED_TRIPS.includes(t.trip));
+  const pastTrips = cacheTrips.filter(t => new Date(t.date) < today);
+
+  document.getElementById('homeContent').innerHTML = `
+    <div class="greet-bar">
+      <div class="left">
+        <h2>${greeting}, ${currentUser.nick}! 👋</h2>
+        <p>คุณมีประวัติทริปทั้งหมด <strong style="color:var(--moss)">${myTripCount} ทริป</strong></p>
+      </div>
+      <div class="greet-actions">
+        <div class="qa-mini qa-trip-mini" onclick="switchTab('trips')">
+          <div class="qa-mini-ico">🥾</div>
+          <div class="qa-mini-label">จองทริป</div>
+        </div>
+        <div class="qa-mini qa-rent-mini" onclick="openEquipRent()">
+          <div class="qa-mini-ico">🏕️</div>
+          <div class="qa-mini-label">เช่าของ</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-hdr">
+      <h3>🌲 ทริปที่เปิดจอง</h3>
+      <span onclick="switchTab('trips')" style="font-size:12px;color:var(--moss);cursor:pointer;font-weight:600">ดูทั้งหมด ›</span>
+    </div>
+    <div id="upcomingList" style="display:flex;gap:12px;overflow-x:auto;scroll-behavior:smooth;padding-bottom:4px;-ms-overflow-style:none;scrollbar-width:none">
+      <p style="text-align:center;color:var(--moss);padding:20px">⌛ กำลังโหลดข้อมูลจากหลังบ้าน...</p>
+    </div>
+
+    <div class="divider"></div>
+    <div class="sec-hdr">
+      <h3>⚠️ จะเปิดจองเร็วๆ นี้</h3>
+      <span onclick="togglePastList(this)" style="font-size:12px;color:var(--moss);cursor:pointer;font-weight:600">ดูทั้งหมด ›</span>
+    </div>
+    <div class="trip-list" id="closedList">
+      ${closedTrips.map(t => cardHTML(t)).join('') || '<p style="text-align:center;color:var(--muted);padding:20px">-</p>'}
+    </div>
+
+    <div class="divider"></div>
+    <div class="sec-hdr">
+      <h3>📅 ทริปที่ผ่านมา</h3>
+      <span onclick="togglePastList(this)" style="font-size:12px;color:var(--moss);cursor:pointer;font-weight:600">ดูทั้งหมด ›</span>
+    </div>
+    <div class="trip-list" id="pastList" style="opacity:.7">
+      ${pastTrips.map((t, i) => `<div class="${i >= 2 ? 'past-extra' : ''}" style="${i >= 2 ? 'display:none' : ''}">${cardHTML(t)}</div>`).join('')
+        || '<p style="text-align:center;color:var(--muted);padding:20px">-</p>'}
+    </div>
+
+    <div class="divider"></div>
+    <div class="sec-hdr"><h3>🌟 ให้ระดับความยาก</h3></div>
+    <div class="past-grid">
+      ${PAST_TRIPS.map(p => `
+        <div class="past-card">
+          <img src="${p.img}" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&q=60'}">
+          <div class="past-card-rating">⭐ ${p.rating}</div>
+          <div class="past-card-info"><h5>${p.name}</h5><p>👥 ${p.people} คน · ${p.rounds} รอบ</p></div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="stat-bar">
+      <div class="ico">👥</div>
+      <div class="txt"><h4>ยอดรวมผู้เดินทางกว่า 100+ คน</h4><p>ขอบคุณทุกความไว้วางใจจากยินดีที่ได้เจอ 🌲</p></div>
+    </div>
+  `;
+}
+
+function togglePastList(triggerEl) {
+  const expanded = document.getElementById('pastList').classList.toggle('expanded');
+  triggerEl.innerText = expanded ? 'ย่อ ‹' : 'ดูทั้งหมด ›';
+}
+
+function toggleBookingHistory(triggerEl, listId) {
+  const expanded = document.getElementById(listId).classList.toggle('expanded');
+  triggerEl.innerText = expanded ? 'ย่อ ‹' : 'ดูทั้งหมด ›';
+}
+
+/* ================================================================
+   TRIP CARD (ใช้ร่วมกันหลายหน้า)
+   ================================================================ */
+function cardHTML(item, compact = false) {
+  const info = TRIP_DETAILS[item.trip] || {};
+  const img = TRIP_IMAGES[item.trip] || 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&q=70';
+  const fmtDate = new Date(item.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+  const locked = CLOSED_TRIPS.includes(item.trip);
+  const isPast = new Date(item.date) < new Date(new Date().setHours(0, 0, 0, 0));
+
+  const totalSeats = BUS_GRID_STRUCTURE.filter(n => n !== 'driver' && n !== 'spacer').length * 3;
+  const bookedCount = allBookings.filter(b => b.seat && b.trip === item.trip && b.date === item.date).length;
+  const avail = totalSeats - bookedCount;
+
+  let statusClass = 'open', statusText = 'เปิดจอง';
+  if (locked) { statusClass = 'soon'; statusText = '⚠️ เร็วๆนี้'; }
+  else if (isPast) { statusClass = 'done'; statusText = '✅ ไปมาแล้ว'; }
+  else if (avail <= 0) { statusClass = 'full'; statusText = '🔴 เต็มแล้ว'; }
+  else if (avail <= 5) { statusClass = 'almost'; statusText = '🔥 ใกล้เต็ม!'; }
+
+  let seatsClass = 'ok', seatsText = `🟢 ว่าง ${avail} ที่`;
+  if (locked) { seatsClass = 'full'; seatsText = '⚠️ ยังไม่เปิด'; }
+  else if (isPast) { seatsText = '✅ ไปมาแล้ว'; }
+  else if (avail <= 0) { seatsClass = 'full'; seatsText = '🔴 เต็มแล้ว'; }
+  else if (avail <= 5) { seatsClass = 'low'; seatsText = `🔥 ว่าง ${avail} ที่`; }
+
+  return `
+    <div class="trip-hcard${compact ? ' compact' : ''}" onclick="openModal('${item.trip}','${item.date}')">
+      <div class="lux-photo">
+        <img src="${img}" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&q=70'}">
+        <span class="lux-status ${statusClass}">${statusText}</span>
+        <span class="lux-price">฿${info.price || '-'}</span>
+        ${locked ? '<div class="lux-locked-ov">🔒</div>' : ''}
+      </div>
+      <div class="lux-stub"></div>
+      <div class="lux-body">
+        <h4 class="lux-title">${item.trip}</h4>
+        <div class="lux-loc">📍 ${info.loc || 'ประเทศไทย'}</div>
+        <div class="lux-meta-row">
+          <span class="lux-date">🗓️ ${fmtDate}</span>
+          <span class="lux-seats ${seatsClass}">${seatsText}</span>
+        </div>
+        <div class="lux-meta-row2">
+          <span class="lux-days">⏳ ${info.days || '-'}</span>
+          <span class="lux-cta">ดูรายละเอียด <span>›</span></span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ================================================================
+   TRIPS TAB
+   ================================================================ */
+function renderTripList(list) {
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
+  const upcoming = list.filter(t => new Date(t.date) >= today);
+  const past = list.filter(t => new Date(t.date) < today);
+
+  document.getElementById('tripListFull').innerHTML = `
+    <div class="sec-hdr"><h3>🌲 ทริปที่เปิดจอง</h3></div>
+    <div class="trip-list">${upcoming.map(t => cardHTML(t, true)).join('') || '<p style="text-align:center;color:var(--muted);padding:20px">ยังไม่มีทริปเปิดจองครับ</p>'}</div>
+    <div class="divider"></div>
+    <div class="sec-hdr"><h3>📅 ทริปที่ผ่านมา</h3></div>
+    <div class="trip-list" style="opacity:.7">${past.map(t => cardHTML(t, true)).join('') || '<p style="text-align:center;color:var(--muted);padding:20px">-</p>'}</div>
+  `;
+}
+
+function searchTrips() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  renderTripList(cacheTrips.filter(t => t.trip.toLowerCase().includes(q)));
+}
+
+/* ================================================================
+   MY TRIPS TAB
+   ================================================================ */
+function renderMyTrips() {
+  const norm = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+  const myBookings = allBookings.filter(b => norm(b.phone) === norm(currentUser.phone));
+
+  const seen = {}; const uniqueBookings = [];
+  myBookings.forEach(b => {
+    const key = b.trip + '_' + b.date + '_' + b.seat;
+    if (!seen[key]) { seen[key] = 1; uniqueBookings.push(b); }
+  });
+
+  const myEquipRentals = allEquipRentals.filter(r => norm(r.phone) === norm(currentUser.phone));
+  const provinceCount = [...new Set(uniqueBookings.map(b => (TRIP_DETAILS[b.trip] || {}).loc).filter(Boolean))].length;
+
+  document.getElementById('myContent').innerHTML = `
+    <div class="my-profile">
+      <div class="my-ava-col">
+        <div class="my-ava" style="overflow:hidden;border-radius:50%;width:58px;height:58px;padding:0;flex-shrink:0">
+          <img id="userAvatar" src="${currentUser.linePicture || 'https://via.placeholder.com/150/1f5136/ffffff?text=👤'}" style="width:100%;height:100%;object-fit:cover">
+        </div>
+      </div>
+      <div class="my-info" style="flex:1">
+        <h3>${currentUser.nick}</h3>
+        <p>📞 ${currentUser.phone}</p>
+        <div class="my-stats">
+          <div class="my-stat"><h4>${uniqueBookings.length}</h4><p>ทริปทั้งหมด</p></div>
+          <div class="my-stat"><h4>${provinceCount}</h4><p>จังหวัด</p></div>
+          <div class="my-stat"><h4>${"⭐".repeat(Math.min(uniqueBookings.length, 5))}</h4><p>ระดับสายลุยกับเพจ</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-hdr"><h3>📋 ประวัติการเดินทาง</h3></div>
+    ${uniqueBookings.length === 0 ? '<div class="empty-st"><div class="ico">🏕️</div><p>ยังไม่มีประวัติการจองครับ<br>ไปเลือกทริปแล้วออกเดินทางกันเลย!</p></div>' : (() => {
+      const todayCut = new Date(new Date().setHours(0, 0, 0, 0));
+      const upcoming = uniqueBookings.filter(b => new Date(b.date) >= todayCut).sort((a, b) => new Date(a.date) - new Date(b.date));
+      const past = uniqueBookings.filter(b => new Date(b.date) < todayCut).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      const historyItemHTML = (b, i) => {
+        const img = TRIP_IMAGES[b.trip] || 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=100&q=60';
+        const fmtDate = new Date(b.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+        const isPast = new Date(b.date) < todayCut;
+        return `
+          <div class="${i >= 2 ? 'hist-extra' : ''}" style="${i >= 2 ? 'display:none' : ''}">
+            <div class="h-item" onclick="viewMyBookingSeat('${b.trip}','${b.date}','${b.seat || ''}')">
+              <img src="${img}" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=100&q=60'}">
+              <div class="hi">
+                <h4>${b.trip}</h4>
+                <p>📅 ${fmtDate}</p>
+                <p style="margin-top:4px">${isPast ? '<span class="chip chip-green">✅ ไปแล้ว</span>' : '<span class="chip chip-blue">🗓️ กำลังจะไป</span>'}</p>
+              </div>
+              <div class="mini-seat">
+                <span class="mini-seat-label">ที่นั่ง</span>
+                <span class="mini-seat-num">${b.seat || '-'}</span>
+              </div>
+              <div class="h-arr">›</div>
+            </div>
+          </div>
+        `;
+      };
+
+      return `
+        ${upcoming.length ? `
+          <div class="hist-group-title">
+            <span>🗓️ กำลังจะไป (${upcoming.length})</span>
+            ${upcoming.length > 2 ? `<span onclick="toggleBookingHistory(this,'bookingUpcomingList')" style="font-size:12px;color:var(--moss);cursor:pointer;font-weight:600">ดูทั้งหมด ›</span>` : ''}
+          </div>
+          <div id="bookingUpcomingList">${upcoming.map(historyItemHTML).join('')}</div>
+        ` : ''}
+        ${past.length ? `
+          <div class="hist-group-title">
+            <span>✅ ไปแล้ว (${past.length})</span>
+            ${past.length > 2 ? `<span onclick="toggleBookingHistory(this,'bookingHistoryList')" style="font-size:12px;color:var(--moss);cursor:pointer;font-weight:600">ดูทั้งหมด ›</span>` : ''}
+          </div>
+          <div id="bookingHistoryList">${past.map(historyItemHTML).join('')}</div>
+        ` : ''}
+      `;
+    })()}
+
+    <div class="sec-hdr" style="margin-top:24px"><h3>🎒 ประวัติการเช่าอุปกรณ์</h3></div>
+    ${myEquipRentals.length === 0
+      ? '<div class="empty-st" style="padding:34px 20px"><div class="ico" style="font-size:38px">🏕️</div><p>ยังไม่มีประวัติการเช่าอุปกรณ์ครับ</p></div>'
+      : myEquipRentals.map(r => {
+          const img = TRIP_IMAGES[r.trip] || 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=100&q=60';
+          const fmtDate = new Date(r.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+          return `
+            <div class="h-item" style="cursor:default">
+              <img src="${img}" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=100&q=60'}">
+              <div class="hi">
+                <h4>${r.trip}</h4>
+                <p>📅 ${fmtDate}</p>
+                <p style="margin-top:4px;color:var(--sub);font-size:11px">${r.itemsSummary || '-'}</p>
+              </div>
+              <div class="h-seat"><div class="snum" style="font-size:15px">฿${Number(r.total || 0).toLocaleString()}</div><p>ยอดรวม</p></div>
+            </div>
+          `;
+        }).join('')}
+
+    <div style="height:1px;background:var(--border);margin:20px 0"></div>
+    <button class="btn-logout" onclick="logOut()">🚪 ออกจากระบบ</button>
+  `;
+}
+
+function viewMyBookingSeat(trip, dateStr, seat) {
+  const fmtDate = new Date(dateStr).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+  pendingTrip = { name: trip, date: fmtDate, raw: dateStr };
+  highlightSeatId = seat || null;
+  goToBook();
+}
+
+/* ================================================================
+   NOTIF TAB
+   ================================================================ */
+const PREP_CHECKLIST = [
+  { t: "📋 ศึกษาข้อมูลเส้นทาง!", m: "* ระยะทางทั้งหมด<br>* ระดับความยาก<br>* ระยะเวลาเดิน<br>* ความสูงสะสม (Elevation Gain)<br>* จุดกางเต็นท์<br>* แหล่งน้ำ<br>* จุดรับสัญญาณโทรศัพท์<br>* สภาพอากาศล่าสุด<br>* กฎของอุทยานหรือพื้นที่" },
+  { t: "❤️ เตรียมร่างกาย!", m: "* พักผ่อนให้เพียงพอ<br>* ฝึกเดินหรือวิ่งก่อนเดินจริง<br>* ซ้อมแบกเป้<br>* ยืดกล้ามเนื้อ<br>* ดื่มน้ำให้เพียงพอ<br>* งดแอลกอฮอล์ก่อนเดิน" },
+  { t: "‍👩‍👧 แจ้งคนใกล้ตัว!", m: "* แจ้งเส้นทาง<br>* แจ้งวันเข้า-ออก<br>* แจ้งผู้ร่วมเดินทาง<br>* ส่งพิกัดหรือแผนที่<br>* แจ้งเบอร์ติดต่อฉุกเฉิน" },
+  { t: "🎒 อุปกรณ์แบกสัมภาระ!", m: "* เป้เดินป่า<br>* Rain Cover คลุมเป้<br>* Dry Bag<br>* ถุงซิปล็อกกันน้ำ" },
+  { t: "🌧 อุปกรณ์กันฝน!", m: "* เสื้อกันฝน<br>* กางเกงกันฝน<br>* Poncho<br>* ถุงคลุมเป้<br>* ถุงกันน้ำใส่มือถือ" },
+  { t: "🏕 อุปกรณ์แคมป์!", m: "* เต็นท์<br>* ฟลายชีท<br>* สมอบก<br>* เชือก<br>* ถุงนอน<br>* แผ่นรองนอน<br>* หมอนลม" },
+  { t: "🔦 อุปกรณ์ส่องสว่าง!", m: "* ไฟฉายคาดหัว<br>* ไฟฉายมือถือ<br>* แบตเตอรี่สำรอง<br>* โคมไฟแคมป์" },
+  { t: "🩹 ชุดปฐมพยาบาล!", m: "* พลาสเตอร์<br>* ผ้าก๊อซ<br>* ผ้ายืดพันแผล<br>* ยาประจำตัว<br>* ยาแก้ปวด<br>* ยาแก้แพ้<br>* ยาแก้ท้องเสีย<br>* ยาแก้เมารถ" },
+  { t: "⚠️ ก่อนออกเดินทุกครั้ง อย่าลืมเช็ก!", m: "1. เป้ไม่หนักเกิน 20–25% ของน้ำหนักตัว<br>2. ชาร์จอุปกรณ์ไฟฟ้าเต็ม<br>3. เช็กพยากรณ์อากาศ<br>4. แจ้งคนที่บ้าน<br>5. เช็กรองเท้าและเชือกผูก<br>6. เตรียมน้ำและอาหารให้เพียงพอ<br>7. เคารพธรรมชาติ และเก็บขยะกลับทุกชิ้น" }
+];
+
+function renderNotif() {
+  const listHTML = PREP_CHECKLIST.map(n => `
+    <div class="notif-item">
+      <div class="notif-dot"></div>
+      <div class="notif-info"><h4>${n.t}</h4><p>${n.m}</p></div>
+    </div>
+  `).join('');
+
+  document.getElementById('notifContent').innerHTML = `
+    <div style="margin-bottom:16px"><h3 style="font-size:16px;font-weight:700;color:#fff">🔔 การเตรียมตัวก่อนเดินป่า</h3></div>
+    ${listHTML}
+  `;
+}
+
+/* ================================================================
+   BOTTOM NAV TABS
+   ================================================================ */
+const TABS = ['home', 'trips', 'mytrips', 'notif'];
+
+function switchTab(id) {
+  TABS.forEach(t => {
+    document.getElementById('tab-' + t).classList.toggle('active-page', t === id);
+    document.getElementById('nav-' + t).classList.toggle('active', t === id);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ================================================================
+   TRIP DETAIL MODAL
+   ================================================================ */
+function openModal(name, dateStr) {
+  const info = TRIP_DETAILS[name] || { days: '-', distance: '-', level: '-', price: '-', highlight: '-', image: '' };
+  const img = TRIP_IMAGES[name] || info.image || 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80';
+  const locked = CLOSED_TRIPS.includes(name);
+
+  const seatIds = ['A', 'B', 'C'].flatMap(prefix => BUS_GRID_STRUCTURE.filter(n => n !== 'driver' && n !== 'spacer').map(n => prefix + n));
+  const takenSeats = allBookings.filter(b => b.seat && b.trip === name && b.date === dateStr).map(b => String(b.seat));
+  const emptySeats = seatIds.filter(id => !takenSeats.includes(id));
+  const avail = emptySeats.length;
+  const fmtDate = new Date(dateStr).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.getElementById('md-img').src = img;
+  document.getElementById('md-name').innerText = name;
+  document.getElementById('md-date').innerText = '📅 ' + fmtDate;
+  document.getElementById('md-price').innerText = '💸 ค่าใช้จ่ายประมาณ ' + info.price;
+  document.getElementById('md-payment').innerText = info.paymentNote ? '💰 ' + info.paymentNote : '';
+  document.getElementById('md-days').innerText = info.days;
+  document.getElementById('md-dist').innerText = info.distance;
+  document.getElementById('md-level').innerText = info.level;
+  document.getElementById('md-hl').innerText = info.highlight;
+
+  const availEl = document.getElementById('md-avail');
+  const statusEl = document.getElementById('md-status');
+  const bookBtn = document.getElementById('md-bookBtn');
+
+  bookBtn.disabled = false;
+  bookBtn.onclick = () => goToBook();
+  bookBtn.style.background = 'linear-gradient(145deg, #e3b06f, #c98f45)';
+
+  if (locked) {
+    availEl.innerText = 'ยังไม่เปิดจอง';
+    availEl.className = 'avail full';
+    statusEl.innerText = 'เร็วๆ นี้';
+    statusEl.className = 'chip chip-yellow';
+    bookBtn.disabled = true;
+    bookBtn.innerText = '⚠️ ยังไม่เปิดจองครับ';
+  } else if (avail <= 0) {
+    availEl.innerHTML = `
+      <div style="background:rgba(229,72,77,0.1);border:1px solid rgba(229,72,77,0.3);padding:12px;border-radius:12px;text-align:center;">
+        <div style="color:#e5484d;font-weight:800;font-size:14px;">🔴 ที่นั่งเต็มแล้วครับ</div>
+        <div style="color:#a9c2ac;font-size:11px;margin-top:2px;">กดปุ่มด้านล่างเพื่อดูผังเบาะได้ครับ</div>
+      </div>
+    `;
+    statusEl.innerText = 'เต็มแล้ว';
+    statusEl.className = 'chip';
+    statusEl.style.cssText = 'background:rgba(229,72,77,.2);color:var(--red)';
+    bookBtn.innerText = '🔴 ที่นั่งเต็มแล้วครับ 👀 กดดูผังเบาะ';
+    bookBtn.style.background = '#4a5c50';
+  } else {
+    availEl.innerText = `เหลือ ${avail} ที่ — ${emptySeats.slice(0, 5).join(', ')}${emptySeats.length > 5 ? '...' : ''}`;
+    availEl.className = 'avail ' + (avail <= 5 ? 'low' : 'ok');
+    statusEl.innerText = 'เปิดจอง';
+    statusEl.className = 'chip chip-green';
+    bookBtn.innerText = 'จองที่นั่ง 🌲';
+  }
+
+  pendingTrip = { name, date: fmtDate, raw: dateStr };
+  document.getElementById('modalBg').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalBg').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+/* ================================================================
+   BOOKING PAGE
+   ================================================================ */
+function goToBook() {
+  closeModal();
+
+  const cleanDate = new Date(pendingTrip.raw);
+  const yyyy = cleanDate.getFullYear();
+  const mm = String(cleanDate.getMonth() + 1).padStart(2, '0');
+  const dd = String(cleanDate.getDate()).padStart(2, '0');
+  const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+  document.getElementById('b-trip').value = pendingTrip.name;
+  document.getElementById('b-date').value = pendingTrip.date;
+  document.getElementById('f-dateraw').value = formattedDate;
+  document.getElementById('f-phone').value = currentUser.phone;
+  document.getElementById('f-nick').value = currentUser.nick;
+  document.getElementById('f-line').value = currentUser.lineName || currentUser.nick;
+
+  const normPhoneForName = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+  const myPastBooking = allBookings.filter(b => b.name && normPhoneForName(b.phone) === normPhoneForName(currentUser.phone)).slice(-1)[0];
+  document.getElementById('f-name').value = myPastBooking ? myPastBooking.name : '';
+
+  selectedSeat = null;
+  document.getElementById('f-seat').value = '';
+  document.getElementById('formFieldsBox2').classList.remove('show');
+  document.getElementById('bookingPage2').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  resetPickupSelector();
+  loadSeats(formattedDate, true);
+
+  clearInterval(seatRefreshTimer);
+  seatRefreshTimer = setInterval(() => {
+    const page = document.getElementById('bookingPage2');
+    if (page && page.classList.contains('show')) loadSeats(document.getElementById('f-dateraw').value);
+  }, 5000);
+
+  checkBook();
+}
+
+function closeBook() {
+  document.getElementById('bookingPage2').classList.remove('show');
+  document.body.style.overflow = '';
+  clearInterval(seatRefreshTimer);
+  seatRefreshTimer = null;
+  stopSeatCountdown();
+}
+
+function handlePickupSelect() {
+  const select = document.getElementById('f-pickup-select');
+  const otherInput = document.getElementById('f-pickup-other');
+  const hiddenInput = document.getElementById('f-pickup');
+  if (!select || !otherInput || !hiddenInput) return;
+
+  if (select.value === '__other__') {
+    otherInput.style.display = 'block';
+    hiddenInput.value = otherInput.value.trim();
+    otherInput.focus();
+  } else {
+    otherInput.style.display = 'none';
+    otherInput.value = '';
+    hiddenInput.value = select.value;
+  }
+  checkBook();
+}
+
+function resetPickupSelector() {
+  const select = document.getElementById('f-pickup-select');
+  const otherInput = document.getElementById('f-pickup-other');
+  const hiddenInput = document.getElementById('f-pickup');
+  if (!select || !otherInput || !hiddenInput) return;
+  select.selectedIndex = 0;
+  otherInput.style.display = 'none';
+  otherInput.value = '';
+  hiddenInput.value = select.value;
+}
+
+/* ================================================================
+   SEAT MAP RENDERING
+   ================================================================ */
+function renderVansWithData(bookedList, lockList = []) {
+  const bookedMapping = {};
+  bookedList.forEach(booking => {
+    const seat = String(booking.seat || '').trim();
+    if (seat) bookedMapping[seat] = booking.nickname || 'เต็ม';
+  });
+
+  const lockedMapping = {};
+  lockList.forEach(lock => {
+    const seat = String(lock.seat || '').trim();
+    const isMine = String(lock.session_id || '') === String(MY_SESSION_ID);
+    if (seat && !isMine && !bookedMapping[seat]) lockedMapping[seat] = true;
+  });
+
+  let highlightEl = null;
+
+  ['A', 'B', 'C'].forEach(prefix => {
+    const grid = document.getElementById('vanGrid' + prefix);
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    BUS_GRID_STRUCTURE.forEach(n => {
+      const cell = document.createElement('div');
+
+      if (n === 'driver') {
+        cell.className = 'seat driver';
+        cell.innerHTML = '<span style="font-size:22px">👨‍✈️</span><span style="font-size:15px">คนขับ</span>';
+        grid.appendChild(cell);
+        return;
+      }
+      if (n === 'spacer') { cell.className = 'seat spacer'; grid.appendChild(cell); return; }
+
+      const id = prefix + n;
+      cell.className = 'seat';
+
+      if (bookedMapping[id]) {
+        if (bookedMapping[id] === 'งดจอง') { cell.classList.add('hidden-seat'); }
+        else {
+          cell.classList.add('booked');
+          cell.innerHTML = `<span style="font-size:9px">${id}</span><div style="font-size:12px;text-align:center">${bookedMapping[id]}</div>`;
+        }
+      } else if (lockedMapping[id]) {
+        cell.classList.add('locking');
+        cell.innerHTML = `<span style="font-size:9px">${id}</span><div style="font-size:10px;text-align:center">⏳ มีคนเลือก</div>`;
+      } else {
+        cell.classList.add('empty');
+        if (id === selectedSeat) cell.classList.add('selected');
+        cell.innerHTML = `<span style="font-size:10px">เบาะ</span><span style="font-size:15px">${id}</span>`;
+        cell.onclick = () => pickSeat(cell, id);
+      }
+
+      if (highlightSeatId && id === highlightSeatId) highlightEl = cell;
+      grid.appendChild(cell);
+    });
+  });
+
+  if (highlightEl) {
+    const targetEl = highlightEl;
+    setTimeout(() => {
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      targetEl.classList.add('seat-highlight-pulse');
+      setTimeout(() => targetEl.classList.remove('seat-highlight-pulse'), 3500);
+    }, 150);
+    highlightSeatId = null;
+  }
+}
+
+async function pickSeat(el, id) {
+  const trip = document.getElementById('b-trip').value.trim();
+  const date = document.getElementById('f-dateraw').value.trim();
+
+  if (!trip || !date) {
+    Swal.fire({ icon: 'error', title: 'ข้อมูลทริปไม่ครบ', text: 'กรุณากลับไปเลือกทริปใหม่', background: '#12241a', color: '#f2f0e6', confirmButtonColor: '#2f7048' });
+    return;
+  }
+
+  const previousSeat = selectedSeat;
+
+  selectedSeat = id;
+  document.querySelectorAll('.seat.selected').forEach(seat => seat.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('f-seat').value = id;
+  document.getElementById('formFieldsBox2').classList.add('show');
+  checkBook();
+
+  setTimeout(() => { document.getElementById('formFieldsBox2').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+
+  function revertToPreviousSeat() {
+    selectedSeat = previousSeat;
+    el.classList.remove('selected');
+    document.getElementById('f-seat').value = previousSeat || '';
+    if (previousSeat) {
+      const previousEl = [...document.querySelectorAll('.seat')].find(seat => seat.textContent.includes(previousSeat));
+      if (previousEl) previousEl.classList.add('selected');
+    } else {
+      document.getElementById('formFieldsBox2').classList.remove('show');
+    }
+    checkBook();
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      body: new URLSearchParams({ action: 'lockSeat', date, trip, seat: id, session_id: MY_SESSION_ID })
+    });
+    const result = await response.json();
+
+    if (!result.ok) {
+      revertToPreviousSeat();
+      Swal.fire({
+        icon: 'warning', title: 'เบาะนี้ไม่ว่างแล้ว',
+        text: result.error === 'seat_booked' ? 'เบาะนี้ถูกจองไปแล้ว กรุณาเลือกเบาะอื่น' : 'มีคนอื่นกำลังเลือกเบาะนี้ กรุณาเลือกเบาะอื่น',
+        background: '#12241a', color: '#f2f0e6', confirmButtonColor: '#2f7048'
+      });
+      loadSeats(date);
+      return;
+    }
+    startSeatCountdown(true);
+  } catch (error) {
+    // ยังไม่ได้ต่อ backend จริง (placeholder API_URL) — ให้เลือกเบาะแบบ optimistic ต่อไปได้เพื่อทดสอบ UI
+    startSeatCountdown(true);
+  } finally {
+    el.style.pointerEvents = '';
+  }
+}
+
+function checkBook() {
+  const ok = ['f-name', 'f-nick', 'f-phone', 'f-line', 'f-seat', 'f-pickup'].every(id => document.getElementById(id).value.trim() !== '');
+  const btn = document.getElementById('confirmBtn');
+  btn.disabled = !ok;
+  btn.classList.toggle('ready', ok);
+  btn.innerText = ok ? '👉 พร้อมแล้ว...ไปโอนเงินกันเลย! ✨' : '🚀 กรอกข้อมูลให้ครบและเลือกที่นั่ง';
+}
+
+/* ================================================================
+   SLIP UPLOAD
+   ================================================================ */
+function handleSlipFile(input) {
+  const drop = document.getElementById('slipDrop');
+  const nameEl = document.getElementById('slipName');
+  const preview = document.getElementById('slipPreview');
+  const button = document.getElementById('payOkBtn');
+
+  if (!input.files || !input.files[0]) { resetSlipUpload(); return; }
+
+  const file = input.files[0];
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+  if (!allowedTypes.includes(file.type)) {
+    input.value = '';
+    Swal.fire({ icon: 'warning', title: 'ไฟล์ไม่ถูกต้อง', text: 'กรุณาแนบสลิปชนิด JPG, PNG หรือ WEBP', background: '#12241a', color: '#f2f0e6', confirmButtonColor: '#2f7048' });
+    resetSlipUpload();
+    return;
+  }
+
+  const maxSize = 5 * 1024 * 1024;
+  if (file.size > maxSize) {
+    input.value = '';
+    Swal.fire({ icon: 'warning', title: 'ไฟล์ใหญ่เกินไป', text: 'กรุณาใช้รูปสลิปขนาดไม่เกิน 5MB', background: '#12241a', color: '#f2f0e6', confirmButtonColor: '#2f7048' });
+    resetSlipUpload();
+    return;
+  }
+
+  selectedSlipFile = file;
+  drop.classList.add('has-file');
+  nameEl.textContent = '✅ ' + file.name;
+
+  const reader = new FileReader();
+  reader.onload = (event) => { preview.src = event.target.result; preview.classList.add('show'); };
+  reader.readAsDataURL(file);
+
+  button.disabled = false;
+  button.textContent = '✔️ ส่งสลิปและยืนยันการจอง';
+}
+
+function resetSlipUpload() {
+  selectedSlipFile = null;
+  const input = document.getElementById('slipFile');
+  const drop = document.getElementById('slipDrop');
+  const nameEl = document.getElementById('slipName');
+  const preview = document.getElementById('slipPreview');
+  const button = document.getElementById('payOkBtn');
+
+  if (input) input.value = '';
+  if (drop) drop.classList.remove('has-file');
+  if (nameEl) nameEl.textContent = 'แตะเพื่อเลือกรูปสลิป';
+  if (preview) { preview.src = ''; preview.classList.remove('show'); }
+  if (button) { button.disabled = true; button.textContent = '🧾 กรุณาแนบสลิปก่อน'; }
+}
+
+function slipFileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || '');
+      const commaIndex = result.indexOf(',');
+      resolve({ name: file.name, mimeType: file.type || 'image/jpeg', data: commaIndex >= 0 ? result.substring(commaIndex + 1) : result });
+    };
+    reader.onerror = () => reject(new Error('ไม่สามารถอ่านรูปสลิปได้'));
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ================================================================
+   PAYMENT
+   ================================================================ */
+function openPay() {
+  if (!selectedSeat) {
+    Swal.fire({ icon: 'warning', title: 'ยังไม่ได้เลือกที่นั่ง', text: 'กรุณาเลือกที่นั่งก่อนชำระเงิน', background: '#12241a', color: '#f2f0e6', confirmButtonColor: '#2f7048' });
+    return;
+  }
+  resetSlipUpload();
+  startSeatCountdown();
+  document.getElementById('payModal').classList.add('show');
+}
+
+function closePay() {
+  document.getElementById('payModal').classList.remove('show');
+  clearInterval(seatCountdownTimer);
+  seatCountdownTimer = null;
+}
+
+async function submitBook() {
+  const btn = document.getElementById('payOkBtn');
+
+  const seatValueAtSubmit = document.getElementById('f-seat').value.trim();
+  if (!selectedSeat || !seatValueAtSubmit) {
+    closePay();
+    Swal.fire({ icon: 'warning', title: 'ที่นั่งของคุณถูกปลดล็อกไปแล้ว', text: 'กรุณาเลือกเบาะใหม่แล้วทำรายการอีกครั้งครับ', background: '#12241a', color: '#f2f0e6', confirmButtonColor: '#2f7048' });
+    return;
+  }
+  if (!selectedSlipFile) {
+    Swal.fire({ icon: 'warning', title: 'ยังไม่ได้แนบสลิป', text: 'กรุณาแนบรูปสลิปก่อนยืนยันการจอง', background: '#12241a', color: '#f2f0e6', confirmButtonColor: '#2f7048' });
+    return;
+  }
+
+  btn.innerHTML = '⌛ กำลังส่งข้อมูลและสลิป...';
+  btn.disabled = true;
+
+  try {
+    const slipData = await slipFileToBase64(selectedSlipFile);
+    const bookingId = 'BOOK-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+
+    const payload = {
+      date: document.getElementById('f-dateraw').value,
+      trip: document.getElementById('b-trip').value,
+      seat: document.getElementById('f-seat').value,
+      name: document.getElementById('f-name').value.trim(),
+      nickname: document.getElementById('f-nick').value.trim(),
+      phone: document.getElementById('f-phone').value.trim(),
+      line: document.getElementById('f-line').value.trim(),
+      pickup: document.getElementById('f-pickup').value.trim(),
+      confirm: 'true',
+      bookingId: bookingId,
+      session_id: MY_SESSION_ID,
+      slipBase64: slipData.data,
+      slipName: slipData.name,
+      slipMime: slipData.mimeType
+    };
+
+    const form = document.createElement('form');
+    form.method = 'POST'; form.action = API_URL; form.target = '_ifr_booking'; form.acceptCharset = 'UTF-8'; form.style.display = 'none';
+
+    Object.entries(payload).forEach(([key, value]) => {
+      const field = document.createElement('textarea');
+      field.name = key; field.value = value == null ? '' : String(value); field.style.display = 'none';
+      form.appendChild(field);
+    });
+
+    let iframe = document.getElementById('_ifr_booking');
+    if (!iframe) {
+      iframe = document.createElement('iframe');
+      iframe.name = '_ifr_booking'; iframe.id = '_ifr_booking'; iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+
+    setTimeout(() => {
+      clearInterval(seatRefreshTimer); seatRefreshTimer = null;
+      stopSeatCountdown(); closePay();
+
+      document.getElementById('r-name').innerText = payload.name;
+      document.getElementById('r-trip').innerText = payload.trip;
+      document.getElementById('r-date').innerText = new Date(payload.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+      document.getElementById('r-pickup').innerText = payload.pickup;
+      document.getElementById('r-seat').innerText = payload.seat;
+
+      document.getElementById('successPage2').classList.add('show');
+      allBookings.push({ ...payload, paymentStatus: 'รอตรวจสอบสลิป' });
+      renderMyTrips();
+
+      if (form.parentNode) form.remove();
+      selectedSlipFile = null;
+    }, 8000);
+
+  } catch (error) {
+    btn.disabled = false;
+    btn.textContent = '✔️ ส่งสลิปและยืนยันการจอง';
+    Swal.fire({ icon: 'error', title: 'ส่งสลิปไม่สำเร็จ', text: error.message || 'กรุณาลองใหม่อีกครั้ง', background: '#12241a', color: '#f2f0e6', confirmButtonColor: '#2f7048' });
+  }
+}
+
+function backHome() {
+  document.getElementById('successPage2').classList.remove('show');
+  document.getElementById('bookingPage2').classList.remove('show');
+  switchTab('home');
+  renderHome();
+}
+
+/* ================================================================
+   LOGOUT
+   ================================================================ */
+function logOut() {
+  Swal.fire({
+    title: 'ออกจากระบบ?', text: 'ต้องล็อกอินด้วยเบอร์ใหม่อีกครั้ง', icon: 'warning',
+    showCancelButton: true, confirmButtonText: 'ออกเลย', cancelButtonText: 'ยกเลิก',
+    background: '#12241a', color: '#f2f0e6', confirmButtonColor: '#e5484d'
+  }).then(r => {
+    if (r.isConfirmed) {
+      localStorage.removeItem('ydtjUser');
+      try { if (typeof liff !== 'undefined' && liff.isLoggedIn && liff.isLoggedIn()) liff.logout(); } catch (e) {}
+      location.reload();
+    }
+  });
+}
+
+/* ================================================================
+   DRAWER
+   ================================================================ */
+function openDrawer() { document.getElementById('drawer').classList.add('open'); document.getElementById('ov').style.display = 'block'; }
+function closeDrawer() { document.getElementById('drawer').classList.remove('open'); document.getElementById('ov').style.display = 'none'; }
+
+// รูปความทรงจำตัวอย่าง — เปลี่ยนเป็นรูปทริปจริงของลูกค้าได้ทีหลัง
+const MEMORY_PLACEHOLDER_IMAGES = [
+  "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=400&q=70",
+  "https://images.unsplash.com/photo-1500534623283-312aade485b7?w=400&q=70",
+  "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=70",
+  "https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=400&q=70"
+];
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('memGrid');
+  if (grid) grid.innerHTML = MEMORY_PLACEHOLDER_IMAGES.map(src => `<img src="${src}" onerror="this.style.display='none'">`).join('');
+});
+
+/* ================================================================
+   FLOATING ADMIN TAB
+   ================================================================ */
+let adminTabExpanded = false;
+let adminTabCollapseTimer = null;
+
+function toggleAdminTab(e) {
+  e.stopPropagation();
+  const tab = document.getElementById('adminTab');
+  if (!adminTabExpanded) {
+    tab.classList.add('expanded');
+    adminTabExpanded = true;
+    clearTimeout(adminTabCollapseTimer);
+    adminTabCollapseTimer = setTimeout(collapseAdminTab, 4000);
+    return;
+  }
+  window.location.href = 'admin.html';
+}
+
+function collapseAdminTab() {
+  const tab = document.getElementById('adminTab');
+  if (tab) tab.classList.remove('expanded');
+  adminTabExpanded = false;
+  clearTimeout(adminTabCollapseTimer);
+}
+
+document.addEventListener('click', (e) => {
+  if (!adminTabExpanded) return;
+  const tab = document.getElementById('adminTab');
+  if (tab && !tab.contains(e.target)) collapseAdminTab();
+});
+
+/* ================================================================
+   EQUIPMENT RENTAL (เช่าอุปกรณ์)
+   ================================================================ */
+function getMyUniqueBookings() {
+  const norm = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
+  const mine = allBookings.filter(b => b.trip && b.date && norm(b.phone) === norm(currentUser.phone) && new Date(b.date) >= today);
+
+  const seen = {}; const list = [];
+  mine.forEach(b => {
+    const key = b.trip + '_' + b.date + '_' + (b.seat || '');
+    if (!seen[key]) { seen[key] = 1; list.push(b); }
+  });
+  return list;
+}
+
+function openEquipRent() {
+  eqSelectedTripKey = null;
+  eqQty = { tent: 0, sleepingBag: 0, sleepingPad: 0 };
+  renderEqTripList(); renderEqItemList(); updateEqSummary();
+  document.getElementById('equipPage').classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function closeEquipRent() { document.getElementById('equipPage').classList.remove('show'); }
+
+function renderEqTripList() {
+  const box = document.getElementById('eqTripList');
+  const myBookings = getMyUniqueBookings();
+
+  if (myBookings.length === 0) {
+    box.innerHTML = `<p style="text-align:center;color:var(--muted);padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:16px">ยังไม่มีทริปที่จองไว้ครับ 🥲<br>กรุณาจองทริปก่อน ถึงจะเช่าอุปกรณ์ให้ทริปนั้นได้ครับ</p>`;
+    return;
+  }
+
+  box.innerHTML = myBookings.map(b => {
+    const key = b.trip + '_' + b.date + '_' + (b.seat || '');
+    const fmtDate = new Date(b.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+    const selected = key === eqSelectedTripKey;
+    return `
+      <div class="eq-trip-card ${selected ? 'selected' : ''}" onclick="selectEqTrip('${key}')">
+        <div class="eq-trip-radio"></div>
+        <div class="eq-trip-info"><h4>${b.trip}</h4><p>📅 ${fmtDate} · 🪑 เบาะ ${b.seat || '-'}</p></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectEqTrip(key) { eqSelectedTripKey = key; renderEqTripList(); updateEqSummary(); }
+
+function renderEqItemList() {
+  const box = document.getElementById('eqItemList');
+  box.innerHTML = Object.entries(EQUIP_ITEMS).map(([key, item]) => `
+    <div class="eq-item-card">
+      <div class="eq-item-img"><img src="${item.img}" onerror="this.style.display='none'"></div>
+      <div class="eq-item-info">
+        <h4>${item.label}</h4>
+        <p class="model">${item.brand}</p>
+        <p class="price">฿${item.price} / ${item.unit}</p>
+        <div class="eq-stepper">
+          <button class="eq-step-btn" onclick="changeEqQty('${key}', -1)">−</button>
+          <div class="eq-step-val" id="eqQtyVal-${key}">0</div>
+          <button class="eq-step-btn" onclick="changeEqQty('${key}', 1)">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function changeEqQty(key, delta) {
+  const next = Math.max(0, Math.min(10, (eqQty[key] || 0) + delta));
+  eqQty[key] = next;
+  document.getElementById('eqQtyVal-' + key).textContent = next;
+  updateEqSummary();
+}
+
+function getEqSelectedRows() {
+  return Object.entries(EQUIP_ITEMS).filter(([key]) => eqQty[key] > 0).map(([key, item]) => ({ key, item, qty: eqQty[key], subtotal: item.price * eqQty[key] }));
+}
+
+function updateEqSummary() {
+  const rows = getEqSelectedRows();
+  const total = rows.reduce((sum, r) => sum + r.subtotal, 0);
+
+  const summaryBox = document.getElementById('eqSummaryBox');
+  const rowsBox = document.getElementById('eqSummaryRows');
+  const totalEl = document.getElementById('eqTotalPrice');
+  const confirmBtn = document.getElementById('eqConfirmBtn');
+
+  if (rows.length === 0) { summaryBox.style.display = 'none'; }
+  else {
+    summaryBox.style.display = 'block';
+    rowsBox.innerHTML = rows.map(r => `<div class="eq-summary-row"><span>${r.item.label} x${r.qty}</span><span>${r.subtotal.toLocaleString()} บาท</span></div>`).join('');
+    totalEl.textContent = total.toLocaleString() + ' บาท';
+  }
+
+  const ready = Boolean(eqSelectedTripKey) && rows.length > 0;
+  confirmBtn.disabled = !ready;
+  confirmBtn.classList.toggle('ready', ready);
+  confirmBtn.innerText = ready ? `👉 ยืนยันเช่าอุปกรณ์ (${total.toLocaleString()} บาท) ✨` : (!eqSelectedTripKey ? '🚀 กรุณาเลือกทริปก่อนครับ' : '🚀 กรุณาเลือกอุปกรณ์อย่างน้อย 1 ชิ้น');
+}
+
+function confirmEquipRent() {
+  const booking = getMyUniqueBookings().find(b => (b.trip + '_' + b.date + '_' + (b.seat || '')) === eqSelectedTripKey);
+  if (!booking) return;
+
+  const rows = getEqSelectedRows();
+  const total = rows.reduce((sum, r) => sum + r.subtotal, 0);
+
+  const btn = document.getElementById('eqConfirmBtn');
+  const originalText = btn.innerText;
+  btn.disabled = true;
+  btn.innerText = '⌛ กำลังบันทึกข้อมูล...';
+
+  const rentId = 'RENT-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+
+  const payload = {
+    action: 'rentEquip', rentId: rentId, trip: booking.trip, date: booking.date, seat: booking.seat || '',
+    name: booking.name || currentUser.nick, nickname: currentUser.nick, phone: currentUser.phone,
+    tent: String(eqQty.tent || 0), sleepingBag: String(eqQty.sleepingBag || 0), sleepingPad: String(eqQty.sleepingPad || 0),
+    itemsSummary: rows.map(r => `${r.item.label} x${r.qty}`).join(', '), total: String(total), session_id: MY_SESSION_ID
+  };
+
+  const form = document.createElement('form');
+  form.method = 'POST'; form.action = API_URL; form.target = '_ifr_equiprent'; form.acceptCharset = 'UTF-8'; form.style.display = 'none';
+
+  Object.entries(payload).forEach(([key, value]) => {
+    const field = document.createElement('textarea');
+    field.name = key; field.value = value == null ? '' : String(value); field.style.display = 'none';
+    form.appendChild(field);
+  });
+
+  let iframe = document.getElementById('_ifr_equiprent');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.name = '_ifr_equiprent'; iframe.id = '_ifr_equiprent'; iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+
+  setTimeout(() => {
+    document.getElementById('eqr-trip').innerText = booking.trip;
+    document.getElementById('eqr-name').innerText = booking.name || currentUser.nick;
+    document.getElementById('eqr-seat').innerText = booking.seat || '-';
+    document.getElementById('eqr-items').innerHTML = rows.map(r => `<div class="r-item-row"><span>${r.item.label} (${r.item.brand}) x${r.qty}</span><span>${r.subtotal.toLocaleString()} บาท</span></div>`).join('');
+    document.getElementById('eqr-total').innerText = total.toLocaleString() + ' บาท';
+
+    document.getElementById('equipReceiptPage').classList.add('show');
+    if (form.parentNode) form.remove();
+
+    btn.disabled = false;
+    btn.innerText = originalText;
+  }, 2500);
+}
+
+function closeEquipReceipt() {
+  document.getElementById('equipReceiptPage').classList.remove('show');
+  document.getElementById('equipPage').classList.remove('show');
+  switchTab('home');
+}
+</script>
+</body>
+</html>
