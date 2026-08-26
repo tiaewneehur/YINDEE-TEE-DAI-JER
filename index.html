@@ -677,9 +677,30 @@ function renderVan(van){
 }
 async function toggleSeat(van,n){
   if(bookedSeats[van].includes(n)||lockedSeats[van].includes(n))return;
-  if(selectedSeats[van].has(n))selectedSeats[van].delete(n);
-  else selectedSeats[van].add(n);
+  const trip = trips.find(t=>t.id===currentTripId);
+  if(!trip)return;
+  const label = seatLabel(van,n);
+  if(selectedSeats[van].has(n)){
+    selectedSeats[van].delete(n);
+    renderVan(van);updateSeatInfo();
+    return;
+  }
+  selectedSeats[van].add(n);
   renderVan(van);updateSeatInfo();
+  try{
+    const response = await fetch(API_URL,{
+      method:'POST',
+      body:new URLSearchParams({action:'lockSeat',date:trip.rawDate,trip:trip.name,seat:label,session_id:MY_SESSION_ID})
+    });
+    const result = await response.json();
+    if(!result.ok){
+      selectedSeats[van].delete(n);
+      await loadSeatsFromBackend();
+      alert(result.error==='seat_booked' ? `ที่นั่ง ${label} ถูกจองไปแล้ว กรุณาเลือกที่นั่งอื่น` : `มีคนอื่นกำลังเลือกที่นั่ง ${label} อยู่ กรุณาเลือกที่นั่งอื่น`);
+    }
+  }catch(err){
+    // ต่อ backend จริงไม่ได้ (เช่น API_URL ยังเป็น placeholder) — ปล่อยให้เลือกแบบ local ต่อไปเพื่อทดสอบ UI
+  }
 }
 function updateSeatInfo(){
   const all = [];
@@ -755,7 +776,7 @@ function slipToBase64_(file){
     reader.onload = ()=>{
       const result = String(reader.result||'');
       const idx = result.indexOf(',');
-      resolve({name:file.name, data: idx>=0 ? result.slice(idx+1) : result});
+      resolve({name:file.name, mimeType:file.type||'image/jpeg', data: idx>=0 ? result.slice(idx+1) : result});
     };
     reader.onerror = reject;
     reader.readAsDataURL(file);
@@ -764,6 +785,11 @@ function slipToBase64_(file){
 async function confirmPayment(){
   const btn = document.getElementById('payment-submit');
   if(!btn||btn.disabled)return;
+  const input = document.getElementById('slip-input');
+  if(!input.files||!input.files[0]){
+    alert('กรุณาอัปโหลดสลิปโอนเงินก่อนยืนยันการชำระเงิน');
+    return;
+  }
   btn.disabled=true;btn.textContent='กำลังส่งข้อมูล...';
   try{
     const traveler = {
@@ -779,13 +805,43 @@ async function confirmPayment(){
     selectedSeats[2].forEach(n=>allSeats.push('B'+n));
     const code = 'YDEE'+Date.now().toString().slice(-8);
     const trip = trips.find(t=>t.id===currentTripId);
-    // demo mode - no real backend call
+
+    const slipData = await slipToBase64_(input.files[0]);
+
+    let iframe = document.getElementById('_ifr_booking');
+    if(!iframe){
+      iframe = document.createElement('iframe');
+      iframe.name='_ifr_booking';iframe.id='_ifr_booking';iframe.style.display='none';
+      document.body.appendChild(iframe);
+    }
+
+    allSeats.forEach((seat,i)=>{
+      const payload = {
+        date: trip.rawDate, trip: trip.name, seat: seat,
+        name: traveler.name, nickname: traveler.nickname, phone: traveler.phone,
+        line: traveler.line, pickup: traveler.pickup,
+        confirm: 'true', bookingId: code+'-'+(i+1), session_id: MY_SESSION_ID,
+        slipBase64: slipData.data, slipName: slipData.name, slipMime: slipData.mimeType
+      };
+      const form = document.createElement('form');
+      form.method='POST';form.action=API_URL;form.target='_ifr_booking';form.acceptCharset='UTF-8';form.style.display='none';
+      Object.entries(payload).forEach(([key,value])=>{
+        const field = document.createElement('textarea');
+        field.name=key;field.value=value==null?'':String(value);field.style.display='none';
+        form.appendChild(field);
+      });
+      document.body.appendChild(form);
+      form.submit();
+      setTimeout(()=>{ if(form.parentNode) form.remove(); },3000);
+    });
+
+    // รอหลังบ้านบันทึกข้อมูลก่อนแสดงหน้าสรุป
     setTimeout(()=>{
       clearInterval(timerInterval);stopSeatPolling();
       buildSummary(traveler,allSeats,code);
       showScreen('summary');
       btn.disabled=false;btn.textContent='ยืนยันการชำระเงิน';
-    },1500);
+    },2500);
   }catch(err){
     btn.disabled=false;btn.textContent='ยืนยันการชำระเงิน';
     alert('ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้งครับ');
