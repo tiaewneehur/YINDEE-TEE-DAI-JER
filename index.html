@@ -153,19 +153,20 @@ img{max-width:100%;display:block}
 .van-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px 14px;margin:0 18px 16px;box-shadow:var(--shadow-sm)}
 .van-header{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;color:var(--forest);margin-bottom:16px}
 .van-header svg{width:18px;height:18px}
-.van-body{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px 12px}
-.driver-row{display:flex;justify-content:space-between;align-items:center;padding:0 6px 12px}
-.mirror{width:28px;height:12px;border-radius:6px;background:var(--line-strong)}
-.driver-label{font-size:10px;color:var(--ink-muted);font-weight:600}
-.seat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.seat{aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;cursor:pointer;user-select:none;transition:transform .12s ease,background .15s ease}
+/* ผังเบาะ 4 คอลัมน์ x 3 แถว: คนขับ+3,6,9 / ทางเดิน+2,5,8 / เบาะซ้าย+1,4,7 — พาเนลมืดตัดกับพื้นหลังหลักให้รู้สึกเหมือนมองเข้าไปในรถตู้ */
+.van-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px;border-radius:20px;position:relative;overflow:hidden;background:linear-gradient(180deg,#16261c,#0E1811);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 6px 18px rgba(13,40,24,.25)}
+.van-grid::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at top,rgba(201,162,39,.08),transparent 60%);pointer-events:none}
+.seat{aspect-ratio:1;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;cursor:pointer;user-select:none;transition:transform .12s ease,background .15s ease;overflow:hidden}
+.seat span:first-child{font-size:8px;margin-bottom:2px;opacity:.9}
+.seat span:last-child{font-size:13px;line-height:1.1}
 .seat:active{transform:scale(.9)}
-.seat.available{background:var(--forest-light);color:#fff}
-.seat.selected{background:var(--gold);color:var(--forest);box-shadow:0 4px 12px rgba(201,162,39,.35)}
-.seat.booked{background:var(--danger);color:#fff;cursor:not-allowed;opacity:.85}
-.seat.locking-seat{background:#E8A23B;animation:pulse 1.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
-.seat.last-row{grid-column:2 / span 2}
+.seat.driver{background:linear-gradient(145deg,#2A3B2E,#1A281E);color:#8FA391;border:2px dashed rgba(255,255,255,.14);cursor:default}
+.seat.spacer{visibility:hidden;pointer-events:none}
+.seat.available{background:linear-gradient(145deg,#3AA36B,#2D8258);color:#fff;box-shadow:0 4px 0 #1F6642}
+.seat.selected{background:linear-gradient(145deg,#F3D473,var(--gold));color:#3A2E05;transform:scale(.97);box-shadow:0 0 12px rgba(201,162,39,.5),0 4px 0 #9A7A1C;animation:pulse .9s ease-in-out infinite}
+.seat.booked{background:linear-gradient(145deg,#E0655C,var(--danger));color:#fff;cursor:not-allowed;box-shadow:0 4px 0 #8A2F27}
+.seat.locking-seat{background:linear-gradient(145deg,#F0AD5C,#E8A23B);color:#4A2E05;cursor:not-allowed;pointer-events:none;box-shadow:0 4px 0 #A8681C;animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
 .legend-row{display:flex;justify-content:center;flex-wrap:wrap;gap:16px;padding:20px 18px 8px;font-size:11px;color:var(--ink-soft)}
 .legend{display:flex;align-items:center;gap:6px}
 .legend-dot{width:11px;height:11px;border-radius:4px}
@@ -192,8 +193,10 @@ img{max-width:100%;display:block}
 .field{margin-bottom:14px}
 .field:last-child{margin-bottom:0}
 .field label{display:block;font-size:12px;font-weight:700;color:var(--ink-soft);margin-bottom:6px}
-.field input,.field select{width:100%;height:48px;padding:0 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);font-size:14.5px;color:var(--ink);transition:border-color .15s ease}
-.field input:focus,.field select:focus{border-color:var(--forest-light);background:#fff}
+.field input,.field select,.field textarea{width:100%;padding:0 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);font-size:14.5px;color:var(--ink);transition:border-color .15s ease;font-family:inherit}
+.field input,.field select{height:48px}
+.field textarea{height:auto;padding:12px 14px;resize:vertical;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--forest-light);background:#fff}
 .field select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 8l5 5 5-5' stroke='%231B3A2F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
 .upload-zone{border:1.5px dashed var(--line-strong);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;transition:all .2s ease}
 .upload-zone.filled{border-style:solid;border-color:var(--forest-light);background:#F0F5F1}
@@ -240,6 +243,54 @@ img{max-width:100%;display:block}
 .menu-icon svg{width:18px;height:18px}
 .menu-text{flex:1;font-size:14px;font-weight:600}
 .menu-arrow{color:var(--ink-muted);font-size:18px}
+
+/* ===== ONSITE (มาเอง/นัดเจอหน้างาน) ===== */
+.onsite-note{font-size:11px;color:var(--ink-muted);text-align:center;margin:-4px 0 12px;line-height:1.5}
+.onsite-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.onsite-slot{aspect-ratio:1;border-radius:12px;border:1.5px dashed var(--line-strong);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:800;cursor:pointer;background:#fff;color:var(--ink-soft);transition:transform .12s ease}
+.onsite-slot:active{transform:scale(.9)}
+.onsite-slot span:last-child{font-size:14px}
+.onsite-slot.selected{background:var(--gold);border-style:solid;border-color:var(--gold);color:var(--forest)}
+.onsite-slot.booked{background:var(--danger);border-style:solid;border-color:var(--danger);color:#fff;cursor:not-allowed;opacity:.85}
+.onsite-slot.locking{background:#E8A23B;border-style:solid;border-color:#E8A23B;color:#fff;cursor:not-allowed;animation:pulse 1.2s ease-in-out infinite}
+
+/* ===== EQUIPMENT RENTAL ===== */
+.eq-trip-card{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s ease}
+.eq-trip-card.selected{border-color:var(--forest-light);background:#F0F5F1}
+.eq-trip-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--line-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.eq-trip-card.selected .eq-trip-radio{border-color:var(--forest-light)}
+.eq-trip-radio::after{content:'';width:9px;height:9px;border-radius:50%;background:var(--forest-light);display:none}
+.eq-trip-card.selected .eq-trip-radio::after{display:block}
+.eq-trip-info h4{font-size:13.5px;color:var(--ink);font-weight:700}
+.eq-trip-info p{font-size:11px;color:var(--ink-soft);margin-top:2px}
+.eq-item-card{display:flex;gap:12px;border-bottom:1px solid var(--line);padding:14px 0}
+.eq-item-card:last-child{border-bottom:none;padding-bottom:0}
+.eq-item-img{width:64px;height:64px;border-radius:12px;overflow:hidden;flex-shrink:0;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+.eq-item-img img{width:100%;height:100%;object-fit:contain}
+.eq-item-info h4{font-size:14px;color:var(--ink);font-weight:700}
+.eq-item-info p.model{font-size:11px;color:var(--ink-soft);margin-top:2px}
+.eq-item-info p.price{font-size:12px;color:var(--forest-light);font-weight:700;margin-top:4px}
+.eq-stepper{display:flex;align-items:center;gap:10px;margin-top:8px}
+.eq-step-btn{width:28px;height:28px;border-radius:8px;border:1.5px solid var(--line-strong);background:#fff;color:var(--forest);font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.eq-step-val{min-width:20px;text-align:center;font-size:14px;font-weight:800;color:var(--ink)}
+
+/* ===== REVIEWS ===== */
+.review-summary-card{background:linear-gradient(135deg,var(--forest) 0%,var(--forest-mid) 100%);color:#fff;border-radius:var(--radius-lg);padding:24px;text-align:center;box-shadow:var(--shadow);margin-bottom:16px}
+.review-summary-card .avg{font-size:42px;font-weight:900;line-height:1}
+.review-summary-card .stars{font-size:19px;margin:6px 0;letter-spacing:2px;color:var(--gold)}
+.review-summary-card .count{font-size:12px;opacity:.75}
+.star-picker{text-align:center;font-size:32px;letter-spacing:8px;margin:6px 0 16px}
+.star-picker span{cursor:pointer;color:var(--line-strong);transition:color .15s ease,transform .1s ease;display:inline-block}
+.star-picker span:active{transform:scale(1.15)}
+.review-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+.review-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px}
+.review-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--forest-light),var(--forest));display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:800;flex-shrink:0;overflow:hidden}
+.review-avatar img{width:100%;height:100%;object-fit:cover}
+.review-name{font-size:13px;font-weight:700;color:var(--ink)}
+.review-date{font-size:10px;color:var(--ink-muted)}
+.review-stars{color:var(--gold);font-size:13px;letter-spacing:1px;flex-shrink:0}
+.review-comment{font-size:13px;color:var(--ink-soft);line-height:1.65;margin-top:2px}
+.review-photo{width:100%;border-radius:12px;max-height:260px;object-fit:cover;margin-top:10px}
 @media(min-width:640px){body{background:#EDE9E0}.app{max-width:520px;margin:0 auto;min-height:100dvh;background:var(--bg);box-shadow:0 0 60px rgba(0,0,0,.08)}.bottom-nav{max-width:520px;left:50%;transform:translateX(-50%)}.sticky-bar,.seat-sticky{max-width:520px;left:50%;right:auto;width:520px;transform:translateX(-50%)}}
 @media(max-width:360px){.hero-title{font-size:22px}.featured-name{font-size:20px}.quick-icon{width:50px;height:50px}.trip-name{font-size:16px}}
 </style>
@@ -346,16 +397,22 @@ img{max-width:100%;display:block}
   </div>
   <div class="help-banner">เลือกที่นั่งได้มากกว่า 1 ที่นั่ง<br>สีแดง = มีผู้จองแล้ว</div>
   <div class="van-card">
-    <div class="van-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-5A2 2 0 0 1 6.4 6.5h11.2A2 2 0 0 1 19.5 8L21 13"/><rect x="2" y="13" width="20" height="6" rx="1.5"/><circle cx="7" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg> รถตู้คันที่ 1</div>
-    <div class="van-body"><div class="driver-row"><div class="mirror"></div><div class="driver-label">คนขับ</div><div class="mirror"></div></div><div class="seat-grid" id="van1-grid"></div></div>
+    <div class="van-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-5A2 2 0 0 1 6.4 6.5h11.2A2 2 0 0 1 19.5 8L21 13"/><rect x="2" y="13" width="20" height="6" rx="1.5"/><circle cx="7" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg> รถตู้คันที่ 1 (ตู้ A)</div>
+    <div class="van-grid" id="vanGridA"></div>
   </div>
   <div class="van-card">
-    <div class="van-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-5A2 2 0 0 1 6.4 6.5h11.2A2 2 0 0 1 19.5 8L21 13"/><rect x="2" y="13" width="20" height="6" rx="1.5"/><circle cx="7" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg> รถตู้คันที่ 2</div>
-    <div class="van-body"><div class="driver-row"><div class="mirror"></div><div class="driver-label">คนขับ</div><div class="mirror"></div></div><div class="seat-grid" id="van2-grid"></div></div>
+    <div class="van-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-5A2 2 0 0 1 6.4 6.5h11.2A2 2 0 0 1 19.5 8L21 13"/><rect x="2" y="13" width="20" height="6" rx="1.5"/><circle cx="7" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg> รถตู้คันที่ 2 (ตู้ B)</div>
+    <div class="van-grid" id="vanGridB"></div>
+  </div>
+  <div class="van-card">
+    <div class="van-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> มาเอง / นัดเจอหน้างาน</div>
+    <p class="onsite-note">สำหรับคนที่ขับรถไปเอง/นัดเจอกันที่หน้างาน ไม่ใช้ที่นั่งบนรถตู้</p>
+    <div class="onsite-grid" id="onsiteGrid"></div>
   </div>
   <div class="legend-row">
     <div class="legend"><span class="legend-dot" style="background:#2D5A45"></span> ว่าง</div>
     <div class="legend"><span class="legend-dot" style="background:#C9A227"></span> เลือกแล้ว</div>
+    <div class="legend"><span class="legend-dot" style="background:#E8A23B"></span> กำลังเลือก</div>
     <div class="legend"><span class="legend-dot" style="background:#C44B3F"></span> จองแล้ว</div>
   </div>
 </div>
@@ -472,11 +529,92 @@ img{max-width:100%;display:block}
       <div><div class="profile-name" id="profile-name">ผู้เดินทาง</div><div class="profile-sub" id="profile-sub">สมาชิก ยินดีที่ได้เจอ</div></div>
     </div>
     <div class="menu-list">
-      <button class="menu-item"><div class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div><div class="menu-text">ข้อมูลส่วนตัว</div><div class="menu-arrow">›</div></button>
-      <button class="menu-item"><div class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6z"/></svg></div><div class="menu-text">รายการโปรด</div><div class="menu-arrow">›</div></button>
-      <button class="menu-item"><div class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div class="menu-text">ประวัติการจอง</div><div class="menu-arrow">›</div></button>
+      <button class="menu-item" onclick="showScreen('mytrips')"><div class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div class="menu-text">ประวัติการจอง</div><div class="menu-arrow">›</div></button>
+      <button class="menu-item" onclick="openEquipRent()"><div class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20l9-16 9 16H3z"/><path d="M9 12h6"/></svg></div><div class="menu-text">เช่าอุปกรณ์แคมป์</div><div class="menu-arrow">›</div></button>
+      <button class="menu-item" onclick="openReviews()"><div class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6z"/></svg></div><div class="menu-text">รีวิว & แชร์ทริป</div><div class="menu-arrow">›</div></button>
       <button class="menu-item"><div class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><circle cx="12" cy="17" r=".8" fill="currentColor"/></svg></div><div class="menu-text">ช่วยเหลือและติดต่อทีมงาน</div><div class="menu-arrow">›</div></button>
     </div>
+  </div>
+</div>
+</section>
+
+<section class="screen" id="screen-equip">
+<div class="screen-content">
+  <header class="page-header">
+    <button class="icon-btn" onclick="showScreen('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <h1>เช่าอุปกรณ์แคมป์</h1>
+    <div class="header-spacer"></div>
+  </header>
+  <div class="payment-wrap">
+    <div class="form-card">
+      <h3>เลือกทริปที่จะไป</h3>
+      <div id="eqTripList"><div class="empty-state">กำลังโหลด...</div></div>
+    </div>
+    <div class="form-card">
+      <h3>เลือกอุปกรณ์ที่ต้องการเช่า</h3>
+      <div id="eqItemList"></div>
+    </div>
+    <div class="form-card" id="eqSummaryBox" style="display:none">
+      <h3>สรุปยอด</h3>
+      <div id="eqSummaryRows"></div>
+      <div class="row" style="border-top:2px solid var(--line);margin-top:4px;padding-top:14px"><span class="key" style="font-weight:800;color:var(--ink)">ยอดรวมที่ต้องจ่าย</span><span class="val ok" id="eqTotalPrice">0 บาท</span></div>
+      <p style="font-size:11px;color:#8B6C20;background:#FFF8E6;border:1px solid #F0D98A;border-radius:10px;padding:9px 11px;margin-top:12px;line-height:1.6">⚠️ ทางแอดมินจะเรียกเก็บเงินค่าเช่าอุปกรณ์นี้ในกลุ่มอีกครั้งครับ ไม่ต้องโอนตอนนี้</p>
+    </div>
+    <button class="btn-primary" style="width:100%" id="eqConfirmBtn" disabled onclick="confirmEquipRent()">กรุณาเลือกทริปก่อนครับ</button>
+  </div>
+</div>
+</section>
+
+<section class="screen" id="screen-equip-receipt">
+<div class="screen-content">
+  <header class="page-header"><div class="header-spacer"></div><h1>ใบเสร็จค่าเช่า</h1><div class="header-spacer"></div></header>
+  <div class="summary-wrap">
+    <div class="success-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <h2>เช่าอุปกรณ์สำเร็จ!</h2>
+    <div class="summary-sub">แจ้งรายการเช่าไว้ให้แอดมินแล้วครับ</div>
+    <div class="summary-card">
+      <h4>รายละเอียด</h4>
+      <div class="row"><span class="key">ทริป</span><span class="val" id="eqr-trip">—</span></div>
+      <div class="row"><span class="key">ผู้เช่า</span><span class="val" id="eqr-name">—</span></div>
+      <div class="row"><span class="key">เบาะ</span><span class="val" id="eqr-seat">—</span></div>
+      <div id="eqr-items"></div>
+      <div class="row"><span class="key">ยอดรวม</span><span class="val ok" id="eqr-total">—</span></div>
+    </div>
+    <p style="font-size:13px;color:var(--danger);margin-bottom:16px;line-height:1.6">⚠️ ทางแอดมินจะเรียกเก็บเงินค่าเช่าอุปกรณ์นี้ในกลุ่มอีกครั้งครับ ไม่ต้องโอนตอนนี้</p>
+    <button class="btn-primary" style="width:100%" onclick="closeEquipReceipt()">กลับหน้าแรก</button>
+  </div>
+</div>
+</section>
+
+<section class="screen" id="screen-review">
+<div class="screen-content">
+  <header class="page-header">
+    <button class="icon-btn" onclick="showScreen('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <h1>รีวิว & แชร์ทริป</h1>
+    <div class="header-spacer"></div>
+  </header>
+  <div class="payment-wrap">
+    <div id="reviewSummary"></div>
+    <button class="btn-primary" style="width:100%;margin-bottom:18px" onclick="openWriteReview()">✍️ เขียนรีวิว</button>
+    <div class="form-card" id="writeReviewBox" style="display:none">
+      <h3>เขียนรีวิวของคุณ</h3>
+      <div class="star-picker" id="starPicker">
+        <span onclick="setReviewRating(1)">☆</span><span onclick="setReviewRating(2)">☆</span><span onclick="setReviewRating(3)">☆</span><span onclick="setReviewRating(4)">☆</span><span onclick="setReviewRating(5)">☆</span>
+      </div>
+      <div class="field"><label>ความคิดเห็น</label><textarea id="reviewComment" rows="4" placeholder="เล่าประสบการณ์ทริปที่ไปมา หรือความประทับใจกับเพจ..." oninput="checkReviewReady()"></textarea></div>
+      <div class="field">
+        <label>แนบรูปทริป (ไม่บังคับ)</label>
+        <label class="upload-zone" id="reviewPhotoDrop">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          <div class="upload-main" id="reviewPhotoMain">แตะเพื่ออัปโหลดรูป</div>
+          <div class="upload-sub" id="reviewPhotoSub">JPG / PNG</div>
+          <input type="file" accept="image/jpeg,image/png,image/webp" id="reviewPhotoFile" style="display:none" onchange="handleReviewPhoto(this)">
+        </label>
+      </div>
+      <button class="btn-primary" style="width:100%" id="reviewSubmitBtn" disabled onclick="submitReview()">กรุณาให้คะแนนก่อนครับ</button>
+      <p onclick="closeWriteReview()" style="font-size:12.5px;color:var(--ink-muted);margin-top:12px;cursor:pointer;text-align:center">ยกเลิก</p>
+    </div>
+    <div id="reviewList"></div>
   </div>
 </div>
 </section>
@@ -495,13 +633,23 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzVeiOY9Q0r3kH9Qz0nfjn4
 const QUERY_URL = API_URL + "?action=read";
 const SEAT_LOCK_MINUTES = 5;
 const SEAT_LOCK_SECONDS = SEAT_LOCK_MINUTES * 60;
-const MY_SESSION_ID = sessionStorage.getItem('ydtj_session_id') || ('SESSION-' + Date.now() + '-' + Math.random().toString(36).substring(2, 10));
-sessionStorage.setItem('ydtj_session_id', MY_SESSION_ID);
+// ปลอดภัยไว้ก่อน — ถ้าเบราว์เซอร์บล็อก sessionStorage/localStorage (เช่นตอนเปิดไฟล์
+// แบบ file:// ตรงๆ) ให้ใช้ตัวแปรในหน่วยความจำแทน กันสคริปต์ error ตั้งแต่บรรทัดแรก
+const _memStore = {};
+function storageGet_(store, key){
+  try { return store.getItem(key); } catch(e){ return _memStore[key] || null; }
+}
+function storageSet_(store, key, val){
+  try { store.setItem(key, val); } catch(e){ _memStore[key] = val; }
+}
+
+const MY_SESSION_ID = storageGet_(window.sessionStorage, 'ydtj_session_id') || ('SESSION-' + Date.now() + '-' + Math.random().toString(36).substring(2, 10));
+storageSet_(window.sessionStorage, 'ydtj_session_id', MY_SESSION_ID);
 function slugify_(str){return String(str||'trip').replace(/[^\u0E00-\u0E7Fa-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'trip'}
 const GRADIENT_PALETTE = [['#1B3A2F','#0D2818'],['#1A4A5C','#0C2A35'],['#5C3A1A','#2E1C0C'],['#3A2A5C','#1C1430'],['#4A2A2A','#2A1515']];
 let allBookings = [];
-function getTraveler(){try{return JSON.parse(localStorage.getItem('ydtjTraveler')||'{}')}catch(e){return{}}}
-function saveTraveler(t){localStorage.setItem('ydtjTraveler',JSON.stringify(t))}
+function getTraveler(){try{return JSON.parse(storageGet_(window.localStorage,'ydtjTraveler')||'{}')}catch(e){return{}}}
+function saveTraveler(t){storageSet_(window.localStorage,'ydtjTraveler',JSON.stringify(t))}
 const DEMO_TRIPS = [
   {id:'changphueak',tag:'เดินป่า',type:'hiking',name:'เขาช้างเผือก',loc:'จ.กาญจนบุรี',date:'20 - 21 ก.ย. 69 (2 วัน 1 คืน)',dateShort:'20 - 21 ก.ย. 69',seatsLeft:6,price:2690,difficulty:'ยาก',distance:'8 กม.',duration:'2 วัน 1 คืน',capacity:'20 ท่าน',desc:'พิชิตยอดเขาช้างเผือก หนึ่งในเส้นทางเดินป่าที่สวยที่สุดของประเทศไทย ชมวิวภูเขาแบบ 360 องศา ทะเลหมอกยามเช้า และพระอาทิตย์ตกบนสันเขา พร้อมทีมงานดูแลตลอดการเดินทาง',highlights:['เดินสัมผัสสันเขาช้างเผือก','ชมวิว 360 องศา','ชมพระอาทิตย์ขึ้นและตก','มีทีมงานดูแลตลอดเส้นทาง','อาหารจัดเต็ม 3 มื้อ'],gradient:['#1B3A2F','#0D2818']},
   {id:'thilosu',tag:'เดินป่า',type:'hiking',name:'น้ำตกทีลอซู',loc:'จ.ตาก',date:'27 - 29 ก.ย. 69 (3 วัน 2 คืน)',dateShort:'27 - 29 ก.ย. 69',seatsLeft:8,price:3290,difficulty:'ปานกลาง',distance:'10 กม.',duration:'3 วัน 2 คืน',capacity:'18 ท่าน',desc:'สัมผัสธรรมชาติในผืนป่าตะวันตก เดินทางสู่น้ำตกทีลอซู พร้อมพักแคมป์ท่ามกลางธรรมชาติและบรรยากาศป่าเขา',highlights:['ชมน้ำตกทีลอซู','เดินป่าเลียบลำธาร','พักแคมป์ท่ามกลางธรรมชาติ','ไกด์ท้องถิ่นดูแล','อาหารครบทุกมื้อ'],gradient:['#1A4A5C','#0C2A35']},
@@ -510,9 +658,13 @@ const DEMO_TRIPS = [
 let trips = [];
 let currentTripId = 'changphueak';
 let heartOn = false;
-let selectedSeats = {1:new Set(),2:new Set()};
-let bookedSeats = {1:[],2:[]};
-let lockedSeats = {1:[],2:[]};
+
+// ผังเบาะจริง: คนขับ + 3,6,9 / ทางเดิน + 2,5,8 / เบาะซ้าย + 1,4,7 — ต่อรถ 1 คัน (4 คอลัมน์ x 3 แถว)
+const BUS_GRID_STRUCTURE = ['driver', 3, 6, 9, 'spacer', 2, 5, 8, 'เบาะซ้าย', 1, 4, 7];
+
+let selectedSeatIds = new Set();   // เก็บ id เต็มๆ เช่น "A3", "Cเบาะซ้าย"
+let bookedSeatIds = new Set();
+let lockedSeatIds = new Set();
 let seatPollTimer = null;
 let timerInterval = null;
 let secondsLeft = SEAT_LOCK_SECONDS;
@@ -520,12 +672,20 @@ function mountainSVG(c1,c2){
   const id = 'g'+c1.replace('#','')+Math.random().toString(36).substring(2,7);
   return `<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs><rect width="400" height="250" fill="url(#${id})"/><circle cx="320" cy="48" r="26" fill="#fff" opacity=".78"/><path d="M0 200 L55 125 L105 175 L160 85 L225 170 L285 115 L345 175 L400 125 L400 250 L0 250 Z" fill="#061A12" opacity=".32"/><path d="M0 225 L45 160 L95 200 L150 125 L210 200 L270 140 L325 200 L400 160 L400 250 L0 250 Z" fill="#04140E" opacity=".5"/></svg>`;
 }
+// รูปปกทริป — ถ้ามีลิงก์รูปจริง (คอลัมน์ Image ในชีท Trips) ใช้รูปนั้น ถ้าไม่มีค่อย fallback เป็นภาพภูเขาที่วาดเอง
+function tripCoverHTML(t){
+  if(t.image){
+    return `<img src="${t.image}" alt="${t.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.outerHTML=${JSON.stringify(mountainSVG(t.gradient[0],t.gradient[1]))}">`;
+  }
+  return mountainSVG(t.gradient[0],t.gradient[1]);
+}
 function fetchData(){
   const cb = 'cb_'+Date.now();
   let finished = false;
   window[cb] = (res)=>{
     finished = true;
     allBookings = res.bookings||[];
+    allReviews = res.reviews||[];
     const catalog = res.trips||[];
     if(catalog.length===0){
       trips = DEMO_TRIPS.map((t,i)=>({...t,rawDate:demoDate_(i)}));
@@ -559,6 +719,7 @@ function tripFromCatalog_(t,index){
     capacity:t.capacityLabel||'20 ท่าน',
     desc:t.desc||'ทริปเดินป่าโดยยินดีที่ได้เจอ — รายละเอียดเพิ่มเติมสอบถามแอดมินได้ครับ',
     highlights: (t.highlights&&t.highlights.length) ? t.highlights : ['เดินทางโดยรถตู้ VIP','ทีมงานดูแลตลอดทริป'],
+    image: t.image || '',
     gradient:palette
   };
 }
@@ -574,6 +735,8 @@ function loadSeatsFromBackend(){
     document.body.appendChild(s);
   });
 }
+let _lastBookedMap = {};
+let _lastLockedMap = {};
 function applySeatData_(bookedList,lockList){
   const bookedMap = {};
   bookedList.forEach(b=>{const seat=String(b.seat||'').trim();if(seat)bookedMap[seat]=true});
@@ -583,20 +746,16 @@ function applySeatData_(bookedList,lockList){
     const isMine = String(l.session_id||'')===String(MY_SESSION_ID);
     if(seat&&!isMine&&!bookedMap[seat])lockedMap[seat]=true;
   });
-  bookedSeats = {1:[],2:[]};
-  lockedSeats = {1:[],2:[]};
-  for(let n=1;n<=10;n++){
-    if(bookedMap['A'+n])bookedSeats[1].push(n);
-    if(bookedMap['B'+n])bookedSeats[2].push(n);
-    if(lockedMap['A'+n])lockedSeats[1].push(n);
-    if(lockedMap['B'+n])lockedSeats[2].push(n);
-  }
-  renderVan(1);renderVan(2);updateSeatInfo();
+  _lastBookedMap = bookedMap;
+  _lastLockedMap = lockedMap;
+  bookedSeatIds = new Set(Object.keys(bookedMap));
+  lockedSeatIds = new Set(Object.keys(lockedMap));
+  renderVanGrid('A');renderVanGrid('B');renderOnsiteGrid(bookedMap,lockedMap);updateSeatInfo();
 }
 function startSeatPolling(){stopSeatPolling();seatPollTimer=setInterval(()=>{loadSeatsFromBackend()},5000)}
 function stopSeatPolling(){clearInterval(seatPollTimer);seatPollTimer=null}
 async function goToSeats(){
-  selectedSeats[1]=new Set();selectedSeats[2]=new Set();
+  selectedSeatIds=new Set();selectedOnsite=new Set();
   showScreen('seats');
   await loadSeatsFromBackend();
   startSeatPolling();
@@ -607,7 +766,7 @@ function renderTrips(list=trips){
   if(!list.length){container.innerHTML=`<div class="empty-state">ไม่พบทริปในหมวดนี้</div>`;return}
   container.innerHTML = list.map(t=>`
     <article class="trip-card" onclick="openDetail('${t.id}')">
-      <div class="trip-cover">${mountainSVG(t.gradient[0],t.gradient[1])}<div class="trip-tag">${t.tag}</div>
+      <div class="trip-cover">${tripCoverHTML(t)}<div class="trip-tag">${t.tag}</div>
         <div class="trip-fav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
       </div>
       <div class="trip-body">
@@ -637,7 +796,7 @@ function openDetail(id){
   if(!trip)return;
   currentTripId = id;
   document.getElementById('detail-hero').innerHTML = `
-    ${mountainSVG(trip.gradient[0],trip.gradient[1])}
+    ${tripCoverHTML(trip)}
     <div class="detail-overlay"></div>
     <div class="detail-actions">
       <button class="detail-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
@@ -662,58 +821,72 @@ function openDetail(id){
   showScreen('detail');
 }
 function toggleHeart(){heartOn=!heartOn;const svg=document.getElementById('heart-svg');if(svg)svg.setAttribute('fill',heartOn?'#C9A227':'none')}
-function seatLabel(van,n){return (van===1?'A':'B')+n}
-function renderVan(van){
-  const grid = document.getElementById('van'+van+'-grid');
+
+// วาดผังเบาะ 1 คัน ตาม BUS_GRID_STRUCTURE เป๊ะๆ — prefix คือ 'A'/'B'/'C'
+function renderVanGrid(prefix){
+  const grid = document.getElementById('vanGrid'+prefix);
   if(!grid)return;
   let html = '';
-  for(let n=1;n<=10;n++){
+  BUS_GRID_STRUCTURE.forEach(n=>{
+    if(n==='driver'){ html += `<div class="seat driver"><span style="font-size:18px">🧑‍✈️</span><span style="font-size:11px">คนขับ</span></div>`; return; }
+    if(n==='spacer'){ html += `<div class="seat spacer"></div>`; return; }
+
+    const id = prefix+n;
     let cls = 'available';
-    if(bookedSeats[van].includes(n))cls='booked';
-    else if(selectedSeats[van].has(n))cls='selected';
-    else if(lockedSeats[van].includes(n))cls='booked locking-seat';
-    if(n>8)cls+=' last-row';
-    html += `<div class="seat ${cls}" onclick="toggleSeat(${van},${n})">${seatLabel(van,n)}</div>`;
-  }
+    let inner = `<span>เบาะ</span><span>${id}</span>`;
+
+    if(bookedSeatIds.has(id)){
+      cls = 'booked';
+      inner = `<span>${id}</span><span style="font-size:10px">เต็ม</span>`;
+    } else if(selectedSeatIds.has(id)){
+      cls = 'selected';
+    } else if(lockedSeatIds.has(id)){
+      cls = 'booked locking-seat';
+      inner = `<span>${id}</span><span style="font-size:9px">มีคนเลือก</span>`;
+    }
+
+    html += `<div class="seat ${cls}" ${cls==='available'||cls==='selected'?`onclick="toggleSeat('${id}')"`:''}>${inner}</div>`;
+  });
   grid.innerHTML = html;
 }
-async function toggleSeat(van,n){
-  if(bookedSeats[van].includes(n)||lockedSeats[van].includes(n))return;
+
+async function toggleSeat(id){
+  if(bookedSeatIds.has(id)||lockedSeatIds.has(id))return;
   const trip = trips.find(t=>t.id===currentTripId);
   if(!trip)return;
-  const label = seatLabel(van,n);
-  if(selectedSeats[van].has(n)){
-    selectedSeats[van].delete(n);
-    renderVan(van);updateSeatInfo();
+  const prefix = id.charAt(0);
+
+  if(selectedSeatIds.has(id)){
+    selectedSeatIds.delete(id);
+    renderVanGrid(prefix);updateSeatInfo();
     return;
   }
-  selectedSeats[van].add(n);
-  renderVan(van);updateSeatInfo();
+  selectedSeatIds.add(id);
+  renderVanGrid(prefix);updateSeatInfo();
   try{
     const response = await fetch(API_URL,{
       method:'POST',
-      body:new URLSearchParams({action:'lockSeat',date:trip.rawDate,trip:trip.name,seat:label,session_id:MY_SESSION_ID})
+      body:new URLSearchParams({action:'lockSeat',date:trip.rawDate,trip:trip.name,seat:id,session_id:MY_SESSION_ID})
     });
     const result = await response.json();
     if(!result.ok){
-      selectedSeats[van].delete(n);
+      selectedSeatIds.delete(id);
       await loadSeatsFromBackend();
-      alert(result.error==='seat_booked' ? `ที่นั่ง ${label} ถูกจองไปแล้ว กรุณาเลือกที่นั่งอื่น` : `มีคนอื่นกำลังเลือกที่นั่ง ${label} อยู่ กรุณาเลือกที่นั่งอื่น`);
+      alert(result.error==='seat_booked' ? `ที่นั่ง ${id} ถูกจองไปแล้ว กรุณาเลือกที่นั่งอื่น` : `มีคนอื่นกำลังเลือกที่นั่ง ${id} อยู่ กรุณาเลือกที่นั่งอื่น`);
     }
   }catch(err){
     // ต่อ backend จริงไม่ได้ (เช่น API_URL ยังเป็น placeholder) — ปล่อยให้เลือกแบบ local ต่อไปเพื่อทดสอบ UI
   }
 }
 function updateSeatInfo(){
-  const all = [];
-  selectedSeats[1].forEach(n=>all.push('A'+n));
-  selectedSeats[2].forEach(n=>all.push('B'+n));
+  const all = [...selectedSeatIds];
+  selectedOnsite.forEach(n=>all.push('หน้างาน '+n));
   document.getElementById('seat-count').textContent = `เลือกแล้ว ${all.length} ที่นั่ง`;
   document.getElementById('seat-codes').textContent = all.length ? all.join(', ') : '—';
   document.getElementById('seat-next').disabled = all.length===0;
 }
 function goToPayment(){
-  if(!selectedSeats[1].size && !selectedSeats[2].size)return;
+  if(!selectedSeatIds.size && !selectedOnsite.size)return;
   stopSeatPolling();
   secondsLeft = SEAT_LOCK_SECONDS;
   updateTimer();
@@ -723,7 +896,7 @@ function goToPayment(){
     if(secondsLeft<=0){
       secondsLeft=0;clearInterval(timerInterval);
       alert('หมดเวลาล็อกที่นั่ง กรุณาเลือกที่นั่งใหม่อีกครั้งครับ');
-      selectedSeats[1]=new Set();selectedSeats[2]=new Set();
+      selectedSeatIds=new Set();selectedOnsite=new Set();
       loadSeatsFromBackend();showScreen('seats');return;
     }
     updateTimer();
@@ -802,9 +975,8 @@ async function confirmPayment(){
       pickup: document.getElementById('trav-pickup').value.trim()
     };
     saveTraveler(traveler);
-    const allSeats = [];
-    selectedSeats[1].forEach(n=>allSeats.push('A'+n));
-    selectedSeats[2].forEach(n=>allSeats.push('B'+n));
+    const allSeats = [...selectedSeatIds];
+    selectedOnsite.forEach(n=>allSeats.push('หน้างาน '+n));
     const code = 'YDEE'+Date.now().toString().slice(-8);
     const trip = trips.find(t=>t.id===currentTripId);
 
@@ -859,14 +1031,14 @@ function buildSummary(traveler,seatList,code){
   document.getElementById('summary-deposit').textContent = (seatList.length*1000).toLocaleString('th-TH')+' บาท';
 }
 function resetAndHome(){
-  selectedSeats[1]=new Set();selectedSeats[2]=new Set();
+  selectedSeatIds=new Set();selectedOnsite=new Set();
   const input = document.getElementById('slip-input');
   if(input)input.value='';
   const box = document.getElementById('upload-box');
   if(box)box.classList.remove('filled');
   document.getElementById('upload-main').textContent = 'แตะเพื่ออัปโหลดสลิป';
   document.getElementById('upload-sub').textContent = 'JPG / PNG';
-  renderVan(1);renderVan(2);updateSeatInfo();
+  renderVanGrid('A');renderVanGrid('B');updateSeatInfo();
   fetchData();showScreen('home');
 }
 function showScreen(name){
@@ -926,8 +1098,346 @@ function renderMyTrips(){
     return `<div class="booking-card"><div class="booking-status">${isPast?'เดินทางแล้ว':'ยืนยันการจองแล้ว'}</div><div class="booking-name">${g.trip}</div><div class="booking-info">📅 ${fmtDate}</div><div class="booking-seats">ที่นั่ง: ${g.seats.length?g.seats.join(', '):'-'}</div></div>`;
   }).join('');
 }
+
+/* ================================================================
+   ONSITE SLOTS (มาเอง/นัดเจอหน้างาน) — ใช้ระบบล็อกเดียวกับเบาะรถตู้
+   ================================================================ */
+let selectedOnsite = new Set();
+
+function renderOnsiteGrid(bookedMap,lockedMap){
+  const grid = document.getElementById('onsiteGrid');
+  if(!grid)return;
+  let html = '';
+  for(let n=1;n<=10;n++){
+    const label = 'หน้างาน '+n;
+    let cls = '';
+    if(bookedMap && bookedMap[label]) cls='booked';
+    else if(selectedOnsite.has(n)) cls='selected';
+    else if(lockedMap && lockedMap[label]) cls='locking';
+    html += `<div class="onsite-slot ${cls}" onclick="toggleOnsite(${n})"><span>หน้างาน</span><span>${n}</span></div>`;
+  }
+  grid.innerHTML = html;
+}
+
+async function toggleOnsite(n){
+  const label = 'หน้างาน '+n;
+  const trip = trips.find(t=>t.id===currentTripId);
+  if(!trip)return;
+  if(selectedOnsite.has(n)){
+    selectedOnsite.delete(n);
+    renderOnsiteGrid(_lastBookedMap,_lastLockedMap);
+    updateSeatInfo();
+    return;
+  }
+  selectedOnsite.add(n);
+  renderOnsiteGrid(_lastBookedMap,_lastLockedMap);
+  updateSeatInfo();
+  try{
+    const response = await fetch(API_URL,{
+      method:'POST',
+      body:new URLSearchParams({action:'lockSeat',date:trip.rawDate,trip:trip.name,seat:label,session_id:MY_SESSION_ID})
+    });
+    const result = await response.json();
+    if(!result.ok){
+      selectedOnsite.delete(n);
+      await loadSeatsFromBackend();
+      alert(result.error==='seat_booked' ? `ช่อง ${label} ถูกจองไปแล้ว กรุณาเลือกช่องอื่น` : `มีคนอื่นกำลังเลือกช่อง ${label} อยู่ กรุณาเลือกช่องอื่น`);
+    }
+  }catch(err){
+    // ต่อ backend จริงไม่ได้ — ปล่อยให้เลือกแบบ local ต่อไปเพื่อทดสอบ UI
+  }
+}
+
+/* ================================================================
+   EQUIPMENT RENTAL (เช่าอุปกรณ์แคมป์)
+   ================================================================ */
+const EQUIP_ITEMS = {
+  tent: { label: "เต็นท์", brand: "Quechua MH100", price: 300, unit: "หลัง/ทริป", img: "https://contents.mediadecathlon.com/p2754515/k$0c5138baa6a18029208375492aa8e649/picture.jpg?format=auto&f=800x0" },
+  sleepingBag: { label: "ถุงนอน", brand: "Quechua Arpenaz 20°", price: 100, unit: "ใบ/ทริป", img: "https://contents.mediadecathlon.com/p2455218/k$ccb8b375884f01d6a31a25868874a4cc/camping-sleeping-bag-arpenaz-20-quechua-8648438.jpg" },
+  sleepingPad: { label: "แผ่นรองนอน", brand: "Forclaz Trek100", price: 100, unit: "แผ่น/ทริป", img: "https://www.decathlon.com/cdn/shop/files/8492712-product_image-p2422856.jpg?v=1701346667" }
+};
+let eqSelectedTripKey = null;
+let eqQty = { tent:0, sleepingBag:0, sleepingPad:0 };
+
+function getMyUniqueBookings(){
+  const traveler = getTraveler();
+  const myPhone = normPhone_(traveler.phone);
+  const today = new Date(new Date().setHours(0,0,0,0));
+  const mine = allBookings.filter(b=>b.trip&&b.date&&normPhone_(b.phone)===myPhone&&new Date(b.date)>=today);
+  const seen = {}; const list = [];
+  mine.forEach(b=>{
+    const key = b.trip+'_'+b.date+'_'+(b.seat||'');
+    if(!seen[key]){seen[key]=1;list.push(b)}
+  });
+  return list;
+}
+
+function openEquipRent(){
+  eqSelectedTripKey = null;
+  eqQty = { tent:0, sleepingBag:0, sleepingPad:0 };
+  renderEqTripList();
+  renderEqItemList();
+  updateEqSummary();
+  showScreen('equip');
+}
+
+function renderEqTripList(){
+  const box = document.getElementById('eqTripList');
+  const myBookings = getMyUniqueBookings();
+  if(myBookings.length===0){
+    box.innerHTML = `<div class="empty-state">ยังไม่มีทริปที่จองไว้ครับ 🥲<br>กรุณาจองทริปก่อน ถึงจะเช่าอุปกรณ์ให้ทริปนั้นได้ครับ</div>`;
+    return;
+  }
+  box.innerHTML = myBookings.map(b=>{
+    const key = b.trip+'_'+b.date+'_'+(b.seat||'');
+    const fmtDate = new Date(b.date).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
+    const selected = key===eqSelectedTripKey;
+    return `<div class="eq-trip-card ${selected?'selected':''}" onclick="selectEqTrip('${key}')"><div class="eq-trip-radio"></div><div class="eq-trip-info"><h4>${b.trip}</h4><p>${fmtDate} · เบาะ ${b.seat||'-'}</p></div></div>`;
+  }).join('');
+}
+function selectEqTrip(key){ eqSelectedTripKey=key; renderEqTripList(); updateEqSummary(); }
+
+function renderEqItemList(){
+  const box = document.getElementById('eqItemList');
+  box.innerHTML = Object.entries(EQUIP_ITEMS).map(([key,item])=>`
+    <div class="eq-item-card">
+      <div class="eq-item-img"><img src="${item.img}" onerror="this.style.display='none'"></div>
+      <div class="eq-item-info" style="flex:1">
+        <h4>${item.label}</h4>
+        <p class="model">${item.brand}</p>
+        <p class="price">฿${item.price} / ${item.unit}</p>
+        <div class="eq-stepper">
+          <button class="eq-step-btn" onclick="changeEqQty('${key}',-1)">−</button>
+          <div class="eq-step-val" id="eqQtyVal-${key}">0</div>
+          <button class="eq-step-btn" onclick="changeEqQty('${key}',1)">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function changeEqQty(key,delta){
+  eqQty[key] = Math.max(0,Math.min(10,(eqQty[key]||0)+delta));
+  document.getElementById('eqQtyVal-'+key).textContent = eqQty[key];
+  updateEqSummary();
+}
+function getEqSelectedRows(){
+  return Object.entries(EQUIP_ITEMS).filter(([key])=>eqQty[key]>0).map(([key,item])=>({key,item,qty:eqQty[key],subtotal:item.price*eqQty[key]}));
+}
+function updateEqSummary(){
+  const rows = getEqSelectedRows();
+  const total = rows.reduce((s,r)=>s+r.subtotal,0);
+  const summaryBox = document.getElementById('eqSummaryBox');
+  const rowsBox = document.getElementById('eqSummaryRows');
+  const totalEl = document.getElementById('eqTotalPrice');
+  const btn = document.getElementById('eqConfirmBtn');
+  if(rows.length===0){ summaryBox.style.display='none'; }
+  else{
+    summaryBox.style.display='block';
+    rowsBox.innerHTML = rows.map(r=>`<div class="row"><span class="key">${r.item.label} x${r.qty}</span><span class="val">${r.subtotal.toLocaleString()} บาท</span></div>`).join('');
+    totalEl.textContent = total.toLocaleString()+' บาท';
+  }
+  const ready = Boolean(eqSelectedTripKey) && rows.length>0;
+  btn.disabled = !ready;
+  btn.textContent = ready ? `ยืนยันเช่าอุปกรณ์ (${total.toLocaleString()} บาท)` : (!eqSelectedTripKey ? 'กรุณาเลือกทริปก่อนครับ' : 'กรุณาเลือกอุปกรณ์อย่างน้อย 1 ชิ้น');
+}
+function confirmEquipRent(){
+  const booking = getMyUniqueBookings().find(b=>(b.trip+'_'+b.date+'_'+(b.seat||''))===eqSelectedTripKey);
+  if(!booking)return;
+  const rows = getEqSelectedRows();
+  const total = rows.reduce((s,r)=>s+r.subtotal,0);
+  const traveler = getTraveler();
+  const btn = document.getElementById('eqConfirmBtn');
+  const originalText = btn.textContent;
+  btn.disabled=true; btn.textContent='กำลังบันทึกข้อมูล...';
+
+  const rentId = 'RENT-'+Date.now()+'-'+Math.random().toString(36).substring(2,7).toUpperCase();
+  const payload = {
+    action:'rentEquip', rentId, trip:booking.trip, date:booking.date, seat:booking.seat||'',
+    name:booking.name||traveler.name||'', nickname:traveler.nickname||booking.nickname||'', phone:traveler.phone||booking.phone||'',
+    tent:String(eqQty.tent||0), sleepingBag:String(eqQty.sleepingBag||0), sleepingPad:String(eqQty.sleepingPad||0),
+    itemsSummary: rows.map(r=>`${r.item.label} x${r.qty}`).join(', '), total:String(total), session_id:MY_SESSION_ID
+  };
+
+  const form = document.createElement('form');
+  form.method='POST';form.action=API_URL;form.target='_ifr_equiprent';form.acceptCharset='UTF-8';form.style.display='none';
+  Object.entries(payload).forEach(([key,value])=>{
+    const field = document.createElement('textarea');
+    field.name=key;field.value=value==null?'':String(value);field.style.display='none';
+    form.appendChild(field);
+  });
+  let iframe = document.getElementById('_ifr_equiprent');
+  if(!iframe){ iframe=document.createElement('iframe'); iframe.name='_ifr_equiprent'; iframe.id='_ifr_equiprent'; iframe.style.display='none'; document.body.appendChild(iframe); }
+  document.body.appendChild(form);
+  form.submit();
+
+  setTimeout(()=>{
+    document.getElementById('eqr-trip').textContent = booking.trip;
+    document.getElementById('eqr-name').textContent = payload.name;
+    document.getElementById('eqr-seat').textContent = booking.seat||'-';
+    document.getElementById('eqr-items').innerHTML = rows.map(r=>`<div class="row"><span class="key">${r.item.label} (${r.item.brand}) x${r.qty}</span><span class="val">${r.subtotal.toLocaleString()} บาท</span></div>`).join('');
+    document.getElementById('eqr-total').textContent = total.toLocaleString()+' บาท';
+    showScreen('equip-receipt');
+    if(form.parentNode) form.remove();
+    btn.disabled=false; btn.textContent=originalText;
+  },2200);
+}
+function closeEquipReceipt(){ showScreen('home'); }
+
+/* ================================================================
+   REVIEWS (รีวิว & แชร์ทริป)
+   ================================================================ */
+let allReviews = [];
+let reviewRating = 0;
+let reviewPhotoFile = null;
+
+function openReviews(){
+  renderReviewSummary();
+  renderReviewList();
+  showScreen('review');
+}
+function openWriteReview(){
+  document.getElementById('writeReviewBox').style.display='block';
+  setTimeout(()=>document.getElementById('writeReviewBox').scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+function closeWriteReview(){
+  document.getElementById('writeReviewBox').style.display='none';
+  resetReviewForm();
+}
+function setReviewRating(n){
+  reviewRating = n;
+  document.querySelectorAll('#starPicker span').forEach((s,i)=>{
+    s.textContent = i<n ? '★' : '☆';
+    s.style.color = i<n ? 'var(--gold)' : 'var(--line-strong)';
+  });
+  checkReviewReady();
+}
+function checkReviewReady(){
+  const comment = document.getElementById('reviewComment').value.trim();
+  const btn = document.getElementById('reviewSubmitBtn');
+  const ok = reviewRating>0 && comment.length>0;
+  btn.disabled = !ok;
+  btn.textContent = ok ? 'ส่งรีวิว' : (reviewRating===0 ? 'กรุณาให้คะแนนก่อนครับ' : 'กรุณาเขียนความคิดเห็นก่อนครับ');
+}
+function handleReviewPhoto(input){
+  const drop = document.getElementById('reviewPhotoDrop');
+  if(!input.files||!input.files[0]){ resetReviewPhoto(); return; }
+  const file = input.files[0];
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){ input.value=''; alert('กรุณาแนบรูปชนิด JPG, PNG หรือ WEBP'); resetReviewPhoto(); return; }
+  if(file.size>5*1024*1024){ input.value=''; alert('กรุณาใช้รูปขนาดไม่เกิน 5MB'); resetReviewPhoto(); return; }
+  reviewPhotoFile = file;
+  drop.classList.add('filled');
+  document.getElementById('reviewPhotoMain').textContent = '✓ แนบรูปแล้ว';
+  document.getElementById('reviewPhotoSub').textContent = file.name;
+}
+function resetReviewPhoto(){
+  reviewPhotoFile = null;
+  const input = document.getElementById('reviewPhotoFile');
+  const drop = document.getElementById('reviewPhotoDrop');
+  if(input) input.value='';
+  if(drop) drop.classList.remove('filled');
+  document.getElementById('reviewPhotoMain').textContent = 'แตะเพื่ออัปโหลดรูป';
+  document.getElementById('reviewPhotoSub').textContent = 'JPG / PNG';
+}
+function resetReviewForm(){
+  reviewRating = 0;
+  document.getElementById('reviewComment').value = '';
+  resetReviewPhoto();
+  document.querySelectorAll('#starPicker span').forEach(s=>{ s.textContent='☆'; s.style.color='var(--line-strong)'; });
+  const btn = document.getElementById('reviewSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'กรุณาให้คะแนนก่อนครับ';
+}
+function renderReviewSummary(){
+  const box = document.getElementById('reviewSummary');
+  if(!box)return;
+  const count = allReviews.length;
+  const avg = count ? allReviews.reduce((s,r)=>s+Number(r.rating||0),0)/count : 0;
+  const rounded = Math.round(avg);
+  box.innerHTML = `<div class="review-summary-card"><div class="avg">${count?avg.toFixed(1):'-'}</div><div class="stars">${'★'.repeat(rounded)}${'☆'.repeat(5-rounded)}</div><div class="count">${count?`จาก ${count} รีวิว`:'ยังไม่มีรีวิวเลยครับ'}</div></div>`;
+}
+function parseBackendDate_(value){
+  const str = String(value||'').trim();
+  if(!str)return null;
+  const m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
+  if(m){ const [,dd,mm,yyyy,hh='0',min='0',sec='0']=m; return new Date(+yyyy,+mm-1,+dd,+hh,+min,+sec); }
+  const fallback = new Date(str);
+  return isNaN(fallback.getTime()) ? null : fallback;
+}
+function renderReviewList(){
+  const box = document.getElementById('reviewList');
+  if(!box)return;
+  if(allReviews.length===0){ box.innerHTML=`<div class="empty-state">ยังไม่มีรีวิวเลยครับ<br>เป็นคนแรกที่มารีวิวกันเถอะ!</div>`; return; }
+  const sorted = [...allReviews].sort((a,b)=>{
+    const da=parseBackendDate_(a.timestamp), db=parseBackendDate_(b.timestamp);
+    return (db?db.getTime():0)-(da?da.getTime():0);
+  });
+  box.innerHTML = sorted.map(r=>{
+    const ratingNum = Math.max(0,Math.min(5,Number(r.rating)||0));
+    const stars = '★'.repeat(ratingNum)+'☆'.repeat(5-ratingNum);
+    const d = parseBackendDate_(r.timestamp);
+    const fmtDate = d ? d.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'}) : '';
+    const displayName = r.nickname||r.name||'ผู้เดินทาง';
+    return `<div class="review-card">
+      <div class="review-card-head">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <div class="review-avatar">${r.linePicture?`<img src="${r.linePicture}" onerror="this.parentNode.textContent='${displayName.charAt(0)}'">`:displayName.charAt(0)}</div>
+          <div style="min-width:0"><div class="review-name">${displayName}</div><div class="review-date">${fmtDate}</div></div>
+        </div>
+        <div class="review-stars">${stars}</div>
+      </div>
+      ${r.comment?`<p class="review-comment">${r.comment}</p>`:''}
+      ${r.photoUrl?`<img src="${r.photoUrl}" class="review-photo" onerror="this.style.display='none'">`:''}
+    </div>`;
+  }).join('');
+}
+async function submitReview(){
+  const btn = document.getElementById('reviewSubmitBtn');
+  btn.disabled = true; btn.textContent = 'กำลังส่งรีวิว...';
+  try{
+    let photoData = { data:'', name:'', mimeType:'' };
+    if(reviewPhotoFile) photoData = await slipToBase64_(reviewPhotoFile);
+    const traveler = getTraveler();
+    const reviewId = 'REVIEW-'+Date.now()+'-'+Math.random().toString(36).substring(2,7).toUpperCase();
+    const comment = document.getElementById('reviewComment').value.trim();
+    const nowIso = new Date().toISOString();
+
+    const payload = {
+      action:'submitReview', reviewId,
+      name: traveler.name||traveler.nickname||'ผู้เดินทาง', nickname: traveler.nickname||'ผู้เดินทาง',
+      phone: traveler.phone||'', linePicture:'',
+      rating:String(reviewRating), comment,
+      photoBase64:photoData.data, photoName:photoData.name, photoMime:photoData.mimeType,
+      session_id:MY_SESSION_ID
+    };
+
+    const form = document.createElement('form');
+    form.method='POST';form.action=API_URL;form.target='_ifr_review';form.acceptCharset='UTF-8';form.style.display='none';
+    Object.entries(payload).forEach(([key,value])=>{
+      const field = document.createElement('textarea');
+      field.name=key;field.value=value==null?'':String(value);field.style.display='none';
+      form.appendChild(field);
+    });
+    let iframe = document.getElementById('_ifr_review');
+    if(!iframe){ iframe=document.createElement('iframe'); iframe.name='_ifr_review'; iframe.id='_ifr_review'; iframe.style.display='none'; document.body.appendChild(iframe); }
+    document.body.appendChild(form);
+    form.submit();
+
+    setTimeout(()=>{
+      allReviews.unshift({ name:payload.name, nickname:payload.nickname, linePicture:'', rating:reviewRating, comment, photoUrl:reviewPhotoFile?URL.createObjectURL(reviewPhotoFile):'', timestamp:nowIso });
+      renderReviewSummary();
+      renderReviewList();
+      closeWriteReview();
+      alert('ขอบคุณสำหรับรีวิว! 🎉');
+      if(form.parentNode) form.remove();
+    },2200);
+  }catch(err){
+    btn.disabled=false; checkReviewReady();
+    alert('ส่งรีวิวไม่สำเร็จ กรุณาลองใหม่อีกครั้งครับ');
+  }
+}
+
 fetchData();
-renderVan(1);renderVan(2);updateSeatInfo();updateTimer();updateBottomNav('home');
+renderVanGrid('A');renderVanGrid('B');updateSeatInfo();updateTimer();updateBottomNav('home');
 let lastTouchEnd = 0;
 document.addEventListener('touchend',function(e){const now=Date.now();if(now-lastTouchEnd<=300)e.preventDefault();lastTouchEnd=now},{passive:false});
 </script>
