@@ -46,15 +46,20 @@ img{max-width:100%;display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .screen-content{width:100%;max-width:520px;margin:0 auto}
 .topbar{padding:calc(12px + var(--safe-top)) 20px 10px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;background:rgba(249,247,242,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-.brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:var(--forest);letter-spacing:-0.03em}
+.brand-logo{display:flex;align-items:center}
+.brand-logo-img{height:38px;width:auto;display:block;border-radius:9px}
+.brand-fallback{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:var(--forest);letter-spacing:-0.03em}
 .brand-icon{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--forest) 0%,var(--forest-light) 100%);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 12px rgba(13,40,24,.2)}
 .brand-icon svg{width:18px;height:18px}
 .icon-btn{width:42px;height:42px;border-radius:50%;background:var(--bg-card);color:var(--forest);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);border:1px solid var(--line);cursor:pointer;transition:transform .15s ease}
 .icon-btn:active{transform:scale(.94)}
 .icon-btn svg{width:20px;height:20px}
-.hero{padding:8px 20px 0}
-.greeting{font-size:13px;color:var(--ink-muted);font-weight:500;margin-bottom:4px}
-.hero-title{font-size:26px;font-weight:800;line-height:1.3;letter-spacing:-0.03em;color:var(--ink)}
+/* หัวเว็บใหม่ — การ์ดพื้นเข้มโชว์โลโก้เต็มรูป (#ยินดีที่ได้เจอ + ต้นไม้) ให้กลมกลืนกับพื้นหลังดำของภาพ */
+.hero-banner{margin:8px 20px 0;padding:26px 20px 22px;border-radius:24px;background:linear-gradient(160deg,#0B120D 0%,#14231A 55%,#1D3527 100%);text-align:center;box-shadow:0 12px 30px rgba(11,18,13,.32);position:relative;overflow:hidden}
+.hero-banner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 0%,rgba(90,163,111,.18),transparent 60%);pointer-events:none}
+.hero-logo{max-width:230px;width:72%;height:auto;display:block;margin:0 auto 14px;position:relative;z-index:1}
+.hero-fallback-title{color:#fff;font-size:24px;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
+.hero-tagline{color:rgba(255,255,255,.72);font-size:13px;font-weight:500;position:relative;z-index:1}
 .featured-card{margin:20px 20px 0;border-radius:var(--radius-xl);overflow:hidden;position:relative;background:linear-gradient(145deg,#0D2818 0%,#1B3A2F 45%,#2D5A45 100%);color:#fff;box-shadow:var(--shadow-lg);min-height:168px}
 .featured-card::before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05);top:-90px;right:-60px}
 .featured-inner{position:relative;z-index:2;padding:22px;display:flex;flex-direction:column;height:100%;min-height:168px}
@@ -302,19 +307,23 @@ img{max-width:100%;display:block}
 <section class="screen active" id="screen-home">
 <div class="screen-content">
 <header class="topbar">
-  <div class="brand">
-    <div class="brand-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20L10 8l4 6 3-5 5 11H3z"/><circle cx="18" cy="6" r="2.5" fill="currentColor" stroke="none"/></svg>
+  <div class="brand-logo">
+    <img src="logo.png" alt="ยินดีที่ได้เจอ" class="brand-logo-img" onerror="this.style.display='none';document.getElementById('brand-fallback').style.display='flex'">
+    <div class="brand-fallback" id="brand-fallback" style="display:none">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20L10 8l4 6 3-5 5 11H3z"/><circle cx="18" cy="6" r="2.5" fill="currentColor" stroke="none"/></svg>
+      </div>
+      ยินดีที่ได้เจอ
     </div>
-    ยินดีที่ได้เจอ
   </div>
   <button class="icon-btn" aria-label="แจ้งเตือน">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
   </button>
 </header>
-<div class="hero">
-  <div class="greeting">สวัสดี 👋</div>
-  <h1 class="hero-title">พร้อมออกไปเจอ<br>ธรรมชาติด้วยกันไหม?</h1>
+<div class="hero-banner">
+  <img src="logo.png" alt="ยินดีที่ได้เจอ" class="hero-logo" onerror="this.style.display='none';document.getElementById('hero-fallback-title').style.display='block'">
+  <h1 class="hero-fallback-title" id="hero-fallback-title" style="display:none">ยินดีที่ได้เจอ</h1>
+  <p class="hero-tagline">พร้อมออกไปเจอธรรมชาติด้วยกันไหม? 🌲</p>
 </div>
 <div class="featured-card">
   <div class="featured-inner">
