@@ -45,7 +45,7 @@ img{max-width:100%;display:block}
 .screen.active{display:block;animation:fadeIn .28s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .screen-content{width:100%;max-width:520px;margin:0 auto}
-.topbar{padding:calc(12px + var(--safe-top)) 20px 10px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;background:rgba(10,21,14,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.topbar{padding:calc(12px + var(--safe-top)) 20px 10px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;background:linear-gradient(180deg,rgba(5,11,7,.72),rgba(5,11,7,.88)),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900&q=60') center/cover;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .brand-logo{display:flex;align-items:center}
 .brand-logo-img{height:38px;width:auto;display:block;border-radius:9px}
 .brand-fallback{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.03em}
@@ -105,7 +105,7 @@ img{max-width:100%;display:block}
 .seats-left svg{width:15px;height:15px}
 .price{font-size:20px;font-weight:800;color:var(--forest);letter-spacing:-0.02em}
 .price small{font-size:11px;font-weight:500;color:var(--ink-muted);margin-left:2px}
-.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--safe-bottom));background:rgba(10,21,14,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.08);display:flex;padding:6px 6px var(--safe-bottom);z-index:100}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--safe-bottom));background:linear-gradient(0deg,rgba(5,11,7,.9),rgba(5,11,7,.74)),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900&q=60') center/cover;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.08);display:flex;padding:6px 6px var(--safe-bottom);z-index:100}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;color:rgba(255,255,255,.5);cursor:pointer;border-radius:14px;transition:color .2s ease}
 .nav-item svg{width:22px;height:22px}
 .nav-item span{font-size:10px;font-weight:600}
