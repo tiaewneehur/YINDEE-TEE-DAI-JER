@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -54,7 +55,7 @@ img{max-width:100%;display:block}
 .hero-logo{max-width:230px;width:72%;height:auto;display:block;margin:0 auto 14px;position:relative;z-index:1;filter:drop-shadow(0 0 22px rgba(255,255,255,.12)) drop-shadow(0 6px 16px rgba(0,0,0,.45))}
 .hero-fallback-title{color:#fff;font-size:24px;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
 .hero-tagline{color:rgba(255,255,255,.72);font-size:13px;font-weight:500;position:relative;z-index:1}
-.featured-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overflow-y:hidden;overscroll-behavior:contain;touch-action:pan-x;scrollbar-width:none}
+.featured-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overflow-y:hidden;overscroll-behavior:contain;touch-action:pan-x;scrollbar-width:none;margin:0 -20px}
 .featured-carousel::-webkit-scrollbar{display:none}
 .featured-slide{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;padding:0 20px;box-sizing:border-box}
 .featured-card{width:100%;margin:0;border-radius:var(--radius-xl);overflow:hidden;position:relative;background:#0A2016;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.25),0 0 0 1px rgba(201,162,39,.2);min-height:190px;cursor:pointer}
@@ -62,8 +63,13 @@ img{max-width:100%;display:block}
 .featured-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,32,22,.1) 0%,rgba(10,32,22,.55) 55%,rgba(8,20,14,.9) 100%);z-index:1}
 .featured-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(201,162,39,.75),transparent);z-index:3}
 .featured-inner{position:relative;z-index:2;padding:22px;display:flex;flex-direction:column;height:100%;min-height:190px}
-.featured-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;width:fit-content;margin-bottom:14px}
+.featured-top-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.featured-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;width:fit-content}
 .featured-badge .dot{width:6px;height:6px;border-radius:50%;background:#7DDA9B;box-shadow:0 0 0 3px rgba(125,218,155,.25)}
+.featured-seat-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;backdrop-filter:blur(8px);white-space:nowrap}
+.featured-seat-badge.ok{background:rgba(95,209,138,.2);color:#8FE8AC;border:1px solid rgba(95,209,138,.4)}
+.featured-seat-badge.low{background:rgba(232,196,104,.22);color:#F0D68A;border:1px solid rgba(232,196,104,.4)}
+.featured-seat-badge.full{background:rgba(224,101,92,.25);color:#F0A39C;border:1px solid rgba(224,101,92,.4)}
 .featured-name{font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .featured-meta{font-size:13px;opacity:.75;margin-bottom:auto}
 .featured-footer{display:flex;align-items:flex-end;justify-content:space-between;margin-top:18px}
@@ -97,7 +103,10 @@ img{max-width:100%;display:block}
 .meta-item{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ink-soft)}
 .meta-item svg{width:14px;height:14px;flex-shrink:0}
 .trip-footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--line)}
-.seats-left{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--forest-light)}
+.seats-left{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700}
+.seats-left.ok{color:#5FD18A}
+.seats-left.low{color:#E8C468}
+.seats-left.full{color:#E0655C}
 .seats-left svg{width:15px;height:15px}
 .price{font-size:20px;font-weight:800;color:#8FD1A6;letter-spacing:-0.02em}
 .price small{font-size:11px;font-weight:500;color:var(--ink-muted);margin-left:2px}
@@ -733,16 +742,35 @@ function tripCoverHTML(t){
   return mountainSVG(t.gradient[0],t.gradient[1]);
 }
 
+// สถานะที่นั่งเหลือ — ใช้ร่วมกันทั้งการ์ดเลื่อนและการ์ดในลิสต์ (ว่าง=เขียว, ใกล้เต็ม≤3=เหลือง, เต็ม=แดง)
+function seatStatusClass(seatsLeft){
+  if(seatsLeft<=0) return 'full';
+  if(seatsLeft<=3) return 'low';
+  return 'ok';
+}
+function seatStatusText(seatsLeft){
+  if(seatsLeft<=0) return 'เต็มแล้ว';
+  if(seatsLeft<=3) return `เหลือ ${seatsLeft} ที่ (ใกล้เต็ม)`;
+  return `เหลือ ${seatsLeft} ที่นั่ง`;
+}
+
 function featuredCardHTML(t){
   const d = new Date(t.date);
   const fmtDate = isNaN(d.getTime()) ? '' : d.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
+  const seatCls = seatStatusClass(t.seatsLeft);
   return `
     <div class="featured-slide">
       <div class="featured-card" onclick="openDetail('${t.id}')">
         ${tripCoverHTML(t)}
         <div class="featured-scrim"></div>
         <div class="featured-inner">
-          <div class="featured-badge"><span class="dot"></span> เปิดจองอยู่</div>
+          <div class="featured-top-row">
+            <div class="featured-badge"><span class="dot"></span> เปิดจองอยู่</div>
+            <div class="featured-seat-badge ${seatCls}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+              ${seatStatusText(t.seatsLeft)}
+            </div>
+          </div>
           <div class="featured-name">${t.name}</div>
           <div class="featured-meta">${fmtDate}${t.loc?' · '+t.loc:''}</div>
           <div class="featured-footer">
@@ -929,7 +957,7 @@ function tripCardHTML(t){
           <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18"/></svg>${t.dateShort||t.date}</div>
         </div>
         <div class="trip-footer">
-          <div class="seats-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>เหลือ ${t.seatsLeft} ที่นั่ง</div>
+          <div class="seats-left ${seatStatusClass(t.seatsLeft)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>${seatStatusText(t.seatsLeft)}</div>
           <div class="price">${t.price.toLocaleString('th-TH')}<small>บาท/ท่าน</small></div>
         </div>
       </div>
