@@ -57,10 +57,11 @@ img{max-width:100%;display:block}
 .hero-tagline{color:rgba(255,255,255,.72);font-size:13px;font-weight:500;position:relative;z-index:1}
 .featured-carousel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:0 20px 4px;scrollbar-width:none}
 .featured-carousel::-webkit-scrollbar{display:none}
-.featured-card{flex:0 0 84%;scroll-snap-align:start;scroll-snap-stop:always;margin:0;border-radius:var(--radius-xl);overflow:hidden;position:relative;background:linear-gradient(145deg,#0A2016 0%,#173D2C 45%,#2F6B4D 100%);color:#fff;box-shadow:var(--shadow-lg),0 0 0 1px rgba(201,162,39,.2);min-height:168px;cursor:pointer}
+.featured-card{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;margin:0;border-radius:var(--radius-xl);overflow:hidden;position:relative;background:#0A2016;color:#fff;box-shadow:var(--shadow-lg),0 0 0 1px rgba(201,162,39,.2);min-height:190px;cursor:pointer}
+.featured-card svg{position:absolute;inset:0;width:100%;height:100%}
+.featured-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,32,22,.1) 0%,rgba(10,32,22,.55) 55%,rgba(8,20,14,.9) 100%);z-index:1}
 .featured-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(201,162,39,.75),transparent);z-index:3}
-.featured-card::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05);top:-90px;right:-60px}
-.featured-inner{position:relative;z-index:2;padding:22px;display:flex;flex-direction:column;height:100%;min-height:168px}
+.featured-inner{position:relative;z-index:2;padding:22px;display:flex;flex-direction:column;height:100%;min-height:190px}
 .featured-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;width:fit-content;margin-bottom:14px}
 .featured-badge .dot{width:6px;height:6px;border-radius:50%;background:#7DDA9B;box-shadow:0 0 0 3px rgba(125,218,155,.25)}
 .featured-name{font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -736,6 +737,8 @@ function featuredCardHTML(t){
   const fmtDate = isNaN(d.getTime()) ? '' : d.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
   return `
     <div class="featured-card" onclick="openDetail('${t.id}')">
+      ${tripCoverHTML(t)}
+      <div class="featured-scrim"></div>
       <div class="featured-inner">
         <div class="featured-badge"><span class="dot"></span> เปิดจองอยู่</div>
         <div class="featured-name">${t.name}</div>
