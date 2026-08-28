@@ -48,18 +48,17 @@ img{max-width:100%;display:block}
 .icon-btn{width:42px;height:42px;border-radius:50%;background:var(--bg-card);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);border:1px solid var(--line);cursor:pointer;transition:transform .15s ease}
 .icon-btn:active{transform:scale(.94)}
 .icon-btn svg{width:20px;height:20px}
-/* หัวเว็บใหม่ — การ์ดพื้นเข้มโชว์โลโก้เต็มรูป (#ยินดีที่ได้เจอ + ต้นไม้) ให้กลมกลืนกับพื้นหลังดำของภาพ */
 .hero-banner{margin:0;padding:calc(16px + var(--safe-top)) 24px 30px;border-radius:0 0 28px 28px;background:linear-gradient(180deg,rgba(5,11,7,.55) 0%,rgba(5,11,7,.72) 55%,rgba(15,26,19,.82) 82%,var(--bg) 100%),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900&q=60') center/cover;text-align:center;position:sticky;top:0;z-index:40;overflow:hidden;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .hero-banner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 0%,rgba(90,163,111,.16),transparent 60%);pointer-events:none}
 .hero-bell{position:absolute;top:calc(16px + var(--safe-top));right:24px;z-index:2}
 .hero-logo{max-width:230px;width:72%;height:auto;display:block;margin:0 auto 14px;position:relative;z-index:1;filter:drop-shadow(0 0 22px rgba(255,255,255,.12)) drop-shadow(0 6px 16px rgba(0,0,0,.45))}
 .hero-fallback-title{color:#fff;font-size:24px;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
 .hero-tagline{color:rgba(255,255,255,.72);font-size:13px;font-weight:500;position:relative;z-index:1}
-.featured-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x;scrollbar-width:none}
+.featured-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overflow-y:hidden;overscroll-behavior:contain;touch-action:pan-x;scrollbar-width:none}
 .featured-carousel::-webkit-scrollbar{display:none}
 .featured-slide{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;padding:0 20px;box-sizing:border-box}
 .featured-card{width:100%;margin:0;border-radius:var(--radius-xl);overflow:hidden;position:relative;background:#0A2016;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.25),0 0 0 1px rgba(201,162,39,.2);min-height:190px;cursor:pointer}
-.featured-card svg{position:absolute;inset:0;width:100%;height:100%}
+.featured-card > svg,.featured-card > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .featured-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,32,22,.1) 0%,rgba(10,32,22,.55) 55%,rgba(8,20,14,.9) 100%);z-index:1}
 .featured-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(201,162,39,.75),transparent);z-index:3}
 .featured-inner{position:relative;z-index:2;padding:22px;display:flex;flex-direction:column;height:100%;min-height:190px}
@@ -70,9 +69,6 @@ img{max-width:100%;display:block}
 .featured-footer{display:flex;align-items:flex-end;justify-content:space-between;margin-top:18px}
 .featured-price{font-size:20px;font-weight:800}
 .featured-price span{font-size:12px;font-weight:500;opacity:.7;margin-left:2px}
-.featured-cta{width:44px;height:44px;border-radius:50%;background:#fff;color:var(--forest);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.15);transition:transform .15s ease}
-.featured-cta:active{transform:scale(.92)}
-.featured-cta svg{width:20px;height:20px}
 .section{padding:28px 20px 0}
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .section-title{font-size:17px;font-weight:800;letter-spacing:-0.02em}
@@ -158,7 +154,6 @@ img{max-width:100%;display:block}
 .van-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px 14px;margin:0 18px 16px;box-shadow:var(--shadow-sm)}
 .van-header{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;color:#8FD1A6;margin-bottom:16px}
 .van-header svg{width:18px;height:18px}
-/* ผังเบาะ 4 คอลัมน์ x 3 แถว: คนขับ+3,6,9 / ทางเดิน+2,5,8 / เบาะซ้าย+1,4,7 — พาเนลมืดตัดกับพื้นหลังหลักให้รู้สึกเหมือนมองเข้าไปในรถตู้ */
 .van-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px;border-radius:20px;position:relative;overflow:hidden;background:linear-gradient(180deg,#16261c,#0E1811);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 6px 18px rgba(13,40,24,.25)}
 .van-grid::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at top,rgba(201,162,39,.08),transparent 60%);pointer-events:none}
 .seat{aspect-ratio:1;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;cursor:pointer;user-select:none;transition:transform .12s ease,background .15s ease;overflow:hidden}
@@ -263,8 +258,6 @@ img{max-width:100%;display:block}
 .menu-icon svg{width:18px;height:18px}
 .menu-text{flex:1;font-size:14px;font-weight:600}
 .menu-arrow{color:var(--ink-muted);font-size:18px}
-
-/* ===== ONSITE (มาเอง/นัดเจอหน้างาน) ===== */
 .onsite-note{font-size:11px;color:var(--ink-muted);text-align:center;margin:-4px 0 12px;line-height:1.5}
 .onsite-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .onsite-slot{aspect-ratio:1;border-radius:12px;border:1.5px dashed var(--line-strong);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:800;cursor:pointer;background:var(--bg-card);color:var(--ink-soft);transition:transform .12s ease}
@@ -273,8 +266,6 @@ img{max-width:100%;display:block}
 .onsite-slot.selected{background:var(--gold);border-style:solid;border-color:var(--gold);color:var(--forest)}
 .onsite-slot.booked{background:var(--danger);border-style:solid;border-color:var(--danger);color:#fff;cursor:not-allowed;opacity:.85}
 .onsite-slot.locking{background:#E8A23B;border-style:solid;border-color:#E8A23B;color:#fff;cursor:not-allowed;animation:pulse 1.2s ease-in-out infinite}
-
-/* ===== EQUIPMENT RENTAL ===== */
 .eq-trip-card{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s ease}
 .eq-trip-card.selected{border-color:var(--forest-light);background:rgba(45,90,69,.18)}
 .eq-trip-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--line-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center}
@@ -293,8 +284,6 @@ img{max-width:100%;display:block}
 .eq-stepper{display:flex;align-items:center;gap:10px;margin-top:8px}
 .eq-step-btn{width:28px;height:28px;border-radius:8px;border:1.5px solid var(--line-strong);background:#fff;color:var(--forest);font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .eq-step-val{min-width:20px;text-align:center;font-size:14px;font-weight:800;color:var(--ink)}
-
-/* ===== REVIEWS ===== */
 .review-summary-card{background:linear-gradient(135deg,var(--forest) 0%,var(--forest-mid) 100%);color:#fff;border-radius:var(--radius-lg);padding:24px;text-align:center;box-shadow:var(--shadow);margin-bottom:16px}
 .review-summary-card .avg{font-size:42px;font-weight:900;line-height:1}
 .review-summary-card .stars{font-size:19px;margin:6px 0;letter-spacing:2px;color:var(--gold)}
@@ -356,7 +345,6 @@ img{max-width:100%;display:block}
 </section>
 </div>
 </section>
-
 <section class="screen" id="screen-detail">
 <div class="screen-content">
   <div class="detail-hero" id="detail-hero">
@@ -702,8 +690,6 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzVeiOY9Q0r3kH9Qz0nfjn4
 const QUERY_URL = API_URL + "?action=read";
 const SEAT_LOCK_MINUTES = 5;
 const SEAT_LOCK_SECONDS = SEAT_LOCK_MINUTES * 60;
-// ปลอดภัยไว้ก่อน — ถ้าเบราว์เซอร์บล็อก sessionStorage/localStorage (เช่นตอนเปิดไฟล์
-// แบบ file:// ตรงๆ) ให้ใช้ตัวแปรในหน่วยความจำแทน กันสคริปต์ error ตั้งแต่บรรทัดแรก
 const _memStore = {};
 function storageGet_(store, key){
   try { return store.getItem(key); } catch(e){ return _memStore[key] || null; }
@@ -728,10 +714,9 @@ let trips = [];
 let currentTripId = 'changphueak';
 let heartOn = false;
 
-// ผังเบาะจริง: คนขับ + 3,6,9 / ทางเดิน + 2,5,8 / เบาะซ้าย + 1,4,7 — ต่อรถ 1 คัน (4 คอลัมน์ x 3 แถว)
 const BUS_GRID_STRUCTURE = ['driver', 3, 6, 9, 'spacer', 2, 5, 8, 'Staff', 1, 4, 7];
 
-let selectedSeatIds = new Set();   // เก็บ id เต็มๆ เช่น "A3", "Cเบาะซ้าย"
+let selectedSeatIds = new Set();
 let bookedSeatIds = new Set();
 let lockedSeatIds = new Set();
 let seatPollTimer = null;
@@ -741,7 +726,6 @@ function mountainSVG(c1,c2){
   const id = 'g'+c1.replace('#','')+Math.random().toString(36).substring(2,7);
   return `<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs><rect width="400" height="250" fill="url(#${id})"/><circle cx="320" cy="48" r="26" fill="#fff" opacity=".78"/><path d="M0 200 L55 125 L105 175 L160 85 L225 170 L285 115 L345 175 L400 125 L400 250 L0 250 Z" fill="#061A12" opacity=".32"/><path d="M0 225 L45 160 L95 200 L150 125 L210 200 L270 140 L325 200 L400 160 L400 250 L0 250 Z" fill="#04140E" opacity=".5"/></svg>`;
 }
-// รูปปกทริป — ถ้ามีลิงก์รูปจริง (คอลัมน์ Image ในชีท Trips) ใช้รูปนั้น ถ้าไม่มีค่อย fallback เป็นภาพภูเขาที่วาดเอง
 function tripCoverHTML(t){
   if(t.image){
     return `<img src="${t.image}" alt="${t.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.outerHTML=${JSON.stringify(mountainSVG(t.gradient[0],t.gradient[1]))}">`;
@@ -749,9 +733,6 @@ function tripCoverHTML(t){
   return mountainSVG(t.gradient[0],t.gradient[1]);
 }
 
-/* ================================================================
-   FEATURED CAROUSEL — ทริปที่เปิดจองอยู่ เลื่อนอัตโนมัติแบบแอพเซเว่น
-   ================================================================ */
 function featuredCardHTML(t){
   const d = new Date(t.date);
   const fmtDate = isNaN(d.getTime()) ? '' : d.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
@@ -766,9 +747,6 @@ function featuredCardHTML(t){
           <div class="featured-meta">${fmtDate}${t.loc?' · '+t.loc:''}</div>
           <div class="featured-footer">
             <div class="featured-price">${Number(t.price||0).toLocaleString('th-TH')} <span>บาท/ท่าน</span></div>
-            <button class="featured-cta" onclick="event.stopPropagation();openDetail('${t.id}')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </button>
           </div>
         </div>
       </div>
@@ -793,18 +771,44 @@ function renderFeaturedCarousel(){
 
 let carouselTimer = null;
 let carouselResumeTimer = null;
+
+function setupCarouselTouchScroll(box){
+  if(!box || box.dataset.touchReady) return;
+  box.dataset.touchReady = '1';
+  let startX = 0, startY = 0, lastY = 0, mode = null;
+  box.addEventListener('touchstart', (e)=>{
+    const t = e.touches[0];
+    startX = t.clientX;
+    startY = lastY = t.clientY;
+    mode = null;
+  }, {passive:true});
+  box.addEventListener('touchmove', (e)=>{
+    const t = e.touches[0];
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+    if(mode === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)){
+      mode = Math.abs(dy) > Math.abs(dx) ? 'v' : 'h';
+    }
+    if(mode === 'v'){
+      e.preventDefault();
+      window.scrollBy(0, -(t.clientY - lastY));
+      lastY = t.clientY;
+    }
+  }, {passive:false});
+}
 function setupCarouselAutoScroll(){
   const box = document.getElementById('featured-carousel');
   if(!box)return;
   clearInterval(carouselTimer);
   clearTimeout(carouselResumeTimer);
-  if(box.children.length < 2) return; // การ์ดเดียวไม่ต้องเลื่อน
+  setupCarouselTouchScroll(box);
+  if(box.children.length < 2) return;
 
   let isProgrammatic = false;
 
   function tick(){
     if(box.children.length < 2) return;
-    const cardW = box.children[0].getBoundingClientRect().width + 14; // +gap
+    const cardW = box.children[0].getBoundingClientRect().width + 14;
     const maxScroll = box.scrollWidth - box.clientWidth;
     isProgrammatic = true;
     if(box.scrollLeft >= maxScroll - 4){
@@ -817,14 +821,13 @@ function setupCarouselAutoScroll(){
     clearInterval(carouselTimer);
     carouselTimer = setInterval(tick, 2200);
   }
-  // ผู้ใช้ลากเอง → หยุดเลื่อนอัตโนมัติ แล้วรอ 3 วิหลังจากที่หยุดลาก ค่อยเลื่อนต่อ
   function pauseThenResume(){
     clearInterval(carouselTimer);
     clearTimeout(carouselResumeTimer);
     carouselResumeTimer = setTimeout(start, 3000);
   }
   function onScroll(){
-    if(isProgrammatic){ isProgrammatic = false; return; } // ไม่ใช่การลากของผู้ใช้ ข้ามไป
+    if(isProgrammatic){ isProgrammatic = false; return; }
     pauseThenResume();
   }
 
@@ -859,7 +862,6 @@ function fetchData(){
   document.body.appendChild(script);
 }
 function demoDate_(i){const d=new Date();d.setDate(d.getDate()+14+i*10);return d.toISOString().slice(0,10)}
-// แปลงแถวจากชีท Trips (ที่แอดมินกรอกเอง) ให้เป็น object รูปแบบที่หน้านี้ใช้แสดงผล
 function tripFromCatalog_(t,index){
   const d = new Date(t.date);
   const dateThai = d.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
@@ -996,7 +998,6 @@ function openDetail(id){
 }
 function toggleHeart(){heartOn=!heartOn;const svg=document.getElementById('heart-svg');if(svg)svg.setAttribute('fill',heartOn?'#C9A227':'none')}
 
-// วาดผังเบาะ 1 คัน ตาม BUS_GRID_STRUCTURE เป๊ะๆ — prefix คือ 'A'/'B'
 function renderVanGrid(prefix){
   const grid = document.getElementById('vanGrid'+prefix);
   if(!grid)return;
@@ -1052,9 +1053,7 @@ async function toggleSeat(id){
       await loadSeatsFromBackend();
       alert(result.error==='seat_booked' ? `ที่นั่ง ${id} ถูกจองไปแล้ว กรุณาเลือกที่นั่งอื่น` : `มีคนอื่นกำลังเลือกที่นั่ง ${id} อยู่ กรุณาเลือกที่นั่งอื่น`);
     }
-  }catch(err){
-    // ต่อ backend จริงไม่ได้ (เช่น API_URL ยังเป็น placeholder) — ปล่อยให้เลือกแบบ local ต่อไปเพื่อทดสอบ UI
-  }
+  }catch(err){}
 }
 function updateSeatInfo(){
   const all = [...selectedSeatIds].map(formatSeatId);
@@ -1065,20 +1064,17 @@ function updateSeatInfo(){
 }
 function goToTravelerOrStaff(){
   if(!selectedSeatIds.size && !selectedOnsite.size)return;
-
-  // เบาะ Staff ล้วน (ไม่ปนที่นั่งลูกค้า/หน้างาน) — ข้ามฟอร์มลูกค้า/หน้าชำระเงินไปกรอกข้อมูล Staff แล้วจองได้เลย
   const staffOnly = selectedSeatIds.size>0 && [...selectedSeatIds].every(isStaffSeat) && selectedOnsite.size===0;
   if(staffOnly){
     goToStaffForm();
     return;
   }
-
   stopSeatPolling();
   prefillTravelerForm();
   checkTravelerReady();
   showScreen('traveler');
 }
-function goToPaymentScreen(){
+  function goToPaymentScreen(){
   const btn = document.getElementById('traveler-next');
   if(btn&&btn.disabled)return;
 
@@ -1129,14 +1125,12 @@ function prefillTravelerForm(){
   document.getElementById('trav-phone').value = t.phone||'';
   document.getElementById('trav-line').value = t.line||'';
 }
-// หน้ากรอกข้อมูลผู้จอง — เช็กครบก่อนกดต่อไปหน้าโอนเงินได้
 function checkTravelerReady(){
   const fields = ['trav-name','trav-idcard','trav-age','trav-nick','trav-phone','trav-line','trav-pickup'];
   const allFilled = fields.every(id=>{const el=document.getElementById(id);return el&&el.value.trim()!==''});
   const btn = document.getElementById('traveler-next');
   if(btn)btn.disabled = !allFilled;
 }
-// หน้าโอนเงิน — ข้อมูลผู้จองกรอกมาก่อนแล้ว เหลือแค่เช็กว่าแนบสลิปหรือยัง
 function checkPaymentReady(){
   const input = document.getElementById('slip-input');
   const hasSlip = !!(input&&input.files&&input.files[0]);
@@ -1226,7 +1220,6 @@ async function confirmPayment(){
       setTimeout(()=>{ if(form.parentNode) form.remove(); },3000);
     });
 
-    // รอหลังบ้านบันทึกข้อมูลก่อนแสดงหน้าสรุป
     setTimeout(()=>{
       clearInterval(timerInterval);stopSeatPolling();
       buildSummary(traveler,allSeats,code,false);
@@ -1239,9 +1232,6 @@ async function confirmPayment(){
   }
 }
 
-/* ================================================================
-   STAFF SEATS (A Staff / B Staff) — ไม่ต้องผ่านหน้าชำระเงิน
-   ================================================================ */
 function goToStaffForm(){
   stopSeatPolling();
   ['staff-name','staff-nick','staff-phone','staff-code'].forEach(id=>document.getElementById(id).value='');
@@ -1398,7 +1388,6 @@ function renderMyTrips(){
   }).join('');
 }
 
-// จากการ์ด "ทริปของฉัน" — พาไปหน้าผังเบาะของทริปนั้น แล้วไฮไลท์ที่นั่งของตัวเองสักพัก
 async function goToMySeat(tripName, tripDate, seat){
   const trip = trips.find(t=>t.name===tripName && t.rawDate===tripDate);
   if(!trip)return;
@@ -1422,9 +1411,6 @@ async function goToMySeat(tripName, tripDate, seat){
   }
 }
 
-/* ================================================================
-   ONSITE SLOTS (มาเอง/นัดเจอหน้างาน) — ใช้ระบบล็อกเดียวกับเบาะรถตู้
-   ================================================================ */
 let selectedOnsite = new Set();
 
 function renderOnsiteGrid(bookedMap,lockedMap){
@@ -1466,14 +1452,9 @@ async function toggleOnsite(n){
       await loadSeatsFromBackend();
       alert(result.error==='seat_booked' ? `ช่อง ${label} ถูกจองไปแล้ว กรุณาเลือกช่องอื่น` : `มีคนอื่นกำลังเลือกช่อง ${label} อยู่ กรุณาเลือกช่องอื่น`);
     }
-  }catch(err){
-    // ต่อ backend จริงไม่ได้ — ปล่อยให้เลือกแบบ local ต่อไปเพื่อทดสอบ UI
-  }
+  }catch(err){}
 }
 
-/* ================================================================
-   EQUIPMENT RENTAL (เช่าอุปกรณ์แคมป์)
-   ================================================================ */
 const EQUIP_ITEMS = {
   tent: { label: "เต็นท์", brand: "Quechua MH100", price: 300, unit: "หลัง/ทริป", img: "https://contents.mediadecathlon.com/p2754515/k$0c5138baa6a18029208375492aa8e649/picture.jpg?format=auto&f=800x0" },
   sleepingBag: { label: "ถุงนอน", brand: "Quechua Arpenaz 20°", price: 100, unit: "ใบ/ทริป", img: "https://contents.mediadecathlon.com/p2455218/k$ccb8b375884f01d6a31a25868874a4cc/camping-sleeping-bag-arpenaz-20-quechua-8648438.jpg" },
@@ -1606,9 +1587,6 @@ function confirmEquipRent(){
 }
 function closeEquipReceipt(){ showScreen('home'); }
 
-/* ================================================================
-   REVIEWS (รีวิว & แชร์ทริป)
-   ================================================================ */
 let allReviews = [];
 let reviewRating = 0;
 let reviewPhotoFile = null;
