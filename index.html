@@ -418,39 +418,36 @@ img{max-width:100%;display:block}
 </div>
 <div class="seat-sticky">
   <div class="seat-info"><div class="count" id="seat-count">เลือกแล้ว 0 ที่นั่ง</div><div class="codes" id="seat-codes">—</div></div>
-  <button class="seat-next-btn" id="seat-next" disabled onclick="goToPayment()">ต่อไป</button>
+  <button class="seat-next-btn" id="seat-next" disabled onclick="goToTravelerOrStaff()">ต่อไป</button>
 </div>
 </section>
 
-<section class="screen" id="screen-payment">
+<section class="screen" id="screen-traveler">
 <div class="screen-content">
   <header class="page-header">
     <button class="icon-btn" onclick="showScreen('seats')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-    <h1>โอนมัดจำ</h1>
+    <h1>ข้อมูลผู้จอง</h1>
     <div class="header-spacer"></div>
   </header>
   <div class="payment-wrap">
     <div class="steps">
       <div class="step done"><div class="step-dot">✓</div><div class="step-label">เลือกที่นั่ง</div></div>
       <div class="step-line done"></div>
-      <div class="step active"><div class="step-dot">2</div><div class="step-label">โอนมัดจำ</div></div>
+      <div class="step active"><div class="step-dot">2</div><div class="step-label">กรอกข้อมูล</div></div>
       <div class="step-line"></div>
-      <div class="step"><div class="step-dot">3</div><div class="step-label">สรุปการจอง</div></div>
-    </div>
-    <div class="payment-heading"><h2>ชำระเงินมัดจำ</h2><p id="payment-instruction">กรุณาโอนมัดจำภายใน 5 นาที</p></div>
-    <div class="bank-card">
-      <div class="bank-name"><span class="bank-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10l9-6 9 6"/><path d="M4 10v9h16v-9"/><path d="M9 19v-6h6v6"/></svg></span> ธนาคารกสิกรไทย</div>
-      <div class="account-num">123-1-23456-7</div>
-      <div class="account-name">ชื่อบัญชี : ยินดีที่ได้เจอ ทริป</div>
-      <div class="qr-box"><svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#fff"/><g fill="#0D2818"><rect x="6" y="6" width="24" height="24"/><rect x="12" y="12" width="12" height="12" fill="#fff"/><rect x="16" y="16" width="4" height="4"/><rect x="70" y="6" width="24" height="24"/><rect x="76" y="12" width="12" height="12" fill="#fff"/><rect x="80" y="16" width="4" height="4"/><rect x="6" y="70" width="24" height="24"/><rect x="12" y="76" width="12" height="12" fill="#fff"/><rect x="16" y="80" width="4" height="4"/><rect x="38" y="6" width="6" height="6"/><rect x="48" y="6" width="6" height="6"/><rect x="58" y="12" width="6" height="6"/><rect x="38" y="18" width="6" height="6"/><rect x="52" y="20" width="6" height="6"/><rect x="38" y="30" width="6" height="6"/><rect x="60" y="34" width="6" height="6"/><rect x="70" y="40" width="6" height="6"/><rect x="82" y="40" width="6" height="6"/><rect x="40" y="42" width="6" height="6"/><rect x="50" y="44" width="6" height="6"/><rect x="6" y="42" width="6" height="6"/><rect x="18" y="46" width="6" height="6"/><rect x="30" y="50" width="6" height="6"/><rect x="60" y="52" width="6" height="6"/><rect x="70" y="58" width="6" height="6"/><rect x="84" y="60" width="6" height="6"/><rect x="40" y="60" width="6" height="6"/><rect x="50" y="64" width="6" height="6"/><rect x="6" y="60" width="6" height="6"/><rect x="60" y="70" width="6" height="6"/><rect x="70" y="76" width="6" height="6"/><rect x="80" y="80" width="6" height="6"/><rect x="88" y="70" width="6" height="6"/><rect x="40" y="76" width="6" height="6"/><rect x="50" y="82" width="6" height="6"/><rect x="60" y="88" width="6" height="6"/><rect x="72" y="88" width="6" height="6"/><rect x="84" y="88" width="6" height="6"/></g></svg></div>
-      <div class="qr-note">QR ตัวอย่าง — เปลี่ยนเป็น QR รับเงินจริงก่อนใช้งาน</div>
+      <div class="step"><div class="step-dot">3</div><div class="step-label">โอนมัดจำ</div></div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-dot">4</div><div class="step-label">สรุปการจอง</div></div>
     </div>
     <div class="form-card">
       <h3>ข้อมูลผู้จอง</h3>
-      <div class="field"><label>ชื่อ-นามสกุลจริง</label><input type="text" id="trav-name" placeholder="ระบุชื่อ-นามสกุลจริง" oninput="checkPaymentReady()"></div>
-      <div class="field"><label>ชื่อเล่น</label><input type="text" id="trav-nick" placeholder="ชื่อเล่น" oninput="checkPaymentReady()"></div>
-      <div class="field"><label>เบอร์โทรศัพท์</label><input type="tel" id="trav-phone" placeholder="08xxxxxxxx" oninput="checkPaymentReady()"></div>
-      <div class="field"><label>ชื่อ LINE</label><input type="text" id="trav-line" placeholder="ชื่อไลน์ของคุณ" oninput="checkPaymentReady()"></div>
+      <div class="field"><label>ชื่อ-นามสกุลจริง</label><input type="text" id="trav-name" placeholder="ระบุชื่อ-นามสกุลจริง" oninput="checkTravelerReady()"></div>
+      <div class="field"><label>เลขบัตรประจำตัวประชาชน</label><input type="text" id="trav-idcard" inputmode="numeric" maxlength="13" placeholder="ระบุเลขบัตรประชาชน 13 หลัก" oninput="checkTravelerReady()"></div>
+      <div class="field"><label>อายุ</label><input type="number" id="trav-age" min="1" max="120" placeholder="ระบุอายุ" oninput="checkTravelerReady()"></div>
+      <div class="field"><label>ชื่อเล่น</label><input type="text" id="trav-nick" placeholder="ชื่อเล่น" oninput="checkTravelerReady()"></div>
+      <div class="field"><label>เบอร์โทรศัพท์</label><input type="tel" id="trav-phone" placeholder="08xxxxxxxx" oninput="checkTravelerReady()"></div>
+      <div class="field"><label>ชื่อ LINE</label><input type="text" id="trav-line" placeholder="ชื่อไลน์ของคุณ" oninput="checkTravelerReady()"></div>
+      <div class="field"><label>รหัสผู้แนะนำ <span style="font-weight:400;color:var(--ink-muted)">(ถ้ามี)</span></label><input type="text" id="trav-referrer" placeholder="ระบุรหัสผู้แนะนำ (ถ้ามี)"></div>
       <div class="field">
         <label>จุดขึ้นรถ</label>
         <select id="trav-pickup-select" onchange="handlePickupSelect_()">
@@ -460,9 +457,39 @@ img{max-width:100%;display:block}
           <option value="หน้าโลตัสรังสิต">หน้าโลตัสรังสิต</option>
           <option value="__other__">📍 แวะรับจุดอื่น (ระบุเอง)</option>
         </select>
-        <input type="text" id="trav-pickup-other" placeholder="ระบุจุดที่ต้องการให้แวะรับ..." style="display:none;margin-top:8px" oninput="document.getElementById('trav-pickup').value=this.value.trim(); checkPaymentReady()">
+        <input type="text" id="trav-pickup-other" placeholder="ระบุจุดที่ต้องการให้แวะรับ..." style="display:none;margin-top:8px" oninput="document.getElementById('trav-pickup').value=this.value.trim(); checkTravelerReady()">
         <input type="hidden" id="trav-pickup" value="ลานจอด BTS หมอชิต">
       </div>
+    </div>
+    <button class="btn-primary" style="width:100%" id="traveler-next" disabled onclick="goToPaymentScreen()">ต่อไป</button>
+  </div>
+</div>
+</section>
+
+<section class="screen" id="screen-payment">
+<div class="screen-content">
+  <header class="page-header">
+    <button class="icon-btn" onclick="showScreen('traveler')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <h1>โอนมัดจำ</h1>
+    <div class="header-spacer"></div>
+  </header>
+  <div class="payment-wrap">
+    <div class="steps">
+      <div class="step done"><div class="step-dot">✓</div><div class="step-label">เลือกที่นั่ง</div></div>
+      <div class="step-line done"></div>
+      <div class="step done"><div class="step-dot">✓</div><div class="step-label">กรอกข้อมูล</div></div>
+      <div class="step-line done"></div>
+      <div class="step active"><div class="step-dot">3</div><div class="step-label">โอนมัดจำ</div></div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-dot">4</div><div class="step-label">สรุปการจอง</div></div>
+    </div>
+    <div class="payment-heading"><h2>ชำระเงินมัดจำ</h2><p id="payment-instruction">กรุณาโอนมัดจำภายใน 5 นาที</p></div>
+    <div class="bank-card">
+      <div class="bank-name"><span class="bank-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10l9-6 9 6"/><path d="M4 10v9h16v-9"/><path d="M9 19v-6h6v6"/></svg></span> ธนาคารกสิกรไทย</div>
+      <div class="account-num">123-1-23456-7</div>
+      <div class="account-name">ชื่อบัญชี : ยินดีที่ได้เจอ ทริป</div>
+      <div class="qr-box"><svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#fff"/><g fill="#0D2818"><rect x="6" y="6" width="24" height="24"/><rect x="12" y="12" width="12" height="12" fill="#fff"/><rect x="16" y="16" width="4" height="4"/><rect x="70" y="6" width="24" height="24"/><rect x="76" y="12" width="12" height="12" fill="#fff"/><rect x="80" y="16" width="4" height="4"/><rect x="6" y="70" width="24" height="24"/><rect x="12" y="76" width="12" height="12" fill="#fff"/><rect x="16" y="80" width="4" height="4"/><rect x="38" y="6" width="6" height="6"/><rect x="48" y="6" width="6" height="6"/><rect x="58" y="12" width="6" height="6"/><rect x="38" y="18" width="6" height="6"/><rect x="52" y="20" width="6" height="6"/><rect x="38" y="30" width="6" height="6"/><rect x="60" y="34" width="6" height="6"/><rect x="70" y="40" width="6" height="6"/><rect x="82" y="40" width="6" height="6"/><rect x="40" y="42" width="6" height="6"/><rect x="50" y="44" width="6" height="6"/><rect x="6" y="42" width="6" height="6"/><rect x="18" y="46" width="6" height="6"/><rect x="30" y="50" width="6" height="6"/><rect x="60" y="52" width="6" height="6"/><rect x="70" y="58" width="6" height="6"/><rect x="84" y="60" width="6" height="6"/><rect x="40" y="60" width="6" height="6"/><rect x="50" y="64" width="6" height="6"/><rect x="6" y="60" width="6" height="6"/><rect x="60" y="70" width="6" height="6"/><rect x="70" y="76" width="6" height="6"/><rect x="80" y="80" width="6" height="6"/><rect x="88" y="70" width="6" height="6"/><rect x="40" y="76" width="6" height="6"/><rect x="50" y="82" width="6" height="6"/><rect x="60" y="88" width="6" height="6"/><rect x="72" y="88" width="6" height="6"/><rect x="84" y="88" width="6" height="6"/></g></svg></div>
+      <div class="qr-note">QR ตัวอย่าง — เปลี่ยนเป็น QR รับเงินจริงก่อนใช้งาน</div>
     </div>
     <div class="form-card">
       <h3>อัปโหลดสลิปโอนเงิน</h3>
@@ -475,6 +502,27 @@ img{max-width:100%;display:block}
     </div>
     <div class="timer-bar"><div class="timer-label">เวลาที่เหลือในการล็อกที่นั่ง</div><div class="timer-value" id="timer">05:00</div></div>
     <button class="btn-primary" style="width:100%" id="payment-submit" disabled onclick="confirmPayment()">ยืนยันการชำระเงิน</button>
+  </div>
+</div>
+</section>
+
+<section class="screen" id="screen-staff">
+<div class="screen-content">
+  <header class="page-header">
+    <button class="icon-btn" onclick="showScreen('seats')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <h1>จองเบาะ Staff</h1>
+    <div class="header-spacer"></div>
+  </header>
+  <div class="payment-wrap">
+    <div class="help-banner">เบาะสำหรับทีมงาน — ไม่ต้องชำระเงินมัดจำ กรอกข้อมูลแล้วจองได้เลยครับ</div>
+    <div class="form-card">
+      <h3>ข้อมูล Staff</h3>
+      <div class="field"><label>ชื่อ-นามสกุลจริง</label><input type="text" id="staff-name" placeholder="ระบุชื่อ-นามสกุลจริง" oninput="checkStaffReady()"></div>
+      <div class="field"><label>ชื่อเล่น</label><input type="text" id="staff-nick" placeholder="ชื่อเล่น" oninput="checkStaffReady()"></div>
+      <div class="field"><label>เบอร์โทรศัพท์</label><input type="tel" id="staff-phone" placeholder="08xxxxxxxx" oninput="checkStaffReady()"></div>
+      <div class="field"><label>รหัส Staff</label><input type="text" id="staff-code" placeholder="ระบุรหัส Staff" oninput="checkStaffReady()"></div>
+    </div>
+    <button class="btn-primary" style="width:100%" id="staff-submit" disabled onclick="confirmStaffBooking()">ยืนยันการจอง</button>
   </div>
 </div>
 </section>
@@ -660,7 +708,7 @@ let currentTripId = 'changphueak';
 let heartOn = false;
 
 // ผังเบาะจริง: คนขับ + 3,6,9 / ทางเดิน + 2,5,8 / เบาะซ้าย + 1,4,7 — ต่อรถ 1 คัน (4 คอลัมน์ x 3 แถว)
-const BUS_GRID_STRUCTURE = ['driver', 3, 6, 9, 'spacer', 2, 5, 8, 'เบาะซ้าย', 1, 4, 7];
+const BUS_GRID_STRUCTURE = ['driver', 3, 6, 9, 'spacer', 2, 5, 8, 'Staff', 1, 4, 7];
 
 let selectedSeatIds = new Set();   // เก็บ id เต็มๆ เช่น "A3", "Cเบาะซ้าย"
 let bookedSeatIds = new Set();
@@ -822,7 +870,7 @@ function openDetail(id){
 }
 function toggleHeart(){heartOn=!heartOn;const svg=document.getElementById('heart-svg');if(svg)svg.setAttribute('fill',heartOn?'#C9A227':'none')}
 
-// วาดผังเบาะ 1 คัน ตาม BUS_GRID_STRUCTURE เป๊ะๆ — prefix คือ 'A'/'B'/'C'
+// วาดผังเบาะ 1 คัน ตาม BUS_GRID_STRUCTURE เป๊ะๆ — prefix คือ 'A'/'B'
 function renderVanGrid(prefix){
   const grid = document.getElementById('vanGrid'+prefix);
   if(!grid)return;
@@ -832,23 +880,27 @@ function renderVanGrid(prefix){
     if(n==='spacer'){ html += `<div class="seat spacer"></div>`; return; }
 
     const id = prefix+n;
+    const displayLabel = n==='Staff' ? `${prefix} Staff` : id;
     let cls = 'available';
-    let inner = `<span>เบาะ</span><span>${id}</span>`;
+    let inner = n==='Staff' ? `<span>Staff</span><span>${prefix}</span>` : `<span>เบาะ</span><span>${id}</span>`;
 
     if(bookedSeatIds.has(id)){
       cls = 'booked';
-      inner = `<span>${id}</span><span style="font-size:10px">เต็ม</span>`;
+      inner = `<span>${displayLabel}</span><span style="font-size:10px">เต็ม</span>`;
     } else if(selectedSeatIds.has(id)){
       cls = 'selected';
     } else if(lockedSeatIds.has(id)){
       cls = 'booked locking-seat';
-      inner = `<span>${id}</span><span style="font-size:9px">มีคนเลือก</span>`;
+      inner = `<span>${displayLabel}</span><span style="font-size:9px">มีคนเลือก</span>`;
     }
 
     html += `<div class="seat ${cls}" ${cls==='available'||cls==='selected'?`onclick="toggleSeat('${id}')"`:''}>${inner}</div>`;
   });
   grid.innerHTML = html;
 }
+
+function isStaffSeat(id){ return id.endsWith('Staff'); }
+function formatSeatId(id){ return isStaffSeat(id) ? id.slice(0,-5)+' Staff' : id; }
 
 async function toggleSeat(id){
   if(bookedSeatIds.has(id)||lockedSeatIds.has(id))return;
@@ -879,15 +931,34 @@ async function toggleSeat(id){
   }
 }
 function updateSeatInfo(){
-  const all = [...selectedSeatIds];
+  const all = [...selectedSeatIds].map(formatSeatId);
   selectedOnsite.forEach(n=>all.push('หน้างาน '+n));
   document.getElementById('seat-count').textContent = `เลือกแล้ว ${all.length} ที่นั่ง`;
   document.getElementById('seat-codes').textContent = all.length ? all.join(', ') : '—';
   document.getElementById('seat-next').disabled = all.length===0;
 }
-function goToPayment(){
+function goToTravelerOrStaff(){
   if(!selectedSeatIds.size && !selectedOnsite.size)return;
+
+  // เบาะ Staff ล้วน (ไม่ปนที่นั่งลูกค้า/หน้างาน) — ข้ามฟอร์มลูกค้า/หน้าชำระเงินไปกรอกข้อมูล Staff แล้วจองได้เลย
+  const staffOnly = selectedSeatIds.size>0 && [...selectedSeatIds].every(isStaffSeat) && selectedOnsite.size===0;
+  if(staffOnly){
+    goToStaffForm();
+    return;
+  }
+
   stopSeatPolling();
+  prefillTravelerForm();
+  checkTravelerReady();
+  showScreen('traveler');
+}
+function goToPaymentScreen(){
+  const btn = document.getElementById('traveler-next');
+  if(btn&&btn.disabled)return;
+
+  const count = selectedSeatIds.size + selectedOnsite.size;
+  document.getElementById('payment-instruction').textContent = `มัดจำ ${(count*1000).toLocaleString('th-TH')} บาท • ล็อกที่นั่งไว้ ${SEAT_LOCK_MINUTES} นาที`;
+
   secondsLeft = SEAT_LOCK_SECONDS;
   updateTimer();
   clearInterval(timerInterval);
@@ -901,7 +972,7 @@ function goToPayment(){
     }
     updateTimer();
   },1000);
-  prefillTravelerForm();
+  checkPaymentReady();
   showScreen('payment');
 }
 function updateTimer(){
@@ -924,17 +995,25 @@ function prefillTravelerForm(){
   const nameEl = document.getElementById('trav-name');
   if(!nameEl)return;
   nameEl.value = t.name||'';
+  document.getElementById('trav-idcard').value = t.idCard||'';
+  document.getElementById('trav-age').value = t.age||'';
   document.getElementById('trav-nick').value = t.nickname||'';
   document.getElementById('trav-phone').value = t.phone||'';
   document.getElementById('trav-line').value = t.line||'';
 }
+// หน้ากรอกข้อมูลผู้จอง — เช็กครบก่อนกดต่อไปหน้าโอนเงินได้
+function checkTravelerReady(){
+  const fields = ['trav-name','trav-idcard','trav-age','trav-nick','trav-phone','trav-line','trav-pickup'];
+  const allFilled = fields.every(id=>{const el=document.getElementById(id);return el&&el.value.trim()!==''});
+  const btn = document.getElementById('traveler-next');
+  if(btn)btn.disabled = !allFilled;
+}
+// หน้าโอนเงิน — ข้อมูลผู้จองกรอกมาก่อนแล้ว เหลือแค่เช็กว่าแนบสลิปหรือยัง
 function checkPaymentReady(){
   const input = document.getElementById('slip-input');
   const hasSlip = !!(input&&input.files&&input.files[0]);
-  const fields = ['trav-name','trav-nick','trav-phone','trav-line','trav-pickup'];
-  const allFilled = fields.every(id=>{const el=document.getElementById(id);return el&&el.value.trim()!==''});
   const btn = document.getElementById('payment-submit');
-  if(btn)btn.disabled = !(hasSlip&&allFilled);
+  if(btn)btn.disabled = !hasSlip;
 }
 function handlePickupSelect_(){
   const select = document.getElementById('trav-pickup-select');
@@ -943,7 +1022,7 @@ function handlePickupSelect_(){
   if(!select||!other||!hidden)return;
   if(select.value==='__other__'){other.style.display='block';hidden.value=other.value.trim();other.focus()}
   else{other.style.display='none';other.value='';hidden.value=select.value}
-  checkPaymentReady();
+  checkTravelerReady();
 }
 function slipToBase64_(file){
   return new Promise((resolve,reject)=>{
@@ -965,15 +1044,24 @@ async function confirmPayment(){
     alert('กรุณาอัปโหลดสลิปโอนเงินก่อนยืนยันการชำระเงิน');
     return;
   }
+  const traveler = {
+    name: document.getElementById('trav-name').value.trim(),
+    idCard: document.getElementById('trav-idcard').value.trim(),
+    age: document.getElementById('trav-age').value.trim(),
+    nickname: document.getElementById('trav-nick').value.trim(),
+    phone: document.getElementById('trav-phone').value.trim(),
+    line: document.getElementById('trav-line').value.trim(),
+    pickup: document.getElementById('trav-pickup').value.trim()
+  };
+  if(!traveler.name||!traveler.idCard||!traveler.age||!traveler.nickname||!traveler.phone||!traveler.line||!traveler.pickup){
+    alert('กรุณากรอกข้อมูลผู้จองให้ครบก่อนครับ');
+    showScreen('traveler');
+    checkTravelerReady();
+    return;
+  }
   btn.disabled=true;btn.textContent='กำลังส่งข้อมูล...';
   try{
-    const traveler = {
-      name: document.getElementById('trav-name').value.trim(),
-      nickname: document.getElementById('trav-nick').value.trim(),
-      phone: document.getElementById('trav-phone').value.trim(),
-      line: document.getElementById('trav-line').value.trim(),
-      pickup: document.getElementById('trav-pickup').value.trim()
-    };
+    const referrerCode = document.getElementById('trav-referrer').value.trim();
     saveTraveler(traveler);
     const allSeats = [...selectedSeatIds];
     selectedOnsite.forEach(n=>allSeats.push('หน้างาน '+n));
@@ -992,8 +1080,9 @@ async function confirmPayment(){
     allSeats.forEach((seat,i)=>{
       const payload = {
         date: trip.rawDate, trip: trip.name, seat: seat,
-        name: traveler.name, nickname: traveler.nickname, phone: traveler.phone,
-        line: traveler.line, pickup: traveler.pickup,
+        name: traveler.name, idCard: traveler.idCard, age: traveler.age,
+        nickname: traveler.nickname, phone: traveler.phone,
+        line: traveler.line, pickup: traveler.pickup, referrerCode: referrerCode, staffCode: '',
         confirm: 'true', bookingId: code+'-'+(i+1), session_id: MY_SESSION_ID,
         slipBase64: slipData.data, slipName: slipData.name, slipMime: slipData.mimeType
       };
@@ -1012,7 +1101,7 @@ async function confirmPayment(){
     // รอหลังบ้านบันทึกข้อมูลก่อนแสดงหน้าสรุป
     setTimeout(()=>{
       clearInterval(timerInterval);stopSeatPolling();
-      buildSummary(traveler,allSeats,code);
+      buildSummary(traveler,allSeats,code,false);
       showScreen('summary');
       btn.disabled=false;btn.textContent='ยืนยันการชำระเงิน';
     },2500);
@@ -1021,14 +1110,78 @@ async function confirmPayment(){
     alert('ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้งครับ');
   }
 }
-function buildSummary(traveler,seatList,code){
+
+/* ================================================================
+   STAFF SEATS (A Staff / B Staff) — ไม่ต้องผ่านหน้าชำระเงิน
+   ================================================================ */
+function goToStaffForm(){
+  stopSeatPolling();
+  ['staff-name','staff-nick','staff-phone','staff-code'].forEach(id=>document.getElementById(id).value='');
+  checkStaffReady();
+  showScreen('staff');
+}
+function checkStaffReady(){
+  const ok = ['staff-name','staff-nick','staff-phone','staff-code'].every(id=>document.getElementById(id).value.trim()!=='');
+  document.getElementById('staff-submit').disabled = !ok;
+}
+async function confirmStaffBooking(){
+  const btn = document.getElementById('staff-submit');
+  if(!btn||btn.disabled)return;
+  btn.disabled=true;btn.textContent='กำลังบันทึกข้อมูล...';
+
+  const trip = trips.find(t=>t.id===currentTripId);
+  const seatList = [...selectedSeatIds];
+  const code = 'YDEE'+Date.now().toString().slice(-8);
+  const name = document.getElementById('staff-name').value.trim();
+  const nickname = document.getElementById('staff-nick').value.trim();
+  const phone = document.getElementById('staff-phone').value.trim();
+  const staffCode = document.getElementById('staff-code').value.trim();
+
+  let iframe = document.getElementById('_ifr_staff');
+  if(!iframe){
+    iframe = document.createElement('iframe');
+    iframe.name='_ifr_staff';iframe.id='_ifr_staff';iframe.style.display='none';
+    document.body.appendChild(iframe);
+  }
+
+  seatList.forEach((seat,i)=>{
+    const payload = {
+      date: trip.rawDate, trip: trip.name, seat: seat,
+      name, nickname, phone, line:'', pickup:'Staff', referrerCode:'', staffCode,
+      confirm:'true', bookingId: code+'-'+(i+1), session_id: MY_SESSION_ID,
+      slipBase64:'', slipName:'', slipMime:''
+    };
+    const form = document.createElement('form');
+    form.method='POST';form.action=API_URL;form.target='_ifr_staff';form.acceptCharset='UTF-8';form.style.display='none';
+    Object.entries(payload).forEach(([key,value])=>{
+      const field = document.createElement('textarea');
+      field.name=key;field.value=value==null?'':String(value);field.style.display='none';
+      form.appendChild(field);
+    });
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(()=>{ if(form.parentNode) form.remove(); },3000);
+  });
+
+  setTimeout(()=>{
+    stopSeatPolling();
+    buildSummary({name,nickname,phone,line:'',pickup:'Staff'}, seatList, code, true);
+    selectedSeatIds = new Set();
+    showScreen('summary');
+    btn.disabled=false;btn.textContent='ยืนยันการจอง';
+  },2200);
+}
+
+function buildSummary(traveler,seatList,code,isStaff){
   const trip = trips.find(t=>t.id===currentTripId);
   document.getElementById('summary-code').textContent = code;
   document.getElementById('summary-trip').textContent = trip.name;
   document.getElementById('summary-date').textContent = trip.date;
-  document.getElementById('summary-seats').textContent = seatList.join(', ');
+  document.getElementById('summary-seats').textContent = seatList.map(formatSeatId).join(', ');
   document.getElementById('summary-count').textContent = seatList.length+' ท่าน';
-  document.getElementById('summary-deposit').textContent = (seatList.length*1000).toLocaleString('th-TH')+' บาท';
+  document.getElementById('summary-deposit').textContent = isStaff
+    ? 'ฟรี (เบาะ Staff)'
+    : (seatList.length*1000).toLocaleString('th-TH')+' บาท';
 }
 function resetAndHome(){
   selectedSeatIds=new Set();selectedOnsite=new Set();
