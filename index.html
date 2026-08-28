@@ -240,7 +240,7 @@ img{max-width:100%;display:block}
 .timer-label{font-size:12px;font-weight:600;color:#8B6C20}
 .timer-value{font-size:20px;font-weight:800;color:var(--danger)}
 .summary-wrap{padding:24px 20px 40px;text-align:center}
-.success-circle{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--forest-light),var(--forest));color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:0 12px 28px rgba(13,40,24,.2)}
+.success-circle{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--forest-light),var(--forest));color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:0 0 0 6px rgba(201,162,39,.12),0 12px 28px rgba(0,0,0,.35)}
 .success-circle svg{width:40px;height:40px}
 .summary-wrap h2{font-size:24px;font-weight:800;margin-bottom:6px}
 .summary-sub{font-size:13.5px;color:var(--ink-soft);margin-bottom:28px}
@@ -250,7 +250,7 @@ img{max-width:100%;display:block}
 .row:last-child{border-bottom:none}
 .row .key{color:var(--ink-soft);flex-shrink:0}
 .row .val{font-weight:700;text-align:right}
-.row .val.ok{color:var(--forest-light)}
+.row .val.ok{color:#5FD18A}
 .contact-row{display:flex;align-items:center;gap:12px;padding:8px 0}
 .contact-icon{width:40px;height:40px;border-radius:50%;background:rgba(45,90,69,.25);color:#8FD1A6;display:flex;align-items:center;justify-content:center}
 .contact-icon svg{width:18px;height:18px}
@@ -258,6 +258,36 @@ img{max-width:100%;display:block}
 .contact-val{font-size:14px;font-weight:700}
 .summary-actions{display:flex;flex-direction:column;gap:10px;margin-top:8px}
 .btn-outline{height:50px;border-radius:14px;background:var(--bg-card);border:1.5px solid var(--forest-light);color:var(--ink);font-size:14.5px;font-weight:700;cursor:pointer}
+
+/* ================================================================
+   RECEIPT CARD — ใบเสร็จหรูสำหรับแคปหน้าจอส่งแอดมิน
+   ================================================================ */
+.receipt-card{position:relative;overflow:hidden;background:linear-gradient(165deg,#0F2318 0%,#152C1F 55%,#1B3A2F 100%);border:1px solid rgba(201,162,39,.35);border-radius:var(--radius-lg);padding:22px 20px;text-align:left;box-shadow:0 16px 40px rgba(0,0,0,.4),0 0 0 1px rgba(201,162,39,.08);margin-bottom:18px;color:#fff}
+.receipt-card-glow{position:absolute;top:-40%;left:-10%;width:60%;height:90%;background:radial-gradient(circle,rgba(201,162,39,.16),transparent 70%);pointer-events:none}
+.receipt-header{position:relative;text-align:center;margin-bottom:18px}
+.receipt-brand{font-size:15px;font-weight:800;letter-spacing:.5px;color:var(--gold)}
+.receipt-brand-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px;letter-spacing:.5px}
+.receipt-code-row{position:relative;text-align:center;margin-bottom:16px}
+.receipt-code-label{font-size:10.5px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.receipt-code{font-size:22px;font-weight:800;letter-spacing:1px;color:#fff}
+.receipt-divider{position:relative;height:1px;background:repeating-linear-gradient(90deg,rgba(201,162,39,.4) 0 6px,transparent 6px 12px);margin:14px 0}
+.receipt-card .row{border-bottom:1px solid rgba(255,255,255,.1)}
+.receipt-card .row .key{color:rgba(255,255,255,.6)}
+.receipt-card .row .val{color:#fff}
+.receipt-card .row .val.ok{color:#8FE8AC}
+.receipt-passengers-label{position:relative;font-size:11px;font-weight:800;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.passenger-row{position:relative;display:flex;align-items:center;gap:10px;padding:8px 0}
+.passenger-seat-chip{flex-shrink:0;min-width:44px;text-align:center;padding:4px 8px;border-radius:8px;background:rgba(201,162,39,.18);border:1px solid rgba(201,162,39,.35);color:var(--gold);font-size:11px;font-weight:800}
+.passenger-name{font-size:13.5px;font-weight:600;color:#fff}
+
+.line-cta-card{display:flex;gap:12px;align-items:flex-start;background:rgba(6,199,117,.1);border:1px solid rgba(6,199,117,.3);border-radius:var(--radius);padding:14px 16px;text-align:left;margin-bottom:12px}
+.line-cta-icon{width:34px;height:34px;border-radius:50%;background:#06C755;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.line-cta-icon svg{width:18px;height:18px}
+.line-cta-text h4{font-size:13px;font-weight:800;margin-bottom:3px}
+.line-cta-text p{font-size:12px;color:var(--ink-soft);line-height:1.6}
+.line-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:52px;border-radius:14px;background:#06C755;color:#fff;font-size:15px;font-weight:800;text-decoration:none;box-shadow:0 8px 20px rgba(6,199,85,.3);margin-bottom:18px}
+.line-btn svg{width:22px;height:22px}
+.line-btn:active{transform:scale(.98)}
 .mytrips-wrap,.profile-wrap{padding:12px 20px 30px}
 .booking-card{position:relative;overflow:hidden;background:#0A2016;border:1px solid rgba(201,162,39,.2);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);margin-bottom:12px;cursor:pointer;color:#fff}
 .booking-card svg{position:absolute;inset:0;width:100%;height:100%}
@@ -459,14 +489,13 @@ img{max-width:100%;display:block}
       <div class="step-line"></div>
       <div class="step"><div class="step-dot">4</div><div class="step-label">สรุปการจอง</div></div>
     </div>
+    <div class="help-banner" id="traveler-count-note">กรอกข้อมูลผู้โดยสารแต่ละที่นั่ง เพื่อใช้ทำประกันอุบัติเหตุระหว่างทริปครับ</div>
+    <div id="traveler-persons"></div>
     <div class="form-card">
-      <h3>ข้อมูลผู้จอง</h3>
-      <div class="field"><label>ชื่อ-นามสกุลจริง</label><input type="text" id="trav-name" placeholder="ระบุชื่อ-นามสกุลจริง" oninput="checkTravelerReady()"></div>
-      <div class="field"><label>เลขบัตรประจำตัวประชาชน</label><input type="text" id="trav-idcard" inputmode="numeric" maxlength="13" placeholder="ระบุเลขบัตรประชาชน 13 หลัก" oninput="checkTravelerReady()"></div>
-      <div class="field"><label>อายุ</label><input type="number" id="trav-age" min="1" max="120" placeholder="ระบุอายุ" oninput="checkTravelerReady()"></div>
-      <div class="field"><label>ชื่อเล่น</label><input type="text" id="trav-nick" placeholder="ชื่อเล่น" oninput="checkTravelerReady()"></div>
-      <div class="field"><label>เบอร์โทรศัพท์</label><input type="tel" id="trav-phone" placeholder="08xxxxxxxx" oninput="checkTravelerReady()"></div>
-      <div class="field"><label>ชื่อ LINE</label><input type="text" id="trav-line" placeholder="ชื่อไลน์ของคุณ" oninput="checkTravelerReady()"></div>
+      <div class="form-card-head">
+        <div class="form-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a2 2 0 1 1-3.2 2.4"/></svg></div>
+        <div><h3>ข้อมูลเพิ่มเติม</h3><div class="form-card-sub">ใช้ร่วมกันทั้งกลุ่ม</div></div>
+      </div>
       <div class="field"><label>รหัสผู้แนะนำ <span style="font-weight:400;color:var(--ink-muted)">(ถ้ามี)</span></label><input type="text" id="trav-referrer" placeholder="ระบุรหัสผู้แนะนำ (ถ้ามี)"></div>
       <div class="field">
         <label>จุดขึ้นรถ</label>
@@ -561,23 +590,43 @@ img{max-width:100%;display:block}
     <div class="success-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
     <h2>จองทริปสำเร็จ!</h2>
     <div class="summary-sub">ขอบคุณที่ไว้วางใจ "ยินดีที่ได้เจอ"</div>
-    <div class="summary-card">
-      <h4>รายละเอียดการจอง</h4>
-      <div class="row"><span class="key">รหัสการจอง</span><span class="val" id="summary-code">—</span></div>
+
+    <div class="receipt-card">
+      <div class="receipt-card-glow"></div>
+      <div class="receipt-header">
+        <div class="receipt-brand">ยินดีที่ได้เจอ</div>
+        <div class="receipt-brand-sub">ใบยืนยันการจอง</div>
+      </div>
+      <div class="receipt-code-row">
+        <div class="receipt-code-label">รหัสการจอง</div>
+        <div class="receipt-code" id="summary-code">—</div>
+      </div>
+      <div class="receipt-divider"></div>
       <div class="row"><span class="key">ทริป</span><span class="val" id="summary-trip">—</span></div>
       <div class="row"><span class="key">วันที่เดินทาง</span><span class="val" id="summary-date">—</span></div>
       <div class="row"><span class="key">ที่นั่ง</span><span class="val" id="summary-seats">—</span></div>
       <div class="row"><span class="key">จำนวนผู้เดินทาง</span><span class="val" id="summary-count">—</span></div>
       <div class="row"><span class="key">ยอดมัดจำ</span><span class="val" id="summary-deposit">—</span></div>
       <div class="row"><span class="key">สถานะ</span><span class="val ok">มัดจำแล้ว</span></div>
+      <div class="receipt-divider"></div>
+      <div class="receipt-passengers-label">รายชื่อผู้โดยสาร</div>
+      <div id="summary-passengers"></div>
     </div>
-    <div class="summary-card">
-      <h4>ติดต่อทีมงาน</h4>
-      <div class="contact-row"><div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><div class="contact-label">โทรศัพท์</div><div class="contact-val">095-123-4567</div></div></div>
-      <div class="contact-row"><div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div><div class="contact-label">LINE</div><div class="contact-val">@yindeedeejer</div></div></div>
+
+    <div class="line-cta-card">
+      <div class="line-cta-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.94 2 10.8c0 4.36 3.6 8.02 8.47 8.7.33.07.78.22.9.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1 .87.55 1.08-.46 5.8-3.42 7.92-5.85C21.6 14.4 22 12.66 22 10.8 22 5.94 17.52 2 12 2z"/></svg></div>
+      <div class="line-cta-text">
+        <h4>ส่งหลักฐานให้แอดมิน</h4>
+        <p>แคปหน้าจอใบเสร็จนี้ทั้งหน้า แล้วส่งให้แอดมินทางปุ่ม LINE ด้านล่างนี้ เพื่อให้แอดมินดึงเข้ากลุ่มทริปครับ</p>
+      </div>
     </div>
+    <a class="line-btn" href="https://lin.ee/gXlK3Ra" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.94 2 10.8c0 4.36 3.6 8.02 8.47 8.7.33.07.78.22.9.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1 .87.55 1.08-.46 5.8-3.42 7.92-5.85C21.6 14.4 22 12.66 22 10.8 22 5.94 17.52 2 12 2z"/></svg>
+      แอดไลน์ส่งหลักฐานให้แอดมิน
+    </a>
+
     <div class="summary-actions">
-      <button class="btn-primary" style="width:100%" onclick="resetAndHome()">กลับหน้าแรก</button>
+      <button class="btn-primary" style="width:100%" onclick="location.reload()">กลับหน้าแรก</button>
       <button class="btn-outline" onclick="showScreen('mytrips')">ดูทริปของฉัน</button>
     </div>
   </div>
@@ -1135,11 +1184,45 @@ function goToTravelerOrStaff(){
     return;
   }
   stopSeatPolling();
-  prefillTravelerForm();
+  renderTravelerPersons();
   checkTravelerReady();
   showScreen('traveler');
 }
-  function goToPaymentScreen(){
+
+// รายชื่อที่นั่งทั้งหมดที่เลือกไว้ (รถตู้ + มาเองหน้างาน) เรียงลำดับเดียวกันทุกจุดที่ใช้งาน
+function getSelectedSeatList_(){
+  return [...selectedSeatIds, ...[...selectedOnsite].map(n=>'หน้างาน '+n)];
+}
+
+// วาดฟอร์มกรอกข้อมูลผู้โดยสารทีละคนตามจำนวนที่นั่งที่เลือกไว้ (1 ที่นั่ง = 1 คน สำหรับทำประกัน)
+function renderTravelerPersons(){
+  const box = document.getElementById('traveler-persons');
+  if(!box)return;
+  const seats = getSelectedSeatList_();
+  const saved = getTraveler();
+
+  document.getElementById('traveler-count-note').textContent =
+    seats.length>1
+      ? `เลือกไว้ ${seats.length} ที่นั่ง — กรุณากรอกข้อมูลผู้โดยสารให้ครบทุกคน เพื่อใช้ทำประกันอุบัติเหตุระหว่างทริปครับ`
+      : 'กรอกข้อมูลผู้โดยสาร เพื่อใช้ทำประกันอุบัติเหตุระหว่างทริปครับ';
+
+  box.innerHTML = seats.map((seat,i)=>`
+    <div class="form-card">
+      <div class="form-card-head">
+        <div class="form-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+        <div><h3>ผู้โดยสารคนที่ ${i+1}</h3><div class="form-card-sub">เบาะ ${formatSeatId(seat)}</div></div>
+      </div>
+      <div class="field"><label>ชื่อ-นามสกุลจริง</label><input type="text" id="trav-name-${i}" placeholder="ระบุชื่อ-นามสกุลจริง" oninput="checkTravelerReady()" value="${i===0?(saved.name||''):''}"></div>
+      <div class="field"><label>เลขบัตรประจำตัวประชาชน</label><input type="text" id="trav-idcard-${i}" inputmode="numeric" maxlength="13" placeholder="ระบุเลขบัตรประชาชน 13 หลัก" oninput="checkTravelerReady()" value="${i===0?(saved.idCard||''):''}"></div>
+      <div class="field"><label>อายุ</label><input type="number" id="trav-age-${i}" min="1" max="120" placeholder="ระบุอายุ" oninput="checkTravelerReady()" value="${i===0?(saved.age||''):''}"></div>
+      <div class="field"><label>ชื่อเล่น</label><input type="text" id="trav-nick-${i}" placeholder="ชื่อเล่น" oninput="checkTravelerReady()" value="${i===0?(saved.nickname||''):''}"></div>
+      <div class="field"><label>เบอร์โทรศัพท์</label><input type="tel" id="trav-phone-${i}" placeholder="08xxxxxxxx" oninput="checkTravelerReady()" value="${i===0?(saved.phone||''):''}"></div>
+      <div class="field"><label>ชื่อ LINE</label><input type="text" id="trav-line-${i}" placeholder="ชื่อไลน์ของคุณ" oninput="checkTravelerReady()" value="${i===0?(saved.line||''):''}"></div>
+    </div>
+  `).join('');
+}
+
+function goToPaymentScreen(){
   const btn = document.getElementById('traveler-next');
   if(btn&&btn.disabled)return;
 
@@ -1179,22 +1262,25 @@ function fileChosen(){
   document.getElementById('upload-sub').textContent = input.files[0].name;
   checkPaymentReady();
 }
-function prefillTravelerForm(){
-  const t = getTraveler();
-  const nameEl = document.getElementById('trav-name');
-  if(!nameEl)return;
-  nameEl.value = t.name||'';
-  document.getElementById('trav-idcard').value = t.idCard||'';
-  document.getElementById('trav-age').value = t.age||'';
-  document.getElementById('trav-nick').value = t.nickname||'';
-  document.getElementById('trav-phone').value = t.phone||'';
-  document.getElementById('trav-line').value = t.line||'';
+// รวบรวมข้อมูลผู้โดยสารทุกคนจากฟอร์มที่กรอกไว้ กลับมาเป็น array [{name,idCard,age,nickname,phone,line}, ...]
+function collectTravelerPersons_(){
+  const seats = getSelectedSeatList_();
+  return seats.map((seat,i)=>({
+    seat: seat,
+    name: (document.getElementById('trav-name-'+i)||{}).value?.trim()||'',
+    idCard: (document.getElementById('trav-idcard-'+i)||{}).value?.trim()||'',
+    age: (document.getElementById('trav-age-'+i)||{}).value?.trim()||'',
+    nickname: (document.getElementById('trav-nick-'+i)||{}).value?.trim()||'',
+    phone: (document.getElementById('trav-phone-'+i)||{}).value?.trim()||'',
+    line: (document.getElementById('trav-line-'+i)||{}).value?.trim()||''
+  }));
 }
 function checkTravelerReady(){
-  const fields = ['trav-name','trav-idcard','trav-age','trav-nick','trav-phone','trav-line','trav-pickup'];
-  const allFilled = fields.every(id=>{const el=document.getElementById(id);return el&&el.value.trim()!==''});
+  const persons = collectTravelerPersons_();
+  const allPersonsFilled = persons.length>0 && persons.every(p=>p.name&&p.idCard&&p.age&&p.nickname&&p.phone&&p.line);
+  const pickupFilled = document.getElementById('trav-pickup').value.trim()!=='';
   const btn = document.getElementById('traveler-next');
-  if(btn)btn.disabled = !allFilled;
+  if(btn)btn.disabled = !(allPersonsFilled && pickupFilled);
 }
 function checkPaymentReady(){
   const input = document.getElementById('slip-input');
@@ -1231,17 +1317,11 @@ async function confirmPayment(){
     alert('กรุณาอัปโหลดสลิปโอนเงินก่อนยืนยันการชำระเงิน');
     return;
   }
-  const traveler = {
-    name: document.getElementById('trav-name').value.trim(),
-    idCard: document.getElementById('trav-idcard').value.trim(),
-    age: document.getElementById('trav-age').value.trim(),
-    nickname: document.getElementById('trav-nick').value.trim(),
-    phone: document.getElementById('trav-phone').value.trim(),
-    line: document.getElementById('trav-line').value.trim(),
-    pickup: document.getElementById('trav-pickup').value.trim()
-  };
-  if(!traveler.name||!traveler.idCard||!traveler.age||!traveler.nickname||!traveler.phone||!traveler.line||!traveler.pickup){
-    alert('กรุณากรอกข้อมูลผู้จองให้ครบก่อนครับ');
+  const persons = collectTravelerPersons_();
+  const pickup = document.getElementById('trav-pickup').value.trim();
+  const personsOk = persons.length>0 && persons.every(p=>p.name&&p.idCard&&p.age&&p.nickname&&p.phone&&p.line);
+  if(!personsOk || !pickup){
+    alert('กรุณากรอกข้อมูลผู้โดยสารให้ครบทุกคนก่อนครับ');
     showScreen('traveler');
     checkTravelerReady();
     return;
@@ -1249,9 +1329,7 @@ async function confirmPayment(){
   btn.disabled=true;btn.textContent='กำลังส่งข้อมูล...';
   try{
     const referrerCode = document.getElementById('trav-referrer').value.trim();
-    saveTraveler(traveler);
-    const allSeats = [...selectedSeatIds];
-    selectedOnsite.forEach(n=>allSeats.push('หน้างาน '+n));
+    saveTraveler(persons[0]); // จำข้อมูลคนแรก (ผู้จองหลัก) ไว้ช่วยกรอกอัตโนมัติครั้งถัดไป
     const code = 'YDEE'+Date.now().toString().slice(-8);
     const trip = trips.find(t=>t.id===currentTripId);
 
@@ -1264,12 +1342,12 @@ async function confirmPayment(){
       document.body.appendChild(iframe);
     }
 
-    allSeats.forEach((seat,i)=>{
+    persons.forEach((p,i)=>{
       const payload = {
-        date: trip.rawDate, trip: trip.name, seat: seat,
-        name: traveler.name, idCard: traveler.idCard, age: traveler.age,
-        nickname: traveler.nickname, phone: traveler.phone,
-        line: traveler.line, pickup: traveler.pickup, referrerCode: referrerCode, staffCode: '',
+        date: trip.rawDate, trip: trip.name, seat: p.seat,
+        name: p.name, idCard: p.idCard, age: p.age,
+        nickname: p.nickname, phone: p.phone,
+        line: p.line, pickup: pickup, referrerCode: referrerCode, staffCode: '',
         confirm: 'true', bookingId: code+'-'+(i+1), session_id: MY_SESSION_ID,
         slipBase64: slipData.data, slipName: slipData.name, slipMime: slipData.mimeType
       };
@@ -1287,7 +1365,7 @@ async function confirmPayment(){
 
     setTimeout(()=>{
       clearInterval(timerInterval);stopSeatPolling();
-      buildSummary(traveler,allSeats,code,false);
+      buildSummary(persons,code,false);
       showScreen('summary');
       btn.disabled=false;btn.textContent='ยืนยันการชำระเงิน';
     },2500);
@@ -1348,23 +1426,34 @@ async function confirmStaffBooking(){
 
   setTimeout(()=>{
     stopSeatPolling();
-    buildSummary({name,nickname,phone,line:'',pickup:'Staff'}, seatList, code, true);
+    const staffPersons = seatList.map(seat=>({seat,name,nickname,phone,line:'',idCard:'',age:''}));
+    buildSummary(staffPersons, code, true);
     selectedSeatIds = new Set();
     showScreen('summary');
     btn.disabled=false;btn.textContent='ยืนยันการจอง';
   },2200);
 }
 
-function buildSummary(traveler,seatList,code,isStaff){
+function buildSummary(persons,code,isStaff){
   const trip = trips.find(t=>t.id===currentTripId);
   document.getElementById('summary-code').textContent = code;
   document.getElementById('summary-trip').textContent = trip.name;
   document.getElementById('summary-date').textContent = trip.date;
-  document.getElementById('summary-seats').textContent = seatList.map(formatSeatId).join(', ');
-  document.getElementById('summary-count').textContent = seatList.length+' ท่าน';
+  document.getElementById('summary-seats').textContent = persons.map(p=>formatSeatId(p.seat)).join(', ');
+  document.getElementById('summary-count').textContent = persons.length+' ท่าน';
   document.getElementById('summary-deposit').textContent = isStaff
     ? 'ฟรี (เบาะ Staff)'
-    : (seatList.length*1000).toLocaleString('th-TH')+' บาท';
+    : (persons.length*1000).toLocaleString('th-TH')+' บาท';
+
+  const passengerBox = document.getElementById('summary-passengers');
+  if(passengerBox){
+    passengerBox.innerHTML = persons.map(p=>`
+      <div class="passenger-row">
+        <div class="passenger-seat-chip">${formatSeatId(p.seat)}</div>
+        <div class="passenger-name">${p.name||p.nickname||'-'}</div>
+      </div>
+    `).join('');
+  }
 }
 function resetAndHome(){
   selectedSeatIds=new Set();selectedOnsite=new Set();
