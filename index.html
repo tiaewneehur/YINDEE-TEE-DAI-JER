@@ -55,7 +55,7 @@ img{max-width:100%;display:block}
 .hero-logo{max-width:230px;width:72%;height:auto;display:block;margin:0 auto 14px;position:relative;z-index:1;filter:drop-shadow(0 0 22px rgba(255,255,255,.12)) drop-shadow(0 6px 16px rgba(0,0,0,.45))}
 .hero-fallback-title{color:#fff;font-size:24px;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
 .hero-tagline{color:rgba(255,255,255,.72);font-size:13px;font-weight:500;position:relative;z-index:1}
-.featured-carousel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding:0 20px 4px;scrollbar-width:none}
+.featured-carousel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x;padding:0 20px 4px;scrollbar-width:none}
 .featured-carousel::-webkit-scrollbar{display:none}
 .featured-card{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;margin:0;border-radius:var(--radius-xl);overflow:hidden;position:relative;background:#0A2016;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.25),0 0 0 1px rgba(201,162,39,.2);min-height:190px;cursor:pointer}
 .featured-card svg{position:absolute;inset:0;width:100%;height:100%}
@@ -170,6 +170,8 @@ img{max-width:100%;display:block}
 .seat.selected{background:linear-gradient(145deg,#F3D473,var(--gold));color:#3A2E05;transform:scale(.97);box-shadow:0 0 12px rgba(201,162,39,.5),0 4px 0 #9A7A1C;animation:pulse .9s ease-in-out infinite}
 .seat.booked{background:linear-gradient(145deg,#E0655C,var(--danger));color:#fff;cursor:not-allowed;box-shadow:0 4px 0 #8A2F27}
 .seat.locking-seat{background:linear-gradient(145deg,#F0AD5C,#E8A23B);color:#4A2E05;cursor:not-allowed;pointer-events:none;box-shadow:0 4px 0 #A8681C;animation:pulse 1.2s ease-in-out infinite}
+.seat.highlight-pulse{box-shadow:0 0 0 4px var(--gold),0 0 24px 6px rgba(201,162,39,.7);animation:seatHighlight 1s ease-in-out infinite;z-index:5}
+@keyframes seatHighlight{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
 .legend-row{display:flex;justify-content:center;flex-wrap:wrap;gap:16px;padding:20px 18px 8px;font-size:11px;color:var(--ink-soft)}
 .legend{display:flex;align-items:center;gap:6px}
@@ -240,11 +242,14 @@ img{max-width:100%;display:block}
 .summary-actions{display:flex;flex-direction:column;gap:10px;margin-top:8px}
 .btn-outline{height:50px;border-radius:14px;background:var(--bg-card);border:1.5px solid var(--forest-light);color:var(--ink);font-size:14.5px;font-weight:700;cursor:pointer}
 .mytrips-wrap,.profile-wrap{padding:12px 20px 30px}
-.booking-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);margin-bottom:12px}
-.booking-status{display:inline-flex;padding:5px 10px;border-radius:20px;background:rgba(45,90,69,.25);color:#8FD1A6;font-size:11px;font-weight:700;margin-bottom:10px}
+.booking-card{position:relative;overflow:hidden;background:#0A2016;border:1px solid rgba(201,162,39,.2);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);margin-bottom:12px;cursor:pointer;color:#fff}
+.booking-card svg{position:absolute;inset:0;width:100%;height:100%}
+.booking-card-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,32,22,.35) 0%,rgba(10,32,22,.7) 60%,rgba(8,20,14,.9) 100%);z-index:1}
+.booking-card-inner{position:relative;z-index:2}
+.booking-status{display:inline-flex;padding:5px 10px;border-radius:20px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);color:#fff;font-size:11px;font-weight:700;margin-bottom:10px}
 .booking-name{font-size:17px;font-weight:800;margin-bottom:6px}
-.booking-info{font-size:12.5px;color:var(--ink-soft);margin-bottom:12px}
-.booking-seats{padding-top:12px;border-top:1px solid var(--line);font-size:13px;font-weight:700;color:var(--forest-light)}
+.booking-info{font-size:12.5px;color:rgba(255,255,255,.8);margin-bottom:12px}
+.booking-seats{padding-top:12px;border-top:1px solid rgba(255,255,255,.2);font-size:13px;font-weight:700;color:var(--gold)}
 .empty-state{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:40px 24px;text-align:center;color:var(--ink-soft);font-size:14px;line-height:1.6}
 .profile-card{background:linear-gradient(135deg,var(--forest) 0%,var(--forest-mid) 100%);color:#fff;border-radius:var(--radius-lg);padding:22px;display:flex;align-items:center;gap:16px;margin-bottom:18px;box-shadow:var(--shadow)}
 .avatar{width:60px;height:60px;border-radius:50%;background:#fff;color:var(--forest);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800}
@@ -326,7 +331,7 @@ img{max-width:100%;display:block}
 <section class="section" style="padding-top:20px">
   <div class="section-header"><h2 class="section-title">เมนูลัด</h2></div>
   <div class="quick-grid">
-    <div class="quick-item" onclick="showScreen('home')"><div class="quick-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg></div><span>ทริปทั้งหมด</span></div>
+    <div class="quick-item" onclick="showScreen('alltrips')"><div class="quick-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg></div><span>ทริปทั้งหมด</span></div>
     <div class="quick-item" onclick="openDetail('changphueak')"><div class="quick-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18"/></svg></div><span>จองทริป</span></div>
     <div class="quick-item" onclick="showScreen('mytrips')"><div class="quick-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div><span>ทริปของฉัน</span></div>
     <div class="quick-item" onclick="showScreen('profile')"><div class="quick-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div><span>โปรไฟล์</span></div>
@@ -1012,7 +1017,7 @@ function renderVanGrid(prefix){
       inner = `<span>${displayLabel}</span><span style="font-size:9px">มีคนเลือก</span>`;
     }
 
-    html += `<div class="seat ${cls}" ${cls==='available'||cls==='selected'?`onclick="toggleSeat('${id}')"`:''}>${inner}</div>`;
+    html += `<div class="seat ${cls}" id="seat-${id}" ${cls==='available'||cls==='selected'?`onclick="toggleSeat('${id}')"`:''}>${inner}</div>`;
   });
   grid.innerHTML = html;
 }
@@ -1373,8 +1378,45 @@ function renderMyTrips(){
     const d = new Date(g.date);
     const fmtDate = d.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
     const isPast = d<today;
-    return `<div class="booking-card"><div class="booking-status">${isPast?'เดินทางแล้ว':'ยืนยันการจองแล้ว'}</div><div class="booking-name">${g.trip}</div><div class="booking-info">📅 ${fmtDate}</div><div class="booking-seats">ที่นั่ง: ${g.seats.length?g.seats.join(', '):'-'}</div></div>`;
+    const matchTrip = trips.find(t=>t.name===g.trip && t.rawDate===g.date);
+    const bgLayer = matchTrip ? tripCoverHTML(matchTrip) : '';
+    const firstSeat = g.seats[0] || '';
+    const clickable = matchTrip && firstSeat && !isPast;
+    const onclickAttr = clickable ? `onclick="goToMySeat('${g.trip.replace(/'/g,"\\'")}','${g.date}','${firstSeat}')"` : '';
+    return `<div class="booking-card" ${onclickAttr}>
+      ${bgLayer}<div class="booking-card-scrim"></div>
+      <div class="booking-card-inner">
+        <div class="booking-status">${isPast?'เดินทางแล้ว':'ยืนยันการจองแล้ว'}</div>
+        <div class="booking-name">${g.trip}</div>
+        <div class="booking-info">📅 ${fmtDate}</div>
+        <div class="booking-seats">ที่นั่ง: ${g.seats.length?g.seats.join(', '):'-'}</div>
+      </div>
+    </div>`;
   }).join('');
+}
+
+// จากการ์ด "ทริปของฉัน" — พาไปหน้าผังเบาะของทริปนั้น แล้วไฮไลท์ที่นั่งของตัวเองสักพัก
+async function goToMySeat(tripName, tripDate, seat){
+  const trip = trips.find(t=>t.name===tripName && t.rawDate===tripDate);
+  if(!trip)return;
+  currentTripId = trip.id;
+  document.getElementById('b-trip').value = trip.name;
+  document.getElementById('b-date').value = trip.dateShort||trip.date;
+  document.getElementById('f-dateraw').value = trip.rawDate;
+  selectedSeatIds = new Set();
+  selectedOnsite = new Set();
+  showScreen('seats');
+  await loadSeatsFromBackend();
+  startSeatPolling();
+
+  const seatEl = document.getElementById('seat-'+seat) || document.getElementById('onsite-'+seat.replace('หน้างาน ',''));
+  if(seatEl){
+    setTimeout(()=>{
+      seatEl.scrollIntoView({behavior:'smooth',block:'center'});
+      seatEl.classList.add('highlight-pulse');
+      setTimeout(()=>seatEl.classList.remove('highlight-pulse'), 5500);
+    },300);
+  }
 }
 
 /* ================================================================
@@ -1392,7 +1434,7 @@ function renderOnsiteGrid(bookedMap,lockedMap){
     if(bookedMap && bookedMap[label]) cls='booked';
     else if(selectedOnsite.has(n)) cls='selected';
     else if(lockedMap && lockedMap[label]) cls='locking';
-    html += `<div class="onsite-slot ${cls}" onclick="toggleOnsite(${n})"><span>หน้างาน</span><span>${n}</span></div>`;
+    html += `<div class="onsite-slot ${cls}" id="onsite-${n}" onclick="toggleOnsite(${n})"><span>หน้างาน</span><span>${n}</span></div>`;
   }
   grid.innerHTML = html;
 }
