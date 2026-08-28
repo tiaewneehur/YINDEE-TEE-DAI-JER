@@ -45,18 +45,13 @@ img{max-width:100%;display:block}
 .screen.active{display:block;animation:fadeIn .28s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .screen-content{width:100%;max-width:520px;margin:0 auto}
-.topbar{padding:calc(12px + var(--safe-top)) 20px 40px;display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;z-index:40;background:linear-gradient(180deg,rgba(5,11,7,.85) 0%,rgba(5,11,7,.6) 45%,rgba(15,26,19,.7) 78%,var(--bg) 100%),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900&q=60') center/cover;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.brand-logo{display:flex;align-items:center}
-.brand-logo-img{height:38px;width:auto;display:block;border-radius:9px}
-.brand-fallback{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.03em}
-.brand-icon{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--forest) 0%,var(--forest-light) 100%);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 12px rgba(13,40,24,.2)}
-.brand-icon svg{width:18px;height:18px}
 .icon-btn{width:42px;height:42px;border-radius:50%;background:var(--bg-card);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);border:1px solid var(--line);cursor:pointer;transition:transform .15s ease}
 .icon-btn:active{transform:scale(.94)}
 .icon-btn svg{width:20px;height:20px}
 /* หัวเว็บใหม่ — การ์ดพื้นเข้มโชว์โลโก้เต็มรูป (#ยินดีที่ได้เจอ + ต้นไม้) ให้กลมกลืนกับพื้นหลังดำของภาพ */
-.hero-banner{margin:8px 20px 0;padding:26px 20px 22px;border-radius:24px;background:linear-gradient(160deg,rgba(5,11,7,.78) 0%,rgba(5,11,7,.62) 55%,rgba(5,11,7,.8) 100%),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900&q=60') center/cover;text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.35);position:relative;overflow:hidden}
-.hero-banner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 0%,rgba(90,163,111,.18),transparent 60%);pointer-events:none}
+.hero-banner{margin:0;padding:calc(16px + var(--safe-top)) 24px 30px;border-radius:0 0 28px 28px;background:linear-gradient(180deg,rgba(5,11,7,.55) 0%,rgba(5,11,7,.72) 55%,rgba(15,26,19,.82) 82%,var(--bg) 100%),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900&q=60') center/cover;text-align:center;position:sticky;top:0;z-index:40;overflow:hidden;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.hero-banner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 0%,rgba(90,163,111,.16),transparent 60%);pointer-events:none}
+.hero-bell{position:absolute;top:calc(16px + var(--safe-top));right:24px;z-index:2}
 .hero-logo{max-width:230px;width:72%;height:auto;display:block;margin:0 auto 14px;position:relative;z-index:1;filter:drop-shadow(0 0 22px rgba(255,255,255,.12)) drop-shadow(0 6px 16px rgba(0,0,0,.45))}
 .hero-fallback-title{color:#fff;font-size:24px;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
 .hero-tagline{color:rgba(255,255,255,.72);font-size:13px;font-weight:500;position:relative;z-index:1}
@@ -316,21 +311,10 @@ img{max-width:100%;display:block}
 
 <section class="screen active" id="screen-home">
 <div class="screen-content">
-<header class="topbar">
-  <div class="brand-logo">
-    <img src="IMG_1931.png" alt="ยินดีที่ได้เจอ" class="brand-logo-img" onerror="this.style.display='none';document.getElementById('brand-fallback').style.display='flex'">
-    <div class="brand-fallback" id="brand-fallback" style="display:none">
-      <div class="brand-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20L10 8l4 6 3-5 5 11H3z"/><circle cx="18" cy="6" r="2.5" fill="currentColor" stroke="none"/></svg>
-      </div>
-      ยินดีที่ได้เจอ
-    </div>
-  </div>
-  <button class="icon-btn" aria-label="แจ้งเตือน">
+<div class="hero-banner">
+  <button class="icon-btn hero-bell" aria-label="แจ้งเตือน">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
   </button>
-</header>
-<div class="hero-banner">
   <img src="IMG_1931.png" alt="ยินดีที่ได้เจอ" class="hero-logo" onerror="this.style.display='none';document.getElementById('hero-fallback-title').style.display='block'">
   <h1 class="hero-fallback-title" id="hero-fallback-title" style="display:none">ยินดีที่ได้เจอ</h1>
   <p class="hero-tagline">พร้อมออกไปเจอธรรมชาติด้วยกันไหม? 🌲</p>
