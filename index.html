@@ -52,6 +52,18 @@ img{max-width:100%;display:block}
 .hero-banner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 0%,rgba(90,163,111,.16),transparent 60%);pointer-events:none}
 .hero-bell{position:absolute;top:calc(16px + var(--safe-top));right:24px;z-index:2}
 .hero-logo{max-width:230px;width:72%;height:auto;display:block;margin:0 auto 14px;position:relative;z-index:1;filter:drop-shadow(0 0 22px rgba(255,255,255,.12)) drop-shadow(0 6px 16px rgba(0,0,0,.45))}
+
+/* ================================================================
+   SPLASH SCREEN — โชว์ตอนโหลดหน้าเว็บครั้งแรก/รีเฟรช พื้นหลังป่าเดียวกับหน้าหลัก
+   ================================================================ */
+#splash-screen{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:linear-gradient(180deg,rgba(5,11,7,.7) 0%,rgba(5,11,7,.85) 60%,rgba(8,20,14,.95) 100%),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900&q=60') center/cover;transition:opacity .5s ease,visibility .5s ease}
+#splash-screen.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-ring-wrap{position:relative;width:180px;height:180px;display:flex;align-items:center;justify-content:center}
+.splash-ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0%,var(--gold) 15%,transparent 30%,transparent 100%);animation:splashSpin 1.6s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 3px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 3px))}
+.splash-ring::after{content:'';position:absolute;inset:0;border-radius:50%;box-shadow:0 0 20px 2px rgba(201,162,39,.5)}
+@keyframes splashSpin{to{transform:rotate(360deg)}}
+.splash-logo{width:64%;max-width:120px;position:relative;z-index:1;filter:drop-shadow(0 0 18px rgba(255,255,255,.18))}
+.splash-text{color:rgba(255,255,255,.65);font-size:12px;font-weight:500;letter-spacing:.5px}
 .hero-fallback-title{color:#fff;font-size:24px;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
 .hero-tagline{color:rgba(255,255,255,.72);font-size:13px;font-weight:500;position:relative;z-index:1}
 .featured-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overflow-y:hidden;overscroll-behavior:contain;touch-action:pan-x;scrollbar-width:none;margin:0 -20px}
@@ -61,17 +73,17 @@ img{max-width:100%;display:block}
 .featured-card > svg,.featured-card > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .featured-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,32,22,.1) 0%,rgba(10,32,22,.55) 55%,rgba(8,20,14,.9) 100%);z-index:1}
 .featured-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(201,162,39,.75),transparent);z-index:3}
+.featured-badge-abs{position:absolute;top:16px;left:16px;z-index:3;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600}
+.featured-badge-abs .dot{width:6px;height:6px;border-radius:50%;background:#7DDA9B;box-shadow:0 0 0 3px rgba(125,218,155,.25)}
 .featured-inner{position:relative;z-index:2;padding:22px;display:flex;flex-direction:column;height:100%;min-height:190px}
-.featured-top-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
-.featured-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;width:fit-content}
-.featured-badge .dot{width:6px;height:6px;border-radius:50%;background:#7DDA9B;box-shadow:0 0 0 3px rgba(125,218,155,.25)}
-.featured-seat-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;backdrop-filter:blur(8px);white-space:nowrap}
+.featured-seat-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;backdrop-filter:blur(8px);white-space:nowrap;flex-shrink:0}
 .featured-seat-badge.ok{background:rgba(95,209,138,.2);color:#8FE8AC;border:1px solid rgba(95,209,138,.4)}
 .featured-seat-badge.low{background:rgba(232,196,104,.22);color:#F0D68A;border:1px solid rgba(232,196,104,.4)}
 .featured-seat-badge.full{background:rgba(224,101,92,.25);color:#F0A39C;border:1px solid rgba(224,101,92,.4)}
-.featured-name{font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.featured-meta{font-size:13px;opacity:.75;margin-bottom:auto}
-.featured-footer{display:flex;align-items:flex-end;justify-content:space-between;margin-top:18px}
+.featured-name{font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:38px}
+.featured-meta{font-size:13px;opacity:.75;margin-bottom:2px}
+.featured-duration{font-size:12px;opacity:.65;margin-bottom:auto}
+.featured-footer{display:flex;align-items:center;justify-content:space-between;margin-top:18px;gap:8px}
 .featured-price{font-size:20px;font-weight:800}
 .featured-price span{font-size:12px;font-weight:500;opacity:.7;margin-left:2px}
 .section{padding:28px 20px 0}
@@ -164,6 +176,7 @@ img{max-width:100%;display:block}
 .van-header svg{width:18px;height:18px}
 .van-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px;border-radius:20px;position:relative;overflow:hidden;background:linear-gradient(180deg,#16261c,#0E1811);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 6px 18px rgba(13,40,24,.25)}
 .van-grid::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at top,rgba(201,162,39,.08),transparent 60%);pointer-events:none}
+.spin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--line-strong);border-top-color:var(--gold);animation:splashSpin .7s linear infinite;flex-shrink:0}
 .seat{aspect-ratio:1;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;cursor:pointer;user-select:none;transition:transform .12s ease,background .15s ease;overflow:hidden}
 .seat span:first-child{font-size:8px;margin-bottom:2px;opacity:.9}
 .seat span:last-child{font-size:13px;line-height:1.1}
@@ -313,6 +326,13 @@ img{max-width:100%;display:block}
 </style>
 </head>
 <body>
+<div id="splash-screen">
+  <div class="splash-ring-wrap">
+    <div class="splash-ring"></div>
+    <img src="IMG_1931.png" alt="ยินดีที่ได้เจอ" class="splash-logo" onerror="this.style.display='none'">
+  </div>
+  <div class="splash-text">กำลังโหลดข้อมูล...</div>
+</div>
 <div class="app">
 <div class="screens">
 
@@ -762,18 +782,17 @@ function featuredCardHTML(t){
       <div class="featured-card" onclick="openDetail('${t.id}')">
         ${tripCoverHTML(t)}
         <div class="featured-scrim"></div>
+        <div class="featured-badge-abs"><span class="dot"></span> เปิดจองอยู่</div>
         <div class="featured-inner">
-          <div class="featured-top-row">
-            <div class="featured-badge"><span class="dot"></span> เปิดจองอยู่</div>
+          <div class="featured-name">${t.name}</div>
+          <div class="featured-meta">${fmtDate}${t.loc?' · '+t.loc:''}</div>
+          <div class="featured-duration">⏳ ${t.duration||'-'}</div>
+          <div class="featured-footer">
+            <div class="featured-price">${Number(t.price||0).toLocaleString('th-TH')} <span>บาท/ท่าน</span></div>
             <div class="featured-seat-badge ${seatCls}">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
               ${seatStatusText(t.seatsLeft)}
             </div>
-          </div>
-          <div class="featured-name">${t.name}</div>
-          <div class="featured-meta">${fmtDate}${t.loc?' · '+t.loc:''}</div>
-          <div class="featured-footer">
-            <div class="featured-price">${Number(t.price||0).toLocaleString('th-TH')} <span>บาท/ท่าน</span></div>
           </div>
         </div>
       </div>
@@ -861,6 +880,14 @@ function setupCarouselAutoScroll(){
   box.addEventListener('scroll', onScroll, {passive:true});
   start();
 }
+const _splashStartedAt = Date.now();
+function hideSplash_(){
+  const el = document.getElementById('splash-screen');
+  if(!el || el.classList.contains('hide'))return;
+  const elapsed = Date.now() - _splashStartedAt;
+  const wait = Math.max(0, 600 - elapsed); // โชว์อย่างน้อย 600ms กันกระพริบวูบเดียวถ้าโหลดไวมาก
+  setTimeout(()=>{ el.classList.add('hide'); }, wait);
+}
 function fetchData(){
   const cb = 'cb_'+Date.now();
   let finished = false;
@@ -876,6 +903,7 @@ function fetchData(){
     }
     renderTrips();
     renderFeaturedCarousel();
+    hideSplash_();
     delete window[cb];
   };
   const script = document.createElement('script');
@@ -885,6 +913,7 @@ function fetchData(){
     trips = DEMO_TRIPS.map((t,i)=>({...t,rawDate:demoDate_(i)}));
     renderTrips();
     renderFeaturedCarousel();
+    hideSplash_();
   };
   document.body.appendChild(script);
 }
@@ -922,7 +951,7 @@ let _lastBookedMap = {};
 let _lastLockedMap = {};
 function applySeatData_(bookedList,lockList){
   const bookedMap = {};
-  bookedList.forEach(b=>{const seat=String(b.seat||'').trim();if(seat)bookedMap[seat]=true});
+  bookedList.forEach(b=>{const seat=String(b.seat||'').trim();if(seat)bookedMap[seat]=b.nickname||'เต็ม'});
   const lockedMap = {};
   (lockList||[]).forEach(l=>{
     const seat = String(l.seat||'').trim();
@@ -935,13 +964,21 @@ function applySeatData_(bookedList,lockList){
   lockedSeatIds = new Set(Object.keys(lockedMap));
   renderVanGrid('A');renderVanGrid('B');renderOnsiteGrid(bookedMap,lockedMap);updateSeatInfo();
 }
-function startSeatPolling(){stopSeatPolling();seatPollTimer=setInterval(()=>{loadSeatsFromBackend()},5000)}
+function startSeatPolling(){stopSeatPolling();seatPollTimer=setInterval(()=>{loadSeatsFromBackend()},4000)}
 function stopSeatPolling(){clearInterval(seatPollTimer);seatPollTimer=null}
 async function goToSeats(){
   selectedSeatIds=new Set();selectedOnsite=new Set();
   showScreen('seats');
+  showSeatGridLoading_();
   await loadSeatsFromBackend();
   startSeatPolling();
+}
+function showSeatGridLoading_(){
+  const msg = `<div style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:8px;padding:24px 0;color:var(--ink-muted);font-size:12.5px"><span class="spin-dot"></span>กำลังดึงข้อมูลจากหลังบ้าน...</div>`;
+  ['A','B'].forEach(prefix=>{
+    const grid = document.getElementById('vanGrid'+prefix);
+    if(grid) grid.innerHTML = msg;
+  });
 }
 function tripCardHTML(t){
   return `
@@ -1040,7 +1077,8 @@ function renderVanGrid(prefix){
 
     if(bookedSeatIds.has(id)){
       cls = 'booked';
-      inner = `<span>${displayLabel}</span><span style="font-size:10px">เต็ม</span>`;
+      const nickname = _lastBookedMap[id] || 'เต็ม';
+      inner = `<span>${displayLabel}</span><span style="font-size:10px;font-weight:800">${nickname}</span>`;
     } else if(selectedSeatIds.has(id)){
       cls = 'selected';
     } else if(lockedSeatIds.has(id)){
@@ -1425,6 +1463,7 @@ async function goToMySeat(tripName, tripDate, seat){
   selectedSeatIds = new Set();
   selectedOnsite = new Set();
   showScreen('seats');
+  showSeatGridLoading_();
   await loadSeatsFromBackend();
   startSeatPolling();
 
